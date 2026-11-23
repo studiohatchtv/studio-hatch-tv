@@ -155,6 +155,7 @@
       <div class="hero-art tech"><img class="${f.blend?"blend":""}" src="${esc(f.image)}" alt="" fetchpriority="high">${f.durationMin?`<div class="badge-40"><b>${f.durationMin}'</b><small>${esc(t().minutes)}</small></div>`:""}</div>
     </div>`;
     }
+    heroVideo();
     const tk=["Deneyimler","Local Makers","Buluşmalar",...["culture","wellness","nocturne"].map(p=>t().pillars[p][0])]; const tkH=tk.map(x=>`<span>${x}</span>`).join("");
     $("#ticker").innerHTML = `<div class="ticker-t" aria-hidden="true">${tkH+tkH+tkH+tkH}</div>`;
     $("#showsW").innerHTML = renderShows();
@@ -366,6 +367,22 @@
       try{ await navigator.clipboard.writeText(location.href); toast(t().copied); }catch(x){}
     };
   }
+  // Ana sayfa banner videosu: yalnız masaüstü; telefonda, veri tasarrufunda ve "hareketi azalt"ta görsel kalır
+  function heroVideo(){
+    const u = String(ayar("hero_video")||"").trim(), art = $("#hero .hero-art");
+    const ok = /^assets\/video\/[\w-]+\.(mp4|webm)$/.test(u) || /^https:\/\/uolmzykwvizhmycgymfi\.supabase\.co\/storage\/v1\/object\/public\/site-gorselleri\/[\w\/.-]+\.(mp4|webm)$/.test(u);
+    if(!art || !ok || !matchMedia("(min-width:981px)").matches || matchMedia("(prefers-reduced-motion: reduce)").matches || (navigator.connection && navigator.connection.saveData)) return;
+    const v = document.createElement("video");
+    v.className = "hero-vid"; v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.preload = "auto";
+    v.setAttribute("muted",""); v.setAttribute("playsinline",""); v.setAttribute("aria-hidden","true"); v.tabIndex = -1;
+    v.src = u;
+    v.addEventListener("playing", ()=>art.classList.add("vid-on"), { once:true });
+    v.addEventListener("error", ()=>v.remove(), { once:true });
+    art.insertBefore(v, art.querySelector(".badge-40"));
+    const p = v.play(); if(p && p.catch) p.catch(()=>{});
+    document.addEventListener("visibilitychange", ()=>{ if(!v.isConnected) return; document.hidden ? v.pause() : v.play().catch(()=>{}); });
+  }
+
   function stories(){
     const az = matchMedia("(prefers-reduced-motion: reduce)").matches || (navigator.connection && navigator.connection.saveData);
     document.querySelectorAll("[data-story]").forEach(box=>{
