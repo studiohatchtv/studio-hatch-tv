@@ -48,6 +48,31 @@
         <button class="st-play" type="button" aria-label="${lang==="tr"?"Oynat":"Play"}"><svg width="30" height="30" viewBox="0 0 10 10"><path d="M2.5 1.2l6.2 3.8-6.2 3.8z" fill="currentColor"/></svg></button>
         <button class="st-snd" type="button" aria-label="${lang==="tr"?"Sesi aç":"Unmute"}" data-off="1">${SND_OFF}</button></div>`
     : `<div class="ev-img ${x.blend?"blend":""}"><img src="${esc(x.image)}" alt=""></div>`;
+  // mini galeri: masaüstünde ızgara (6 kare, fazlası "+N"), telefonda kaydırmalı şerit; dokununca tam ekran
+  const galHtml = x => {
+    const g=x.gallery||[]; if(!g.length) return "";
+    const tr=lang==="tr", fazla=g.length-6;
+    return `<section class="gal" aria-label="${tr?"Fotoğraf galerisi":"Photo gallery"}"><div class="gal-h"><h2>${tr?"Galeri":"Gallery"}</h2><span class="mono">${g.length} ${tr?"fotoğraf":(g.length>1?"photos":"photo")}</span></div>
+      <div class="gal-grid">${g.map((u,i)=>`<button type="button" class="gal-i${i>=6?" gal-x":""}" onclick="hatchLb(${i})" aria-label="${tr?"Fotoğrafı büyüt":"Open photo"} ${i+1}/${g.length}"><img src="${esc(u)}" alt="" loading="lazy">${i===5&&fazla>0?`<span class="gal-more">+${fazla}</span>`:""}</button>`).join("")}</div></section>`;
+  };
+  let LB=[];
+  window.hatchLb = i => {
+    let lb=document.querySelector(".lb");
+    if(!lb){
+      document.body.insertAdjacentHTML("beforeend",`<div class="lb" role="dialog" aria-modal="true" hidden><img alt=""><button class="lb-x" type="button" aria-label="${lang==="tr"?"Kapat":"Close"}">×</button><button class="lb-p" type="button" aria-label="${lang==="tr"?"Önceki":"Previous"}">‹</button><button class="lb-n" type="button" aria-label="${lang==="tr"?"Sonraki":"Next"}">›</button><span class="lb-c mono"></span></div>`);
+      lb=document.querySelector(".lb"); const im=lb.querySelector("img");
+      const git=d=>{ lb.dataset.i=(+lb.dataset.i+d+LB.length)%LB.length; goster(); };
+      const goster=()=>{ const k=+lb.dataset.i; im.src=LB[k]; lb.querySelector(".lb-c").textContent=`${k+1} / ${LB.length}`; [1,-1].forEach(d=>{ const p=new Image(); p.src=LB[(k+d+LB.length)%LB.length]; }); lb.querySelectorAll(".lb-p,.lb-n").forEach(b=>b.hidden=LB.length<2); };
+      const kapat=()=>{ lb.hidden=true; document.documentElement.style.overflow=""; if(lb._geri) lb._geri.focus(); };
+      lb._goster=goster;
+      lb.querySelector(".lb-x").onclick=kapat; lb.querySelector(".lb-p").onclick=()=>git(-1); lb.querySelector(".lb-n").onclick=()=>git(1);
+      lb.addEventListener("click",e=>{ if(e.target===lb) kapat(); });
+      document.addEventListener("keydown",e=>{ if(lb.hidden) return; if(e.key==="Escape") kapat(); else if(e.key==="ArrowLeft") git(-1); else if(e.key==="ArrowRight") git(1); });
+      let x0=null; lb.addEventListener("touchstart",e=>{ x0=e.touches[0].clientX; },{passive:true});
+      lb.addEventListener("touchend",e=>{ if(x0==null) return; const dx=e.changedTouches[0].clientX-x0; x0=null; if(Math.abs(dx)>45) git(dx<0?1:-1); });
+    }
+    lb._geri=document.activeElement; lb.dataset.i=i; lb.hidden=false; document.documentElement.style.overflow="hidden"; lb._goster(); lb.querySelector(".lb-x").focus();
+  };
   const buyBar = x => x.ticketUrl ? `<div class="buybar"><div><b>${esc(L(x.title))}</b><small>${esc(L(x.price)||"")}</small></div><a class="btn btn-blue" href="${esc(x.ticketUrl)}" target="_blank" rel="noopener">${esc(t().tickets)} <span class="arr">${ARR}</span></a></div>` : "";
   const faqHtml = list => list.map(x=>`<details class="faq"><summary>${esc(x.q)}<i aria-hidden="true"></i></summary><p>${esc(x.a)}</p></details>`).join("");
   const NL_ILGI = [["Immersive deneyimler","Immersive shows"],["Atölyeler","Workshops"],["Etkinlikler & konserler","Events & concerts"],["Wellness","Wellness"],["Tasarım ürünleri & mağaza","Design store"]];
@@ -242,7 +267,8 @@
         <span class="tag" style="background:rgba(255,255,255,.16);color:#fff">${esc(L(e.tur))}</span>
         <h1>${esc(L(e.title))}</h1><p class="lead">${esc(L(e.short))}</p></div>
       ${mediaHtml(e)}</div>`;
-    $("#evBody").innerHTML = `<div class="txt">${L(e.desc).map(p=>`<p>${esc(p)}</p>`).join("")}
+    LB=e.gallery||[];
+    $("#evBody").innerHTML = `<div class="txt">${L(e.desc).map(p=>`<p>${esc(p)}</p>`).join("")}${galHtml(e)}
         ${L(e.know).length?`<h2>${esc(t().evKnow)}</h2><ul class="know" style="--c:${c}">${L(e.know).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}</div>
       <aside class="side"><dl>
         <div><dt>${esc(t().evDate)}</dt><dd>${esc(dateTxt)}</dd></div>
@@ -301,8 +327,9 @@
     const facts=[[t().evDate, shWhen(g)], [t().evSessions, g.times.join(" · ")], [t().shHours, L(g.hours)], [t().evDuration, g.durationMin?`${g.durationMin} ${t().minutes}`:""], [t().shAge, L(g.age)], [t().evPrice, L(g.price)]].filter(x=>x[1]);
     $("#shFacts").innerHTML = facts.length ? `<div class="wrap"><dl class="sh-facts">${facts.map(([a,b])=>`<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl></div>` : "";
     const is=L(g.is), isnt=L(g.isnt), faq=[...L(g.faq), ...window.hatchFaq(ayar("genel_sss"))], about=ayar("immersive_nedir");
+    LB=g.gallery||[];
     $("#evBody").innerHTML = `<div class="txt">
-        ${L(g.desc).map(p=>`<p>${esc(p)}</p>`).join("")}
+        ${L(g.desc).map(p=>`<p>${esc(p)}</p>`).join("")}${galHtml(g)}
         ${is.length||isnt.length?`<h2>${esc(t().shWhat)}</h2><div class="isnt">
           ${is.length?`<div class="yes"><h3>${esc(t().shIs)}</h3><ul>${is.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
           ${isnt.length?`<div class="no"><h3>${esc(t().shIsnt)}</h3><ul>${isnt.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}</div>`:""}

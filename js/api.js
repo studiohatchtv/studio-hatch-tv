@@ -23,7 +23,7 @@
       know:{tr:lines(r.bilgiler), en:lines(r.bilgiler_en||r.bilgiler)},
       date:r.tarih, end:multi?r.bitis_tarih:null, times, endTime: times.length===1 && r.bitis_saat ? hm(r.bitis_saat) : "",
       durationMin:r.sure_dk||null, price:{tr:r.fiyat||"", en:r.fiyat_en||r.fiyat||""}, ticketUrl:safeUrl(r.bilet_url),
-      image:gorsel(r.gorsel)||FALLBACK[r.program]||FALLBACK.culture, video:medya(r.video), poster:kapak(medya(r.video)), blend:false };
+      image:gorsel(r.gorsel)||FALLBACK[r.program]||FALLBACK.culture, video:medya(r.video), poster:kapak(medya(r.video)), gallery:(r.galeri||[]).map(gorsel).filter(Boolean).slice(0,12), blend:false };
   }
   // SSS: bloklar boş satırla ayrılır; ilk satır soru, kalanı cevap
   const faq = s => String(s||"").split(/\n\s*\n/).map(b=>b.trim().split("\n")).filter(b=>b[0]&&b[0].trim())
@@ -34,7 +34,7 @@
     return { id:g.id, featured:!!g.one_cikan, title:two(g.baslik,g.baslik_en), sub:two(g.alt_baslik,g.alt_baslik_en),
       short:two(g.ozet,g.ozet_en), desc:two(g.aciklama,g.aciklama_en,paras), is:two(g.nedir,g.nedir_en,lines), isnt:two(g.ne_degildir,g.ne_degildir_en,lines),
       faq:two(g.sss,g.sss_en,faq), start:g.baslangic||null, end:g.bitis||null, times:g.seanslar||[], durationMin:g.sure_dk||null,
-      hours:two(g.saatler,g.saatler_en), age:two(g.yas,g.yas_en), price:two(g.fiyat,g.fiyat_en), ticketUrl:safeUrl(g.bilet_url), image:gorsel(g.gorsel)||"assets/oda-frida.jpg", video:medya(g.video), poster:kapak(medya(g.video)), blend:false };
+      hours:two(g.saatler,g.saatler_en), age:two(g.yas,g.yas_en), price:two(g.fiyat,g.fiyat_en), ticketUrl:safeUrl(g.bilet_url), image:gorsel(g.gorsel)||"assets/oda-frida.jpg", video:medya(g.video), poster:kapak(medya(g.video)), gallery:(g.galeri||[]).map(gorsel).filter(Boolean).slice(0,12), blend:false };
   }
   window.hatchLoad = async function(){
     if(window.HATCH_DEMO_MODE){ window.HATCH_SETTINGS=window.HATCH_DEMO_SETTINGS||{}; window.HATCH_SHOWS=window.HATCH_DEMO_SHOWS||[]; return window.HATCH_DEMO; }
