@@ -102,7 +102,7 @@
     const hu = huBand();
     const band = DEMO ? t().proto : hu ? hu : (ayar("duyuru") ? esc(ayar("duyuru")) : (PREVIEW ? (lang==="tr" ? "<b>Önizleme.</b> Site henüz yayında değil; program Flow'dan canlı geliyor." : "<b>Preview.</b> Not public yet; the program is live from Flow.") : ""));
     $("#proto").innerHTML = band; $("#proto").style.display = band ? "" : "none"; $("#proto").classList.toggle("hu-band", !!hu && !DEMO);
-    $("#nav").innerHTML = n.map((x,i)=>`<a href="index.html${qs()}#${ids[i]}">${esc(x)}</a>`).join("") + `<a href="${JOIN_URL}">${esc(t().join)}</a>`;
+    $("#nav").innerHTML = n.map((x,i)=>`<a href="${ids[i]==="visit"?"ziyaret.html"+qs():"index.html"+qs()+"#"+ids[i]}">${esc(x)}</a>`).join("") + `<a href="${JOIN_URL}">${esc(t().join)}</a>`;
     $("#hdR").innerHTML = `<div class="lang" role="group" aria-label="Dil / Language"><button class="${lang==="tr"?"on":""}" onclick="hatchLang('tr')">TR</button><button class="${lang==="en"?"on":""}" onclick="hatchLang('en')">EN</button></div>
       <a class="btn btn-blue" href="index.html${qs()}#gosterimler">${esc(t().tickets)}</a>`;
     $("#ft").innerHTML = footer();
@@ -178,7 +178,7 @@
         <dt>${esc(t().hours)}</dt><dd>${ayar("saatler") ? esc(ayar("saatler")).replace(/\n/g,"<br>") : `<span class="todo">${esc(t().hoursTodo)}</span>`}</dd>
         <dt>${esc(t().giseH)}</dt><dd>${esc(t().gise)}</dd>
         <dt>${esc(t().contact)}</dt><dd><a href="mailto:${esc(SET.eposta||"hello@studiohatch.tv")}">${esc(SET.eposta||"hello@studiohatch.tv")}</a><br><a href="https://instagram.com/${esc(SET.instagram||"studiohatchtv")}" target="_blank" rel="noopener">@${esc(SET.instagram||"studiohatchtv")}</a></dd></dl>
-        <a class="btn btn-ink" style="margin-top:26px" href="${MAPS}" target="_blank" rel="noopener">${esc(t().map)} <span class="arr">${ARR}</span></a></div>
+        <div class="vz-acts" style="margin-top:26px"><a class="btn btn-ink" href="ziyaret.html${qs()}">${lang==="tr"?"Ziyaret rehberi":"Visitor guide"} <span class="arr">${ARR}</span></a><a class="btn" href="${MAPS}" target="_blank" rel="noopener">${esc(t().map)} ↗</a></div></div>
       <div class="card rv" style="background:var(--blue-soft)"><h2 class="h2">${esc(t().nlH)}</h2><p class="sub" style="color:var(--ink)">${esc(t().nlP)}</p>
         <form class="nl-form nl2" onsubmit="event.preventDefault(); hatchNl(this)">
           <label class="sr" for="nlMail">${esc(t().nlPh)}</label><input id="nlMail" type="email" required placeholder="${esc(t().nlPh)} *" autocomplete="email" maxlength="200">
@@ -405,7 +405,116 @@
       metin.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>{ const [ilk,...kalan]=p.split("\n"); const bas=ilk.length<70 && !/[.:;,]$/.test(ilk.trim());
         return bas ? `<h2>${esc(ilk)}</h2>${kalan.length?`<p>${esc(kalan.join("\n")).replace(/\n/g,"<br>")}</p>`:""}` : `<p>${esc(p).replace(/\n/g,"<br>")}</p>`; }).join("");
   }
-  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else if(pg==="kvkk") kvkkPage(); else if(pg==="hatchup") window.hatchupPage(); else if(pg==="katil") window.katilPage(); else home(); reveal(); stories(); }
+  // ===== Ziyaret et (ziyaret.html) =====
+  const VZ = {
+    tr:{ title:"Ziyaret et", eye:"Ziyaretini planla", h1:"Gel, içine gir,<br>keşfet.", lead:"Bursa Nilüfer'de, High Garden AVM'de immersive gösterimler, tasarım mağazası, atölyeler ve etkinlikler. Gelmeden önce bilmen gereken her şey burada.",
+      acik:"Şu an açık", kapanir:"22:00'ye kadar", acilir:"Bugün 12:00'de açılıyor", kapali:"Şu an kapalı · yarın 12:00'de açılır", yol:"Yol tarifi al",
+      chips:[["bilet","Bilet"],["ulasim","Ulaşım"],["neler","Neler var?"],["grup","Gruplar"],["sss","SSS"]],
+      qHours:"Saatler", qAdres:"Adres", qBilet:"Bilet", qBiletT:"Passo uygulaması, passo.com.tr ve studio HATCH gişesi", qIletisim:"İletişim",
+      bH:"Bilet nasıl alınır?", bP:"Biletler Passo'da ve gişemizde satılır. Özellikle hafta sonları için biletini önceden almanı öneririz.",
+      bOn:"Online", bOnT:"Passo uygulaması veya passo.com.tr üzerinden gün ve seans seçerek al; biletin telefonuna gelir.", bOnB:"Gösterimleri gör",
+      bGise:"Gişeden", bGiseT:"studio HATCH'teki gişeden de bilet alabilirsin. Uygunluk seansın doluluğuna bağlıdır.",
+      bNow:"Şu an gösterimde", bBuy:"Bilet al", bInfo:"Detaylar",
+      uH:"Nasıl gelinir?", uP:"studio HATCH, Nilüfer'deki High Garden AVM'de, Newline Konutları E Blok'ta.", uNav:"Navigasyon uygulamanda “studio HATCH” ya da “High Garden AVM” araması seni doğrudan getirir.",
+      eH:"Erişilebilirlik",
+      nH:"Seni neler bekliyor?", nP:"Bir ziyarette gösterim, alışveriş ve atölyeyi bir araya getirebilirsin.",
+      n:[["oda-frida","Immersive gösterimler","Dört bir yanını saran görüntü ve sesle, içinde dolaştığın dijital sanat deneyimleri.","index.html#gosterimler","Gösterimler"],
+         ["magaza","Hatch Shop","Bağımsız tasarımcıların ürünlerinden oluşan tasarım mağazası; her gün 12:00'den itibaren açık.","index.html#makers","Mağaza"],
+         ["seramik","Atölyeler & etkinlikler","Seramikten amuta, buluşmalardan konserlere; takvimde her hafta yeni bir program.","index.html#program","Takvim"],
+         ["wellness-yoga","Wellness","Immersive alanda yoga, nefes ve meditasyon seansları.","index.html#program","Seanslar"]],
+      sure:"Ziyaretin ne kadar sürer?", sureT:"Immersive gösterim yaklaşık 40 dakika sürer. Mağaza ile birlikte 1–1,5 saat ayırmanı öneririz.",
+      gH:"Grup ziyaretleri & özel etkinlikler", gP:"Okulların, kurumların ve arkadaş gruplarının ziyaretleri için birlikte plan yapalım.",
+      g:[["🎒","Okul & eğitim grupları","Öğrencilere dijital sanatı içinden deneyimleten gösterim ve atölye programları."],
+         ["🏢","Kurumsal & takım etkinlikleri","Takımına özel gösterim, atölye ya da immersive alanda buluşma."],
+         ["🎉","Özel gösterim & kutlamalar","Doğum günü, lansman ve özel davetler için alanı birlikte kurgulayalım."]],
+      gBtn:"Grup ziyareti için yaz", gKonu:"Grup ziyareti talebi",
+      cH:"Üretici, tasarımcı ya da atölye yürütücüsü müsün?", cP:"Ürünlerini mağazamıza getir, atölye aç ya da bir etkinlik fikrini birlikte hayata geçirelim.", cBtn:"Hemen katıl",
+      sH:"Sıkça sorulanlar" },
+    en:{ title:"Visit", eye:"Plan your visit", h1:"Step inside,<br>explore.", lead:"Immersive shows, a design store, workshops and events at High Garden AVM in Nilüfer, Bursa. Everything you need to know before you come.",
+      acik:"Open now", kapanir:"until 10pm", acilir:"Opens today at 12pm", kapali:"Closed now · opens tomorrow at 12pm", yol:"Get directions",
+      chips:[["bilet","Tickets"],["ulasim","Getting here"],["neler","What's on"],["grup","Groups"],["sss","FAQ"]],
+      qHours:"Hours", qAdres:"Address", qBilet:"Tickets", qBiletT:"Passo app, passo.com.tr and the studio HATCH box office", qIletisim:"Contact",
+      bH:"How to buy tickets", bP:"Tickets are sold on Passo and at our box office. We recommend booking ahead, especially at weekends.",
+      bOn:"Online", bOnT:"Pick a day and session on the Passo app or passo.com.tr; your ticket arrives on your phone.", bOnB:"See the shows",
+      bGise:"Box office", bGiseT:"You can also buy tickets at the box office at studio HATCH, subject to availability.",
+      bNow:"Now showing", bBuy:"Tickets", bInfo:"Details",
+      uH:"Getting here", uP:"studio HATCH is at High Garden AVM in Nilüfer, Newline Konutları, Block E.", uNav:"Search for “studio HATCH” or “High Garden AVM” in your maps app.",
+      eH:"Accessibility",
+      nH:"What's waiting for you", nP:"Combine a show, some shopping and a workshop in one visit.",
+      n:[["oda-frida","Immersive shows","Digital art experiences you walk through, with image and sound all around you.","index.html#gosterimler","Shows"],
+         ["magaza","Hatch Shop","A design store featuring independent designers; open daily from 12pm.","index.html#makers","Store"],
+         ["seramik","Workshops & events","From ceramics to handstands, meet-ups to concerts — something new every week.","index.html#program","Calendar"],
+         ["wellness-yoga","Wellness","Yoga, breathwork and meditation sessions in the immersive room.","index.html#program","Sessions"]],
+      sure:"How long should I plan?", sureT:"The immersive show takes about 40 minutes. Allow 1–1.5 hours including the store.",
+      gH:"Group visits & private events", gP:"Let's plan visits for schools, companies and groups of friends together.",
+      g:[["🎒","Schools & education","Show and workshop programmes that let students experience digital art from the inside."],
+         ["🏢","Corporate & team events","A private screening, workshop or gathering in the immersive room."],
+         ["🎉","Private screenings & celebrations","Birthdays, launches and private events — let's design the space together."]],
+      gBtn:"Enquire about a group visit", gKonu:"Group visit enquiry",
+      cH:"Are you a maker, designer or workshop leader?", cP:"Bring your products to our store, run a workshop or bring an event idea to life with us.", cBtn:"Join us",
+      sH:"Frequently asked" }
+  };
+  function visitPage(){
+    const v=VZ[lang]||VZ.tr, mail=SET.eposta||"hello@studiohatch.tv", ig=SET.instagram||"studiohatchtv";
+    document.title = `${v.title} · studio HATCH`;
+    const [sa,dk]=new Date().toLocaleTimeString("en-GB",{ timeZone:"Europe/Istanbul", hour:"2-digit", minute:"2-digit", hour12:false }).split(":").map(Number), m=sa*60+dk;
+    const durum = m>=720 && m<1320 ? `<span class="vz-st on"><i></i>${esc(v.acik)} · ${esc(v.kapanir)}</span>` : m<720 ? `<span class="vz-st"><i></i>${esc(v.acilir)}</span>` : `<span class="vz-st off"><i></i>${esc(v.kapali)}</span>`;
+    const saat = ayar("saatler") ? esc(ayar("saatler")).replace(/\n/g,"<br>") : "";
+    const simdi = SH.filter(onNow);
+    const faq = window.hatchFaq(ayar("genel_sss"));
+    $("#vz").innerHTML = `
+    <section class="vz-hero"><div class="wrap">
+      <div class="vz-hero-t"><span class="hu-eye mono">${esc(v.eye)}</span><h1>${v.h1}</h1><p class="lead">${esc(v.lead)}</p>
+        <div class="vz-row">${durum}</div>
+        <div class="hero-cta"><a class="btn btn-white" href="#bilet">${esc(t().tickets)} <span class="arr">${ARR}</span></a><a class="btn hu-ghost" href="${MAPS}" target="_blank" rel="noopener">${esc(v.yol)} ↗</a></div></div>
+      <div class="vz-hero-img"><img src="assets/oda-ziyaretci.jpg" alt=""></div>
+    </div></section>
+    <div class="wrap"><dl class="vz-quick">
+      <div><dt class="mono">${esc(v.qHours)}</dt><dd>${saat||"—"}</dd></div>
+      <div><dt class="mono">${esc(v.qAdres)}</dt><dd>High Garden AVM<br>Farabi Cd. E Blok No: 12-E<br>16140 Nilüfer / Bursa<br><a href="${MAPS}" target="_blank" rel="noopener">${esc(t().map)} ↗</a></dd></div>
+      <div><dt class="mono">${esc(v.qBilet)}</dt><dd>${esc(v.qBiletT)}</dd></div>
+      <div><dt class="mono">${esc(v.qIletisim)}</dt><dd><a href="mailto:${esc(mail)}">${esc(mail)}</a><br><a href="https://instagram.com/${esc(ig)}" target="_blank" rel="noopener">@${esc(ig)}</a></dd></div>
+    </dl>
+    <nav class="vz-chips" aria-label="${esc(v.title)}">${v.chips.filter(([id])=>id!=="sss"||faq.length).map(([id,a])=>`<a href="#${id}">${esc(a)}</a>`).join("")}</nav></div>
+
+    <section class="sec vz-sec" id="bilet"><div class="wrap">
+      <div class="vz-head"><h2 class="h2">${esc(v.bH)}</h2><p class="sub">${esc(v.bP)}</p></div>
+      <div class="vz-2">
+        <div class="vz-box"><span class="vz-n mono">01</span><h3>${esc(v.bOn)}</h3><p>${esc(v.bOnT)}</p><a class="btn btn-blue" href="index.html${qs()}#gosterimler">${esc(v.bOnB)} <span class="arr">${ARR}</span></a></div>
+        <div class="vz-box"><span class="vz-n mono">02</span><h3>${esc(v.bGise)}</h3><p>${esc(v.bGiseT)}</p>${saat?`<p class="vz-mini">${saat}</p>`:""}</div>
+      </div>
+      ${simdi.length?`<h3 class="vz-h3">${esc(v.bNow)}</h3><div class="vz-shows">${simdi.map(g=>`<article class="vz-show"><img src="${esc(g.image)}" alt="" loading="lazy"><div><b>${esc(L(g.sub)?L(g.sub)+": "+L(g.title):L(g.title))}</b><small>${esc(L(g.hours)||g.times.join(" · "))}${g.durationMin?` · ${g.durationMin} ${esc(t().minutes)}`:""}</small>
+        <div class="vz-acts">${g.ticketUrl?`<a class="btn btn-blue" href="${esc(g.ticketUrl)}" target="_blank" rel="noopener">${esc(v.bBuy)} <span class="arr">${ARR}</span></a>`:""}<a class="btn" href="${shUrl(g)}">${esc(v.bInfo)}</a></div></div></article>`).join("")}</div>`:""}
+    </div></section>
+
+    <section class="sec vz-sec vz-alt" id="ulasim"><div class="wrap vz-2 vz-ul">
+      <div><h2 class="h2">${esc(v.uH)}</h2><p class="sub">${esc(v.uP)}</p>
+        ${ayar("ulasim")?`<div class="vz-txt">${ayar("ulasim").split(/\n\s*\n/).map(p=>`<p>${esc(p).replace(/\n/g,"<br>")}</p>`).join("")}</div>`:`<p class="vz-txt">${esc(v.uNav)}</p>`}
+        <a class="btn btn-ink" href="${MAPS}" target="_blank" rel="noopener">${esc(v.yol)} ↗</a>
+        ${ayar("erisim")?`<h3 class="vz-h3">${esc(v.eH)}</h3><div class="vz-txt">${ayar("erisim").split(/\n\s*\n/).map(p=>`<p>${esc(p).replace(/\n/g,"<br>")}</p>`).join("")}</div>`:""}</div>
+      <a class="vz-map" href="${MAPS}" target="_blank" rel="noopener" aria-label="${esc(v.yol)}"><span class="vz-pin" aria-hidden="true"></span><b>studio HATCH</b><small>${esc(ADRES)}</small><em>${esc(t().map)} ↗</em></a>
+    </div></section>
+
+    <section class="sec vz-sec" id="neler"><div class="wrap">
+      <div class="vz-head"><h2 class="h2">${esc(v.nH)}</h2><p class="sub">${esc(v.nP)}</p></div>
+      <div class="vz-cards">${v.n.map(([img,h,p,href,cta])=>`<a class="vz-card" href="${href.replace("index.html","index.html"+qs())}"><div class="vz-ci"><img src="assets/${img}.jpg" alt="" loading="lazy"></div><h3>${esc(h)}</h3><p>${esc(p)}</p><span class="vz-go">${esc(cta)} ${ARR}</span></a>`).join("")}</div>
+      <div class="vz-time"><b>${esc(v.sure)}</b><span>${esc(v.sureT)}</span></div>
+    </div></section>
+
+    <section class="sec vz-sec vz-alt" id="grup"><div class="wrap">
+      <div class="vz-head"><h2 class="h2">${esc(v.gH)}</h2><p class="sub">${esc(v.gP)}</p></div>
+      <div class="vz-groups">${v.g.map(([ic,h,p])=>`<div class="vz-g"><span aria-hidden="true">${ic}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`).join("")}</div>
+      <div class="vz-acts" style="margin-top:26px"><a class="btn btn-blue" href="mailto:${esc(mail)}?subject=${encodeURIComponent(v.gKonu)}">${esc(v.gBtn)} <span class="arr">${ARR}</span></a><a class="btn" href="${JOIN_URL}?tur=etkinlik#form">${esc(v.cBtn)}</a></div>
+    </div></section>
+
+    <section class="sec"><div class="wrap"><div class="vz-cta">
+      <div><h2>${esc(v.cH)}</h2><p>${esc(v.cP)}</p></div>
+      <a class="btn btn-white" href="${JOIN_URL}">${esc(v.cBtn)} <span class="arr">${ARR}</span></a>
+    </div></div></section>
+
+    ${faq.length?`<section class="sec" id="sss" style="padding-top:0"><div class="wrap hu-faq"><div><h2 class="h2">${esc(v.sH)}</h2></div><div class="faqs">${faqHtml(faq)}</div></div></section>`:""}`;
+  }
+  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else if(pg==="kvkk") kvkkPage(); else if(pg==="hatchup") window.hatchupPage(); else if(pg==="katil") window.katilPage(); else if(pg==="visit") visitPage(); else home(); reveal(); stories(); }
   window.addEventListener("scroll", ()=>$(".hd").classList.toggle("scrolled", scrollY>8), { passive:true });
   window.hatchMenu = () => $("#nav").classList.toggle("open");
   document.addEventListener("click", ev=>{ if(ev.target.closest("#nav a")) $("#nav").classList.remove("open"); });
