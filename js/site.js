@@ -407,7 +407,7 @@
   }
   // ===== Ziyaret et (ziyaret.html) =====
   const VZ = {
-    tr:{ title:"Ziyaret et", eye:"Ziyaretini planla", h1:"Gel, içine gir,<br>keşfet.", lead:"Bursa Nilüfer'de, High Garden AVM'de immersive gösterimler, tasarım mağazası, atölyeler ve etkinlikler. Gelmeden önce bilmen gereken her şey burada.",
+    tr:{ title:"Ziyaret et", eye:"Ziyaret et", h1:"Ziyaretini<br>planla.", lead:"Bursa Nilüfer'de, High Garden AVM'de immersive gösterimler, tasarım mağazası, atölyeler ve etkinlikler. Gelmeden önce bilmen gereken her şey burada.",
       acik:"Şu an açık", kapanir:"22:00'ye kadar", acilir:"Bugün 12:00'de açılıyor", kapali:"Şu an kapalı · yarın 12:00'de açılır", yol:"Yol tarifi al",
       chips:[["bilet","Bilet"],["ulasim","Ulaşım"],["neler","Neler var?"],["grup","Gruplar"],["sss","SSS"]],
       qHours:"Saatler", qAdres:"Adres", qBilet:"Bilet", qBiletT:"Passo uygulaması, passo.com.tr ve studio HATCH gişesi", qIletisim:"İletişim",
@@ -430,7 +430,7 @@
       gBtn:"Grup ziyareti için yaz", gKonu:"Grup ziyareti talebi",
       cH:"Üretici, tasarımcı ya da atölye yürütücüsü müsün?", cP:"Ürünlerini mağazamıza getir, atölye aç ya da bir etkinlik fikrini birlikte hayata geçirelim.", cBtn:"Hemen katıl",
       sH:"Sıkça sorulanlar" },
-    en:{ title:"Visit", eye:"Plan your visit", h1:"Step inside,<br>explore.", lead:"Immersive shows, a design store, workshops and events at High Garden AVM in Nilüfer, Bursa. Everything you need to know before you come.",
+    en:{ title:"Visit", eye:"Visit", h1:"Plan your<br>visit.", lead:"Immersive shows, a design store, workshops and events at High Garden AVM in Nilüfer, Bursa. Everything you need to know before you come.",
       acik:"Open now", kapanir:"until 10pm", acilir:"Opens today at 12pm", kapali:"Closed now · opens tomorrow at 12pm", yol:"Get directions",
       chips:[["bilet","Tickets"],["ulasim","Getting here"],["neler","What's on"],["grup","Groups"],["sss","FAQ"]],
       qHours:"Hours", qAdres:"Address", qBilet:"Tickets", qBiletT:"Passo app, passo.com.tr and the studio HATCH box office", qIletisim:"Contact",
