@@ -34,14 +34,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .proto b{color:#fff}
 
 /* logo: siyah png'yi maske olarak kullanıp istediğimiz renge boyuyoruz */
-.logo{display:block;width:92px;aspect-ratio:1200/751;background:currentColor;
-  -webkit-mask:url(../assets/logo-wordmark.png) center/contain no-repeat;mask:url(../assets/logo-wordmark.png) center/contain no-repeat}
+.logo{display:block;width:140px;aspect-ratio:1087/402;background:currentColor;
+  -webkit-mask:url(../assets/logo-wordmark.png?v=2) center/contain no-repeat;mask:url(../assets/logo-wordmark.png?v=2) center/contain no-repeat}
 
 /* başlık çubuğu */
 .hd{position:sticky;top:0;z-index:50;background:rgba(252,250,246,.86);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
 .hd.scrolled{border-color:var(--line)}
 .hd .wrap{display:flex;align-items:center;gap:28px;height:76px}
-.hd .logo{color:var(--blue);width:84px}
+.hd .logo{color:var(--blue);width:118px}
 .nav{display:flex;gap:4px;margin-left:auto}
 .nav a{font-size:15px;font-weight:500;padding:8px 13px;border-radius:999px;transition:background .15s}
 .nav a:hover{background:var(--paper-2)}
@@ -201,7 +201,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* alt bilgi */
 .ft{background:var(--ink);color:#e9e9ee;padding:72px 0 36px;margin-top:96px}
-.ft .logo{color:#fff;width:150px}
+.ft .logo{color:#fff;width:210px}
 .ft-g{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
 .ft h4{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#9a9aa6;margin-bottom:14px}
 .ft li{list-style:none;margin-bottom:8px}
@@ -266,6 +266,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .wrap{padding:0 18px}
   .sec{padding:64px 0}
   .hd .wrap{gap:12px}
+  .hd .logo{width:96px}
   .hero-art{min-height:280px}
   .badge-40{width:96px;height:96px;right:6px}
   .badge-40 b{font-size:32px}

@@ -102,7 +102,11 @@
     tr:`Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında, studio HATCH web sitesindeki bülten formu aracılığıyla paylaştığınız kişisel verilerin işlenmesine ilişkin olarak sizi bilgilendirmek amacıyla hazırlanmıştır.
 
 Veri sorumlusu
-[Şirket unvanı], High Garden AVM, Newline Konutları, Ahmet Yesevi Mah., Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa ("studio HATCH"). İletişim: hello@studiohatch.tv
+CEZERİ TASARIM OTOMOTİV MAKİNE KALIP İTHALAT İHRACAT SANAYİ VE TİCARET LTD. ŞTİ. ("studio HATCH")
+Adres: Gökçe Mah. Gökçeköy Cad. No: 18/1 Nilüfer/Bursa
+Vergi dairesi / no: Nilüfer V.D. 2091463860 · Ticaret sicil no: 112601 · MERSİS: 0209146386000001
+Mekân: High Garden AVM, Newline Konutları, Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa
+İletişim: hello@studiohatch.tv
 
 İşlenen kişisel veriler
 E-posta adresiniz; isteğe bağlı olarak paylaşmanız hâlinde adınız soyadınız, telefon numaranız ve seçtiğiniz ilgi alanları; onay verdiğiniz metin ve onay tarihi.
@@ -124,7 +128,11 @@ KVKK madde 11 uyarınca kişisel verilerinizin işlenip işlenmediğini öğrenm
     en:`This notice explains how studio HATCH processes the personal data you share through the newsletter form on this website, under Turkish Personal Data Protection Law No. 6698 ("KVKK").
 
 Data controller
-[Company name], High Garden AVM, Newline Konutları, Ahmet Yesevi Mah., Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa, Türkiye ("studio HATCH"). Contact: hello@studiohatch.tv
+CEZERİ TASARIM OTOMOTİV MAKİNE KALIP İTHALAT İHRACAT SANAYİ VE TİCARET LTD. ŞTİ. ("studio HATCH")
+Registered address: Gökçe Mah. Gökçeköy Cad. No: 18/1 Nilüfer/Bursa, Türkiye
+Tax office / no: Nilüfer V.D. 2091463860 · Trade registry no: 112601 · MERSİS: 0209146386000001
+Venue: High Garden AVM, Newline Konutları, Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa
+Contact: hello@studiohatch.tv
 
 Data we process
 Your email address; if you choose to share them, your name, phone number and selected interests; the consent text you agreed to and its date.
