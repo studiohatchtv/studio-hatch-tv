@@ -88,8 +88,8 @@
   window.HATCH_DEMO_SETTINGS = {
     immersive_nedir:"Immersive (sarmalayıcı) deneyimde görüntü bir ekranda değil, bulunduğun mekânın duvarlarında ve zemininde akar. İzlemezsin; hikâyenin içinde durursun, dilediğin yere bakar, odada dolaşırsın. [Taslak — ekip düzenleyecek]",
     immersive_nedir_en:"In an immersive experience the images aren't on a screen; they flow across the walls and floor around you. You don't just watch; you stand inside the story, look wherever you like and move around the room. [Draft]",
-    genel_sss:"studio HATCH nerede?\nHigh Garden AVM, Newline Konutları, Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa.\n\nGösterim dışında mekânda ne var?\nLounge, 16 bağımsız tasarımcının ürünleriyle tasarım mağazası, atölyeler ve etkinlikler.\n\nOtopark var mı?\n[Ekip] Bilgi buraya.",
-    genel_sss_en:"Where is studio HATCH?\nHigh Garden AVM, Newline Konutları, Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa.\n\nWhat else is there besides the shows?\nA lounge, a design store with work by 16 independent designers, workshops and events.\n\nIs there parking?\n[Team] Info here." };
+    genel_sss:"Biletleri nereden alabilirim?\nPasso uygulaması ve passo.com.tr’nin yanı sıra studio HATCH’teki gişeden de alabilirsiniz.\n\nstudio HATCH nerede?\nHigh Garden AVM, Newline Konutları, Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa.\n\nGösterim dışında mekânda ne var?\nLounge, 16 bağımsız tasarımcının ürünleriyle tasarım mağazası, atölyeler ve etkinlikler.\n\nOtopark var mı?\n[Ekip] Bilgi buraya.",
+    genel_sss_en:"Where can I buy tickets?\nOn the Passo app and passo.com.tr, and also at the box office at studio HATCH.\n\nWhere is studio HATCH?\nHigh Garden AVM, Newline Konutları, Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa.\n\nWhat else is there besides the shows?\nA lounge, a design store with work by 16 independent designers, workshops and events.\n\nIs there parking?\n[Team] Info here." };
 
   // KVKK aydınlatma metni TASLAĞI — Flow → Website → Site bilgileri'nde "KVKK" alanı doldurulunca o kullanılır. Hukukçu kontrolü gerekir.
   window.HATCH_KVKK_TASLAK = {
@@ -172,7 +172,7 @@ Under KVKK Art. 11 you may ask whether your data is processed, request informati
       ftAbout:"Kreatif Yaşamın Merkezi", ftCols:["Program","Hatch","Takip et"], ftLinks:[["Immersive Gösterimler","#gosterimler"],["Etkinlikler","#program"],["Bülten","#visit"]], ftLinks2:[["Mağaza","#makers"],["Hatch'e katıl","#join"],["Ziyaret","#visit"]],
       rights:"Tüm hakları saklıdır.",
       evBack:"Etkinlikler", evDate:"Tarih", evTime:"Saat", evSessions:"Seanslar", evDuration:"Süre", evPlace:"Yer", evPrice:"Bilet", evKnow:"Bilmen gerekenler", evMore:"Bunlar da ilgini çekebilir",
-      addCal:"Takvime ekle", share:"Paylaş", copied:"Bağlantı kopyalandı", everyDay:"Her gün", until:"tarihine kadar", noTicket:"Kayıt gerekmez" },
+      addCal:"Takvime ekle", share:"Paylaş", copied:"Bağlantı kopyalandı", everyDay:"Her gün", until:"tarihine kadar", noTicket:"Kayıt gerekmez", gise:"Biletleri Passo uygulaması ve passo.com.tr’nin yanı sıra studio HATCH’teki gişeden de alabilirsiniz.", giseKisa:"Gişeden de satılır", giseH:"Bilet" },
     en:{ nav:["Immersive Shows","Events","Store","Visit"], tickets:"Tickets",
       showsH:"Immersive <em>Shows</em>", showsSub:"Digital experiences where the images surround you. Each has its own story, sessions and page.",
       showing:"Now showing", soon:"Coming soon", opens:"Opens", explore:"Explore", prev:"Previous", next:"Next",
@@ -198,6 +198,6 @@ Under KVKK Art. 11 you may ask whether your data is processed, request informati
       ftAbout:"The Home of Creative Living", ftCols:["Program","Hatch","Follow"], ftLinks:[["Immersive Shows","#gosterimler"],["Events","#program"],["Newsletter","#visit"]], ftLinks2:[["Store","#makers"],["Join Hatch","#join"],["Visit","#visit"]],
       rights:"All rights reserved.",
       evBack:"Events", evDate:"Date", evTime:"Time", evSessions:"Sessions", evDuration:"Duration", evPlace:"Venue", evPrice:"Tickets", evKnow:"Good to know", evMore:"You might also like",
-      addCal:"Add to calendar", share:"Share", copied:"Link copied", everyDay:"Daily", until:"until", noTicket:"No registration needed" }
+      addCal:"Add to calendar", share:"Share", copied:"Link copied", everyDay:"Daily", until:"until", noTicket:"No registration needed", gise:"Tickets are available on the Passo app and passo.com.tr, and also at the box office at studio HATCH.", giseKisa:"Also at our box office", giseH:"Tickets" }
   };
 })();

@@ -482,3 +482,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .lb-c{position:absolute;bottom:calc(18px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;color:rgba(255,255,255,.75);font-size:13px;letter-spacing:.1em}
 @media (max-width:640px){.lb-p,.lb-n{top:auto;bottom:calc(8px + env(safe-area-inset-bottom));transform:none}.lb img{max-height:76vh}}
 @media (max-width:560px){.gal-grid{margin:0 -18px;padding:0 18px 6px;scroll-padding:0 18px}}
+
+/* ===== Gişe bilgisi ===== */
+.gise{display:flex;gap:10px;align-items:flex-start;margin:14px 0 0;font-size:14px;line-height:1.5;color:var(--muted)}
+.gise svg{flex:none;margin-top:2px;color:var(--blue)}
+.prog-gise .gise{margin-top:22px;padding:14px 18px;border-radius:14px;background:var(--blue-soft);color:var(--ink)}
+.ft-gise .gise{margin:40px 0 0;color:#c9c9d3}
+.ft-gise .gise svg{color:#fff}

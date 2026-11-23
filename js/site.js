@@ -73,7 +73,8 @@
     }
     lb._geri=document.activeElement; lb.dataset.i=i; lb.hidden=false; document.documentElement.style.overflow="hidden"; lb._goster(); lb.querySelector(".lb-x").focus();
   };
-  const buyBar = x => x.ticketUrl ? `<div class="buybar"><div><b>${esc(L(x.title))}</b><small>${esc(L(x.price)||"")}</small></div><a class="btn btn-blue" href="${esc(x.ticketUrl)}" target="_blank" rel="noopener">${esc(t().tickets)} <span class="arr">${ARR}</span></a></div>` : "";
+  const giseHtml = () => `<p class="gise"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9a2 2 0 0 0 0 4v5a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-5a2 2 0 0 0 0-4V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1z"/><path d="M13 5v2M13 17v2M13 11v2"/></svg><span>${esc(t().gise)}</span></p>`;
+  const buyBar = x => x.ticketUrl ? `<div class="buybar"><div><b>${esc(L(x.title))}</b><small>${esc([L(x.price),t().giseKisa].filter(Boolean).join(" · "))}</small></div><a class="btn btn-blue" href="${esc(x.ticketUrl)}" target="_blank" rel="noopener">${esc(t().tickets)} <span class="arr">${ARR}</span></a></div>` : "";
   const faqHtml = list => list.map(x=>`<details class="faq"><summary>${esc(x.q)}<i aria-hidden="true"></i></summary><p>${esc(x.a)}</p></details>`).join("");
   const NL_ILGI = [["Immersive deneyimler","Immersive shows"],["Atölyeler","Workshops"],["Etkinlikler & konserler","Events & concerts"],["Wellness","Wellness"],["Tasarım ürünleri & mağaza","Design store"]];
   const ayar = k => (lang==="en" && SET[k+"_en"]) || SET[k] || "";
@@ -105,7 +106,7 @@
       <div><h4>${c[0]}</h4><ul>${t().ftLinks.map(([a,h])=>`<li><a href="index.html${qs()}${h}">${esc(a)}</a></li>`).join("")}</ul></div>
       <div><h4>${c[1]}</h4><ul>${t().ftLinks2.map(([a,h])=>`<li><a href="${h==="#join"?JOIN_URL:"index.html"+qs()+h}">${esc(a)}</a></li>`).join("")}</ul></div>
       <div><h4>${c[2]}</h4><ul><li><a href="https://instagram.com/${esc(SET.instagram||"studiohatchtv")}" target="_blank" rel="noopener">Instagram</a></li><li><a href="mailto:${esc(SET.eposta||"hello@studiohatch.tv")}">${esc(SET.eposta||"hello@studiohatch.tv")}</a></li></ul></div>
-    </div><div class="ft-b"><span>© ${new Date().getFullYear()} studio HATCH · ${esc(t().rights)} · <a href="kvkk.html${qs()}" style="text-decoration:underline">${esc(t().kvkkLink)}</a></span><a href="${MAPS}" target="_blank" rel="noopener">${esc(ADRES)}</a></div></div>`;
+    </div><div class="ft-gise">${giseHtml()}</div><div class="ft-b"><span>© ${new Date().getFullYear()} studio HATCH · ${esc(t().rights)} · <a href="kvkk.html${qs()}" style="text-decoration:underline">${esc(t().kvkkLink)}</a></span><a href="${MAPS}" target="_blank" rel="noopener">${esc(ADRES)}</a></div></div>`;
   }
 
   // bugünkü seanslar: geçenler soluk, sıradaki vurgulu
@@ -123,6 +124,7 @@
   /* ---------- ANA SAYFA ---------- */
   const st = { pillar:"", day:null }; let heroItem=null;
   function home(){
+    const pg=$("#progGise"); if(pg) pg.innerHTML=giseHtml();
     const gelecek = EV.filter(e=>endOf(e)>=today());
     const f = SH.find(g=>g.featured&&onNow(g)) || SH.find(onNow) || SH.find(g=>g.featured) || gelecek.find(e=>e.featured) || SH[0] || gelecek.find(isRun) || gelecek[0];
     heroItem = f;
@@ -166,6 +168,7 @@
     $("#visitG").innerHTML = `<div class="card rv"><h2 class="h2">${esc(t().visitH)}</h2>
         <dl class="kv"><dt>${esc(t().where)}</dt><dd>studio HATCH — High Garden AVM<br>Newline Konutları, Farabi Cd.<br>E Blok No: 12-E<br>16140 Nilüfer / Bursa</dd>
         <dt>${esc(t().hours)}</dt><dd>${ayar("saatler") ? esc(ayar("saatler")).replace(/\n/g,"<br>") : `<span class="todo">${esc(t().hoursTodo)}</span>`}</dd>
+        <dt>${esc(t().giseH)}</dt><dd>${esc(t().gise)}</dd>
         <dt>${esc(t().contact)}</dt><dd><a href="mailto:${esc(SET.eposta||"hello@studiohatch.tv")}">${esc(SET.eposta||"hello@studiohatch.tv")}</a><br><a href="https://instagram.com/${esc(SET.instagram||"studiohatchtv")}" target="_blank" rel="noopener">@${esc(SET.instagram||"studiohatchtv")}</a></dd></dl>
         <a class="btn btn-ink" style="margin-top:26px" href="${MAPS}" target="_blank" rel="noopener">${esc(t().map)} <span class="arr">${ARR}</span></a></div>
       <div class="card rv" style="background:var(--blue-soft)"><h2 class="h2">${esc(t().nlH)}</h2><p class="sub" style="color:var(--ink)">${esc(t().nlP)}</p>
@@ -276,7 +279,7 @@
         ${dur?`<div><dt>${esc(t().evDuration)}</dt><dd>${esc(dur)}</dd></div>`:""}
         <div><dt>${esc(t().evPlace)}</dt><dd>studio HATCH — High Garden AVM<br><span style="font-weight:400;font-size:14px;color:var(--muted)">Farabi Cd. E Blok No: 12-E, Nilüfer/Bursa</span><br><a href="${MAPS}" target="_blank" rel="noopener" style="font-size:14px;color:var(--blue)">${esc(t().map)} ↗</a></dd></div>
         <div><dt>${esc(t().evPrice)}</dt><dd>${esc(e.ticketUrl?L(e.price):t().noTicket)}</dd></div></dl>
-        ${e.ticketUrl?`<a class="btn btn-blue" href="${esc(e.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}
+        ${e.ticketUrl?`<a class="btn btn-blue" href="${esc(e.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>${giseHtml()}`:""}
         <div class="acts"><button class="btn" onclick="hatchIcs()">📅 ${esc(t().addCal)}</button><button class="btn" onclick="hatchShare()">↗ ${esc(t().share)}</button></div></aside>`;
     const more = EV.filter(x=>x.id!==e.id && !isRun(x) && x.date>=today()).sort((a,b)=>(a.pillar===e.pillar?0:1)-(b.pillar===e.pillar?0:1) || a.date.localeCompare(b.date)).slice(0,3);
     $("#more").innerHTML = `<h2 class="h2" style="font-size:clamp(28px,3vw,40px)">${esc(t().evMore)}</h2><div class="rows">${more.map(x=>`<article class="row"><a class="row-link" href="${evUrl(x)}" aria-label="${esc(L(x.title))}"></a>
@@ -337,7 +340,7 @@
         ${faq.length?`<h2>${esc(t().shFaq)}</h2><div class="faqs">${faqHtml(faq)}</div>`:""}</div>
       <aside class="side">${g.times.length&&now?`<div class="slots-l" style="color:var(--muted)">${slotsHtml(g).split('<div class="slots-r">')[0].replace(/<[^>]+>/g,"")}</div><div class="slots-r" style="margin:8px 0 22px">${slotsHtml(g).split('<div class="slots-r">')[1].replace(/<\/div>$/,"")}</div>`:""}
         <dl><div><dt>${esc(t().evPlace)}</dt><dd>studio HATCH — High Garden AVM<br><span style="font-weight:400;font-size:14px;color:var(--muted)">Farabi Cd. E Blok No: 12-E, Nilüfer/Bursa</span><br><a href="${MAPS}" target="_blank" rel="noopener" style="font-size:14px;color:var(--blue)">${esc(t().map)} ↗</a></dd></div></dl>
-        ${g.ticketUrl?`<a class="btn btn-blue" href="${esc(g.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}
+        ${g.ticketUrl?`<a class="btn btn-blue" href="${esc(g.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>${giseHtml()}`:""}
         <div class="acts" style="grid-template-columns:1fr"><button class="btn" onclick="hatchShare()">↗ ${esc(t().share)}</button></div></aside>`;
     $("#more").innerHTML = (SH.length>1 ? renderShows(g.id) : "") + `<div style="margin-top:40px"><a class="btn btn-ink" href="index.html${qs()}#program">${esc(t().shEvents)} <span class="arr">${ARR}</span></a></div>`;
     $("#more").insertAdjacentHTML("beforeend", buyBar(g));
