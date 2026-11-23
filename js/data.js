@@ -10,7 +10,7 @@
              en:"Learn hand-building techniques and make your own bowl. All materials included."},
       desc:{tr:["Deneyim gerekmez. Atölye sonunda yaptığın parça fırınlanıp iki hafta içinde teslim edilir."],en:["No experience needed. Your piece is fired and ready for pickup within two weeks."]},
       know:{tr:["Kontenjan 12 kişi.","Önlük ve tüm malzemeler dahil."],en:["Limited to 12 people.","Apron and all materials included."]},
-      date:gun(3), times:["14:00"], endTime:"17:00", price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/shop.jpg" },
+      date:gun(3), times:["14:00"], endTime:"17:00", price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/seramik.jpg" },
 
     { id:"gunbatimi", pillar:"wellness", tur:{tr:"Wellness",en:"Wellness"},
       title:{tr:"Gün Batımında Nefes ve Ses Banyosu",en:"Sunset Breath & Sound Bath"},
@@ -18,7 +18,7 @@
              en:"Guided breathwork and a sound bath, surrounded by sunset imagery."},
       desc:{tr:["Günün yorgunluğunu dijital gün batımının içinde bırak. Mat ve battaniye bizden."],en:["Leave the day behind inside a digital sunset. Mats and blankets provided."]},
       know:{tr:["Rahat kıyafet önerilir.","Kontenjan 20 kişi."],en:["Wear comfortable clothes.","Limited to 20 people."]},
-      date:gun(2), times:["18:30"], endTime:"19:45", price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/wellness.jpg" },
+      date:gun(2), times:["18:30"], endTime:"19:45", price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/wellness-yoga.jpg" },
 
     { id:"nocturne-ambient", pillar:"nocturne", tur:{tr:"Gece / Konser",en:"Night / Live"},
       title:{tr:"Ambient Gece",en:"Ambient Night"},
@@ -26,7 +26,7 @@
              en:"A live ambient set, immersive visuals and the lounge open late."},
       desc:{tr:["Hatch geceleri başka bir yere dönüşüyor."],en:["At night, Hatch turns into somewhere else."]},
       know:{tr:["18 yaş ve üzeri.","Lounge 01:00'e kadar açık."],en:["18+ only.","Lounge open until 1am."]},
-      date:gun(4), times:["21:00"], endTime:"23:30", price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/immersive.jpg" },
+      date:gun(4), times:["21:00"], endTime:"23:30", price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/oda-mavi.jpg" },
 
     { id:"makers", pillar:"culture", tur:{tr:"Buluşma",en:"Meet-up"},
       title:{tr:"Local Makers: Tasarımcılarla Tanış",en:"Local Makers: Meet the Designers"},
@@ -34,7 +34,7 @@
              en:"Designers from our store share the stories behind their work. Free entry."},
       desc:{tr:["Bir ürün, bir hikâye. Kahveni al, üreticilerle aynı masaya otur."],en:["One product, one story. Grab a coffee and sit at the same table as the makers."]},
       know:{tr:["Ücretsiz, kayıt gerekmez."],en:["Free, no registration needed."]},
-      date:gun(6), times:["16:00"], endTime:"18:00", price:{tr:"Ücretsiz",en:"Free"}, ticketUrl:"", image:"assets/lounge.jpg" },
+      date:gun(6), times:["16:00"], endTime:"18:00", price:{tr:"Ücretsiz",en:"Free"}, ticketUrl:"", image:"assets/magaza.jpg" },
 
     { id:"sabah-yoga", pillar:"wellness", tur:{tr:"Wellness",en:"Wellness"},
       title:{tr:"Orman Sabahı: Yoga",en:"Forest Morning: Yoga"},
@@ -42,7 +42,7 @@
              en:"An all-levels morning flow inside a digital forest."},
       desc:{tr:["Haftaya sakin bir başlangıç."],en:["A calm start to the week."]},
       know:{tr:["Mat bizden."],en:["Mats provided."]},
-      date:gun(8), times:["09:30"], endTime:"10:45", price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/wellness.jpg" },
+      date:gun(8), times:["09:30"], endTime:"10:45", price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/wellness-orman.jpg" },
 
     { id:"nocturne-frida", pillar:"nocturne", tur:{tr:"Gece / Gösterim",en:"Night / Show"},
       title:{tr:"Frida Gece Yarısı",en:"Frida After Dark"},
@@ -50,7 +50,7 @@
              en:"A late-night session of the Frida show, reimagined with live music."},
       desc:{tr:["Tek gecelik özel seans."],en:["One night only."]},
       know:{tr:["18 yaş ve üzeri."],en:["18+ only."]},
-      date:gun(11), times:["20:30","22:00"], durationMin:50, price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/frida.jpg", blend:true },
+      date:gun(11), times:["20:30","22:00"], durationMin:50, price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/oda-frida-portre.jpg" },
 
     { id:"cocuk", pillar:"culture", tur:{tr:"Atölye · Çocuk",en:"Workshop · Kids"},
       title:{tr:"Küçük Frida'lar: Otoportre Atölyesi",en:"Little Fridas: Self-Portrait Workshop"},
@@ -58,7 +58,7 @@
              en:"Self-portraits with colour and collage for ages 7–12. Includes a show ticket."},
       desc:{tr:["Gösterimin ardından çocuklar kendi hikâyelerini resmediyor."],en:["After the show, kids paint their own stories."]},
       know:{tr:["7–12 yaş.","Veli eşliği gerekmez."],en:["Ages 7–12.","Parents may drop off."]},
-      date:gun(5), times:["11:00"], endTime:"12:30", price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/frida.jpg", blend:true },
+      date:gun(5), times:["11:00"], endTime:"12:30", price:{tr:"Passo'da",en:"On Passo"}, ticketUrl:PASSO, image:"assets/oda-meyve.jpg" },
   ];
 
   // Immersive gösterimler — Frida bilgileri basın bülteninden; [Ekip] ile başlayan cevaplar taslak, ekip dolduracak
@@ -89,7 +89,7 @@
       short:{tr:"Ocak'ta gelecek yeni immersive içeriklerden biri burada görünecek. Bu kart örnektir.",en:"One of the new immersive shows arriving in January will appear here. This card is a sample."},
       desc:{tr:["Bu sayfa örnektir. Flow → Website → Gösterimler'den yeni içerik girildiğinde başlık, görsel, açıklama ve SSS burada yer alacak."],en:["This page is a sample. Once the show is added in Flow, its title, image, description and FAQ will appear here."]},
       is:{tr:[],en:[]}, isnt:{tr:[],en:[]}, faq:{tr:[],en:[]},
-      start:ay(2027,1,15), end:null, times:[], durationMin:null, age:{tr:"",en:""}, price:{tr:"",en:""}, ticketUrl:"", image:"assets/immersive.jpg", blend:false },
+      start:ay(2027,1,15), end:null, times:[], durationMin:null, age:{tr:"",en:""}, price:{tr:"",en:""}, ticketUrl:"", image:"assets/oda-yazi.jpg", blend:false },
   ];
   window.HATCH_DEMO_SETTINGS = {
     immersive_nedir:"Immersive (sarmalayıcı) deneyimde görüntü bir ekranda değil, bulunduğun mekânın duvarlarında ve zemininde akar. İzlemezsin; hikâyenin içinde durursun, dilediğin yere bakar, odada dolaşırsın. [Taslak — ekip düzenleyecek]",
@@ -164,9 +164,9 @@ Under KVKK Art. 11 you may ask whether your data is processed, request informati
       upcoming:"Etkinlikler", upcomingSub:"Atölyeler, wellness seansları, gece programları ve buluşmalar. Güne dokun, o günü gör.",
       all:"Tümü", showAll:"Tüm günler", nothing:"Bu seçimde etkinlik yok. Başka bir güne bak.", free:"Ücretsiz",
       pillarsH:"Üç farklı <em>ritim</em>", pillarsSub:"Saran dijital gösterimler, nefes ve hareket, atölyeler ve buluşmalar. Hatch günün her saatinde başka bir yer.",
-      pillars:{ culture:["Immersive Gösteri","Görüntülerin dört bir yanını sardığı dijital gösterimler ve özel seanslar."], wellness:["Wellness","Saran görüntüler içinde nefes, ses banyosu ve hareket seansları."], nocturne:["Etkinlikler","Atölyeler, konserler, söyleşiler, tasarımcı buluşmaları ve gece programları."] },
-      events:"etkinlik", spaceH:"Görselin <em>içinde</em> sen de varsın", spaceP:"Merkezimizde görüntülerin sizi dört bir yandan çevrelediği bir dijital deneyim alanı var. İçerik değiştikçe mekân da değişiyor: sergi, konser, ders ya da lansman.",
-      st:[["40'","dakikalık deneyim"],["4","duvar, tek hikâye"],["16","tasarımcı"]], spaceCap:"High Garden AVM · Nilüfer, Bursa",
+      pillars:{ culture:["Immersive Gösteri","Görüntülerin dört bir yanını sardığı dijital gösterimler ve özel seanslar."], wellness:["Wellness","Saran görüntüler içinde nefes, ses banyosu ve hareket seansları."], nocturne:["Atölye & Buluşma","Atölyeler, konserler, söyleşiler, tasarımcı buluşmaları ve gece programları."] },
+      events:"etkinlik", spaceEye:"Dijital sanat stüdyosu", spaceH:"Sanatı izlemiyorsun, <em>içinde</em> yürüyorsun.", spaceP:"studio HATCH'in kalbinde, görüntülerin duvarlardan zemine aktığı immersive bir dijital sanat odası var. Her gösterim bu oda için özel üretilen panoramik bir yapım; ses ve ışıkla birlikte çalışır. İçerik değiştikçe oda da dönüşür: sergi, konser, ders ya da lansman.",
+      st:[["180°","U biçiminde saran ekran"],["15.000 px","panoramik görüntü genişliği"],["60 fps","akıcı, kesintisiz hareket"],["40'","tek bir hikâye"]], spaceCap:"High Garden AVM · Nilüfer, Bursa", gal:["Frida · Kökler ve İzler","Işık ve form","Doğa katmanları","Renk odası","Ziyaretçi anı"],
       makersH:"Bir ürün, <em>bir hikâye</em>", makersP:"Tasarım mağazamızda 16 bağımsız tasarımcının ürünleri var. Satın aldığın her parça, doğrudan üreticisini destekliyor.", makersBtn:"Mağazayı keşfet",
       joinH:"Fikrin varsa, <em>sahne</em> burada.", joinP:"Tasarımcılara, atölye yürütücülerine ve etkinlik fikri olan herkese açığız.",
       joinOpts:[["01 / TASARIMCI","Ürünlerini mağazamıza getir"],["02 / ATÖLYE","Becerini paylaş, atölye aç"],["03 / ETKİNLİK","Performans, gösterim, buluşma"]],
@@ -190,9 +190,9 @@ Under KVKK Art. 11 you may ask whether your data is processed, request informati
       upcoming:"Events", upcomingSub:"Workshops, wellness sessions, night programs and meet-ups. Tap a day to see it.",
       all:"All", showAll:"All days", nothing:"Nothing on for this selection. Try another day.", free:"Free",
       pillarsH:"Three different <em>rhythms</em>", pillarsSub:"Immersive digital shows, breath and movement, workshops and meet-ups. Hatch is a different place at every hour.",
-      pillars:{ culture:["Immersive Show","Digital shows and special screenings where the images surround you."], wellness:["Wellness","Breathwork, sound baths and movement inside immersive visuals."], nocturne:["Events","Workshops, concerts, talks, designer meet-ups and night programs."] },
-      events:"events", spaceH:"Step <em>inside</em> the picture", spaceP:"At our heart is a digital space where images surround you on every side. As the content changes, so does the room: exhibition, concert, class or launch.",
-      st:[["40'","minute experience"],["4","walls, one story"],["16","designers"]], spaceCap:"High Garden AVM · Nilüfer, Bursa",
+      pillars:{ culture:["Immersive Show","Digital shows and special screenings where the images surround you."], wellness:["Wellness","Breathwork, sound baths and movement inside immersive visuals."], nocturne:["Workshops & Meet-ups","Workshops, concerts, talks, designer meet-ups and night programs."] },
+      events:"events", spaceEye:"Digital art studio", spaceH:"Don't just watch art. <em>Walk</em> through it.", spaceP:"At the heart of studio HATCH is an immersive digital art room where images flow from the walls to the floor. Every show is a panoramic production made for this room, working together with sound and light. As the content changes, so does the room: exhibition, concert, class or launch.",
+      st:[["180°","U-shaped wraparound screen"],["15,000 px","panoramic image width"],["60 fps","smooth, seamless motion"],["40'","one story"]], spaceCap:"High Garden AVM · Nilüfer, Bursa", gal:["Frida · Roots and Traces","Light and form","Layers of nature","Colour room","Visitor moment"],
       makersH:"One product, <em>one story</em>", makersP:"Our design store carries work by 16 independent designers. Every piece you buy directly supports its maker.", makersBtn:"Explore the store",
       joinH:"Got an idea? <em>The stage</em> is here.", joinP:"We're open to designers, workshop leaders and anyone with an event idea.",
       joinOpts:[["01 / DESIGNERS","Bring your products to our store"],["02 / WORKSHOPS","Share a skill, run a workshop"],["03 / EVENTS","Performances, screenings, meet-ups"]],

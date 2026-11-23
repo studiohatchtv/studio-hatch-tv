@@ -95,18 +95,18 @@
       $("#hero").innerHTML = `<div class="wrap"><div class="rv"><div class="eyebrow">studio HATCH · Nilüfer, Bursa</div>
         <h1><span>${lang==="tr"?"Deneyimler · Local Makers · Buluşmalar":"Experiences · Local Makers · Meet-ups"}</span>${esc(t().ftAbout)}</h1>
         <p class="lead">${esc(t().spaceP)}</p><div class="hero-cta" style="margin-top:28px"><a class="btn btn-white" href="#visit">${esc(t().visitH)} <span class="arr">${ARR}</span></a></div></div>
-        <div class="hero-art"><img class="blend" src="assets/frida.jpg" alt=""></div></div>`;
+        <div class="hero-art tech"><img src="assets/oda-mavi.jpg" alt=""></div></div>`;
     } else {
     const simdi = f.date<=today();
     $("#hero").innerHTML = `<div class="wrap">
       <div class="rv">
-        <div class="eyebrow">${simdi?`<span class="live"></span>${esc(t().nowShowing)}`:(lang==="tr"?"Yakında":"Coming up")} · ${esc(f.show ? (lang==="tr"?"Immersive gösterim":"Immersive show") : L(f.tur))}</div>
+        <div class="eyebrow mono">${simdi?`<span class="live"></span>${esc(t().nowShowing)}`:(lang==="tr"?"Yakında":"Coming up")} · ${esc(f.show ? (lang==="tr"?"Immersive gösterim":"Immersive show") : L(f.tur))}</div>
         <h1>${f.show ? `${L(f.sub)?`<span>${esc(L(f.sub))}</span>`:""}${esc(L(f.title))}` : (()=>{ const [a,b]=L(f.title).split(": "); return b?`<span>${esc(a)}</span>${esc(b)}`:esc(a); })()}</h1>
         <p class="lead">${esc(L(f.short))}</p>
         <div class="slots">${slotsHtml(f)}</div>
         <div class="hero-cta">${f.ticketUrl?`<a class="btn btn-white" href="${esc(f.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}<a class="btn ${f.ticketUrl?"btn-line":"btn-white"}" href="${fUrl}">${esc(f.show?t().explore:t().details)}</a></div>
       </div>
-      <div class="hero-art"><img class="${f.blend?"blend":""}" src="${esc(f.image)}" alt="" fetchpriority="high">${f.durationMin?`<div class="badge-40"><b>${f.durationMin}'</b><small>${esc(t().minutes)}</small></div>`:""}</div>
+      <div class="hero-art tech"><img class="${f.blend?"blend":""}" src="${esc(f.image)}" alt="" fetchpriority="high">${f.durationMin?`<div class="badge-40"><b>${f.durationMin}'</b><small>${esc(t().minutes)}</small></div>`:""}</div>
     </div>`;
     }
     const tk=["Deneyimler","Local Makers","Buluşmalar",...["culture","wellness","nocturne"].map(p=>t().pillars[p][0])]; const tkH=tk.map(x=>`<span>${x}</span>`).join("");
@@ -119,11 +119,12 @@
     $("#pillars").innerHTML = ["culture","wellness","nocturne"].map(p=>`<a class="pillar ${p} rv" href="#program" onclick="hatchPillar('${p}')"><span class="shape"></span>
       <div><h3>${t().pillars[p][0]}</h3><p>${esc(t().pillars[p][1])}</p></div>
       <div class="n"><span>${cnt(p)} ${esc(t().events)}</span>${ARR}</div></a>`).join("");
-    $("#space").innerHTML = `<div class="space-img rv"><img src="assets/immersive.jpg" alt="" loading="lazy"><span class="cap">${esc(t().spaceCap)}</span></div>
-      <div class="space-txt rv"><div><h2 class="h2">${t().spaceH}</h2><p class="sub">${esc(t().spaceP)}</p></div>
-      <div class="stats">${t().st.map(([a,b])=>`<div class="stat"><b>${a}</b><small>${esc(b)}</small></div>`).join("")}</div></div>`;
+    const GAL=["oda-frida","oda-turuncu","oda-geyik","oda-meyve","oda-ziyaretci"];
+    $("#space").innerHTML = `<div class="wrap"><div class="dg-top rv"><div><div class="mono dg-eye"><span class="live"></span>${esc(t().spaceEye)} · ${esc(t().spaceCap)}</div><h2 class="h2">${t().spaceH}</h2></div><p class="sub">${esc(t().spaceP)}</p></div>
+      <div class="dg-specs rv">${t().st.map(([a,b],i)=>`<div><span class="mono">0${i+1}</span><b>${esc(a)}</b><small>${esc(b)}</small></div>`).join("")}</div>
+      <div class="dg-grid">${GAL.map((g,i)=>`<figure class="dg-f f${i} rv"><img src="assets/${g}.jpg" alt="${esc(t().gal[i])}" loading="lazy"><figcaption class="mono">${String(i+1).padStart(2,"0")} / ${esc(t().gal[i])}</figcaption></figure>`).join("")}</div></div>`;
     $("#makers").innerHTML = `<div class="makers-txt rv"><h2 class="h2">${t().makersH}</h2><p class="sub" style="color:var(--ink)">${esc(t().makersP)}</p><div><a class="btn btn-blue" href="#visit">${esc(t().makersBtn)} <span class="arr">${ARR}</span></a></div></div>
-      <div class="makers-img rv"><img src="assets/shop.jpg" alt="" loading="lazy"></div>`;
+      <div class="makers-img rv"><img src="assets/magaza.jpg" alt="" loading="lazy"></div>`;
     $("#join").innerHTML = `<div class="join rv"><div><h2 class="h2">${t().joinH}</h2><p class="sub" style="color:#fff;opacity:.85">${esc(t().joinP)}</p></div>
       <div class="join-opts">${t().joinOpts.map(([a,b])=>`<a class="join-opt" href="${JOIN_URL}"><span><small>${a}</small><b>${esc(b)}</b></span>${ARR}</a>`).join("")}</div></div>`;
     $("#visitG").innerHTML = `<div class="card rv"><h2 class="h2">${esc(t().visitH)}</h2>
