@@ -102,9 +102,9 @@
     const hu = huBand();
     const band = DEMO ? t().proto : hu ? hu : (ayar("duyuru") ? esc(ayar("duyuru")) : (PREVIEW ? (lang==="tr" ? "<b>Önizleme.</b> Site henüz yayında değil; program Flow'dan canlı geliyor." : "<b>Preview.</b> Not public yet; the program is live from Flow.") : ""));
     $("#proto").innerHTML = band; $("#proto").style.display = band ? "" : "none"; $("#proto").classList.toggle("hu-band", !!hu && !DEMO);
-    $("#nav").innerHTML = n.map((x,i)=>`<a href="${ids[i]==="visit"?"ziyaret.html"+qs():"index.html"+qs()+"#"+ids[i]}">${esc(x)}</a>`).join("") + `<a href="${JOIN_URL}">${esc(t().join)}</a>`;
+    $("#nav").innerHTML = n.map((x,i)=>`<a href="${ids[i]==="visit"?"ziyaret.html"+qs():"index.html"+qs()+"#"+ids[i]}">${esc(x)}</a>`).join("") + `<a class="nav-join" href="${JOIN_URL}">${esc(t().join)}</a>`;
     $("#hdR").innerHTML = `<div class="lang" role="group" aria-label="Dil / Language"><button class="${lang==="tr"?"on":""}" onclick="hatchLang('tr')">TR</button><button class="${lang==="en"?"on":""}" onclick="hatchLang('en')">EN</button></div>
-      <a class="btn btn-blue" href="index.html${qs()}#gosterimler">${esc(t().tickets)}</a>`;
+      <a class="btn hd-join" href="${JOIN_URL}">${esc(t().join)}</a><a class="btn btn-blue" href="index.html${qs()}#gosterimler">${esc(t().tickets)}</a>`;
     $("#ft").innerHTML = footer();
   }
   function footer(){
