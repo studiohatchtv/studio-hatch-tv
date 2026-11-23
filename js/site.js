@@ -40,9 +40,20 @@
   const onNow = g => g.date<=today();
   const until = k => lang==="tr" ? fmt(k,{day:"numeric",month:"long"})+" "+t().until : t().until+" "+fmt(k,{day:"numeric",month:"long"});
   const shWhen = g => onNow(g) ? (g.end===FOREVER ? t().openEnded : until(g.end)) : `${t().opens} · ${fmt(g.date,{day:"numeric",month:"long",...(g.date.slice(0,4)!==today().slice(0,4)?{year:"numeric"}:{})})}`;
+  // dikey story video: sessiz başlar, görünürken oynar; ses ve durdurma düğmeleri
+  const VB = `<span class="vid-badge mono"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg>Video</span>`;
+  const mediaHtml = x => x.video
+    ? `<div class="story" data-story><video src="${esc(x.video)}" poster="${esc(x.poster||x.image)}" muted loop playsinline preload="metadata" aria-label="${esc(L(x.title))}"></video>
+        <div class="st-bar"><i></i></div><span class="st-tag mono">${esc(lang==="tr"?"Video":"Video")}</span>
+        <button class="st-play" type="button" aria-label="${lang==="tr"?"Oynat":"Play"}"><svg width="30" height="30" viewBox="0 0 10 10"><path d="M2.5 1.2l6.2 3.8-6.2 3.8z" fill="currentColor"/></svg></button>
+        <button class="st-snd" type="button" aria-label="${lang==="tr"?"Sesi aç":"Unmute"}" data-off="1">${SND_OFF}</button></div>`
+    : `<div class="ev-img ${x.blend?"blend":""}"><img src="${esc(x.image)}" alt=""></div>`;
+  const buyBar = x => x.ticketUrl ? `<div class="buybar"><div><b>${esc(L(x.title))}</b><small>${esc(L(x.price)||"")}</small></div><a class="btn btn-blue" href="${esc(x.ticketUrl)}" target="_blank" rel="noopener">${esc(t().tickets)} <span class="arr">${ARR}</span></a></div>` : "";
   const faqHtml = list => list.map(x=>`<details class="faq"><summary>${esc(x.q)}<i aria-hidden="true"></i></summary><p>${esc(x.a)}</p></details>`).join("");
   const NL_ILGI = [["Immersive deneyimler","Immersive shows"],["Atölyeler","Workshops"],["Etkinlikler & konserler","Events & concerts"],["Wellness","Wellness"],["Tasarım ürünleri & mağaza","Design store"]];
   const ayar = k => (lang==="en" && SET[k+"_en"]) || SET[k] || "";
+  const SND_OFF = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>`;
+  const SND_ON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7M19 5a10 10 0 010 14"/></svg>`;
   const ARR = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
   function setLang(l){
@@ -148,7 +159,7 @@
   function showCard(g){
     const now=onNow(g);
     return `<article class="sh-card rv"><a class="row-link" href="${shUrl(g)}" aria-label="${esc(L(g.title))}"></a>
-      <div class="sh-img ${g.blend?"blend":""}"><img src="${esc(g.image)}" alt="" loading="lazy"><span class="sh-badge ${now?"on":""}">${now?`<span class="live"></span>`:""}${esc(now?t().showing:t().soon)}</span></div>
+      <div class="sh-img ${g.blend?"blend":""}"><img src="${esc(g.image)}" alt="" loading="lazy">${g.video?VB:""}<span class="sh-badge ${now?"on":""}">${now?`<span class="live"></span>`:""}${esc(now?t().showing:t().soon)}</span></div>
       <div class="sh-txt">${L(g.sub)?`<small>${esc(L(g.sub))}</small>`:""}<h3>${esc(L(g.title))}</h3><p>${esc(L(g.short))}</p>
         <div class="sh-meta"><b>${esc(shWhen(g))}</b>${L(g.hours)?`<span class="sep">·</span><span>${esc(L(g.hours))}</span>`:""}${g.durationMin?`<span class="sep">·</span><span>${g.durationMin} ${esc(t().minutes)}</span>`:""}</div>
         <span class="sh-go">${esc(t().explore)} ${ARR}</span></div></article>`;
@@ -187,7 +198,7 @@
         <div class="dt">${isRun(e)&&e.date<=(st.day||t0)?`<b style="font-size:.62em">${esc(t().everyDay)}</b><small>${endOf(e)===FOREVER?esc(t().showing):"→ "+esc(fmt(endOf(e),{day:"numeric",month:"short"}))}</small>`:`<b>${pd(e.date).getDate()}</b><small>${esc(fmt(e.date,{month:"short"}))} · ${esc(fmt(e.date,{weekday:"short"}))}</small>`}</div>
         <div>${tag(e)}<h3>${esc(L(e.title))}</h3><p>${esc(L(e.short))}</p>
           <div class="meta"><b>${esc(e.show ? (L(e.hours) || (e.times.length?e.times.join(" · "):"")) : timeTxt(e))}</b>${e.show&&e.durationMin?`<span class="sep">·</span><span>${e.durationMin} ${esc(t().minutes)}</span>`:""}<span class="sep">·</span><span>${e.ticketUrl?esc(L(e.price)):esc(t().free)}</span></div></div>
-        <div class="th" style="--cs:${PILLAR_COLOR[e.pillar][1]}"><img src="${esc(e.image)}" alt="" loading="lazy"></div>
+        <div class="th" style="--cs:${PILLAR_COLOR[e.pillar][1]}"><img src="${esc(e.image)}" alt="" loading="lazy">${e.video?VB:""}</div>
         <span class="go">${ARR}</span></article>`).join("")
       : `<div class="empty-msg">${esc(t().nothing)}</div>`;
   }
@@ -230,7 +241,7 @@
         <div class="crumb"><a href="index.html${qs()}#program">← ${esc(t().evBack)}</a></div>
         <span class="tag" style="background:rgba(255,255,255,.16);color:#fff">${esc(L(e.tur))}</span>
         <h1>${esc(L(e.title))}</h1><p class="lead">${esc(L(e.short))}</p></div>
-      <div class="ev-img ${e.blend?"blend":""}"><img src="${esc(e.image)}" alt=""></div></div>`;
+      ${mediaHtml(e)}</div>`;
     $("#evBody").innerHTML = `<div class="txt">${L(e.desc).map(p=>`<p>${esc(p)}</p>`).join("")}
         ${L(e.know).length?`<h2>${esc(t().evKnow)}</h2><ul class="know" style="--c:${c}">${L(e.know).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}</div>
       <aside class="side"><dl>
@@ -245,7 +256,8 @@
     $("#more").innerHTML = `<h2 class="h2" style="font-size:clamp(28px,3vw,40px)">${esc(t().evMore)}</h2><div class="rows">${more.map(x=>`<article class="row"><a class="row-link" href="${evUrl(x)}" aria-label="${esc(L(x.title))}"></a>
         <div class="dt"><b>${pd(x.date).getDate()}</b><small>${esc(fmt(x.date,{month:"short"}))}</small></div>
         <div>${tag(x)}<h3>${esc(L(x.title))}</h3><div class="meta"><b>${esc(timeTxt(x))}</b></div></div>
-        <div class="th" style="--cs:${PILLAR_COLOR[x.pillar][1]}"><img src="${esc(x.image)}" alt="" loading="lazy"></div><span class="go">${ARR}</span></article>`).join("")}</div>`;
+        <div class="th" style="--cs:${PILLAR_COLOR[x.pillar][1]}"><img src="${esc(x.image)}" alt="" loading="lazy">${x.video?VB:""}</div><span class="go">${ARR}</span></article>`).join("")}</div>`;
+    $("#more").insertAdjacentHTML("beforeend", buyBar(e));
     // Google etkinlik kartı için yapılandırılmış veri
     const ld={ "@context":"https://schema.org", "@type":"Event", name:L(e.title), description:L(e.short),
       startDate: e.times[0] ? `${e.date}T${e.times[0]}:00+03:00` : e.date, endDate: e.endTime?`${e.date}T${e.endTime}:00+03:00`:`${endOf(e)}T23:00:00+03:00`,
@@ -285,7 +297,7 @@
         <span class="tag" style="background:rgba(255,255,255,.16);color:#fff">${now?`<span class="live"></span>`:""}${esc(now?t().showing:t().soon)} · ${lang==="tr"?"Immersive gösterim":"Immersive show"}</span>
         <h1>${L(g.sub)?`<span>${esc(L(g.sub))}</span>`:""}${esc(L(g.title))}</h1><p class="lead">${esc(L(g.short))}</p>
         <div class="hero-cta" style="margin-top:26px">${g.ticketUrl?`<a class="btn btn-white" href="${esc(g.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}</div></div>
-      <div class="ev-img ${g.blend?"blend":""}"><img src="${esc(g.image)}" alt=""></div></div>`;
+      ${mediaHtml(g)}</div>`;
     const facts=[[t().evDate, shWhen(g)], [t().evSessions, g.times.join(" · ")], [t().shHours, L(g.hours)], [t().evDuration, g.durationMin?`${g.durationMin} ${t().minutes}`:""], [t().shAge, L(g.age)], [t().evPrice, L(g.price)]].filter(x=>x[1]);
     $("#shFacts").innerHTML = facts.length ? `<div class="wrap"><dl class="sh-facts">${facts.map(([a,b])=>`<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl></div>` : "";
     const is=L(g.is), isnt=L(g.isnt), faq=[...L(g.faq), ...window.hatchFaq(ayar("genel_sss"))], about=ayar("immersive_nedir");
@@ -301,6 +313,7 @@
         ${g.ticketUrl?`<a class="btn btn-blue" href="${esc(g.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}
         <div class="acts" style="grid-template-columns:1fr"><button class="btn" onclick="hatchShare()">↗ ${esc(t().share)}</button></div></aside>`;
     $("#more").innerHTML = (SH.length>1 ? renderShows(g.id) : "") + `<div style="margin-top:40px"><a class="btn btn-ink" href="index.html${qs()}#program">${esc(t().shEvents)} <span class="arr">${ARR}</span></a></div>`;
+    $("#more").insertAdjacentHTML("beforeend", buyBar(g));
     const ld=[{ "@context":"https://schema.org", "@type":"Event", name:L(g.sub)?`${L(g.sub)}: ${L(g.title)}`:L(g.title), description:L(g.short),
       startDate:g.start||today(), ...(g.end!==FOREVER?{endDate:g.end}:{}), eventAttendanceMode:"https://schema.org/OfflineEventAttendanceMode", eventStatus:"https://schema.org/EventScheduled",
       image:[new URL(g.image,location.href).href],
@@ -314,6 +327,25 @@
       if(navigator.share){ try{ await navigator.share({ title:L(g.title), url:location.href }); }catch(x){} return; }
       try{ await navigator.clipboard.writeText(location.href); toast(t().copied); }catch(x){}
     };
+  }
+  function stories(){
+    const az = matchMedia("(prefers-reduced-motion: reduce)").matches || (navigator.connection && navigator.connection.saveData);
+    document.querySelectorAll("[data-story]").forEach(box=>{
+      const v=box.querySelector("video"), bar=box.querySelector(".st-bar i"), snd=box.querySelector(".st-snd"), play=box.querySelector(".st-play");
+      const durum=()=>box.classList.toggle("paused", v.paused);
+      v.addEventListener("play",durum); v.addEventListener("pause",durum); durum();
+      v.addEventListener("timeupdate",()=>{ if(v.duration) bar.style.width=(v.currentTime/v.duration*100)+"%"; });
+      const oynat=()=>{ v.play().catch(()=>{}); };
+      box.addEventListener("click",ev=>{ if(ev.target.closest(".st-snd")) return; v.paused?oynat():v.pause(); });
+      snd.addEventListener("click",()=>{ v.muted=!v.muted; snd.innerHTML=v.muted?SND_OFF:SND_ON; snd.setAttribute("aria-label", v.muted?(lang==="tr"?"Sesi aç":"Unmute"):(lang==="tr"?"Sesi kapat":"Mute")); if(v.paused) oynat(); });
+      if("IntersectionObserver" in window){
+        new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting && x.intersectionRatio>.5){ if(!az && !box.dataset.elle) oynat(); } else if(!v.paused){ v.pause(); } }),{ threshold:[0,.5,1] }).observe(box);
+      } else if(!az) oynat();
+      play.addEventListener("click",()=>{ box.dataset.elle=""; });
+    });
+    // telefonda sabit "Bilet al" çubuğu: üstteki bilet düğmesi görünmezken çıkar
+    const bb=document.querySelector(".buybar");
+    if(bb && "IntersectionObserver" in window){ const hero=document.querySelector("#evHero"); new IntersectionObserver(es=>bb.classList.toggle("on", !es[0].isIntersecting),{ rootMargin:"-40% 0px 0px 0px" }).observe(hero); }
   }
   function toast(m){ const el=$("#toast"); el.textContent=m; el.classList.add("on"); setTimeout(()=>el.classList.remove("on"),1800); }
 
@@ -335,7 +367,7 @@
       metin.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>{ const [ilk,...kalan]=p.split("\n"); const bas=ilk.length<70 && !/[.:;,]$/.test(ilk.trim());
         return bas ? `<h2>${esc(ilk)}</h2>${kalan.length?`<p>${esc(kalan.join("\n")).replace(/\n/g,"<br>")}</p>`:""}` : `<p>${esc(p).replace(/\n/g,"<br>")}</p>`; }).join("");
   }
-  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else if(pg==="kvkk") kvkkPage(); else home(); reveal(); }
+  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else if(pg==="kvkk") kvkkPage(); else home(); reveal(); stories(); }
   window.addEventListener("scroll", ()=>$(".hd").classList.toggle("scrolled", scrollY>8), { passive:true });
   window.hatchMenu = () => $("#nav").classList.toggle("open");
   document.addEventListener("click", ev=>{ if(ev.target.closest("#nav a")) $("#nav").classList.remove("open"); });
