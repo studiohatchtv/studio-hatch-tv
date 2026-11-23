@@ -350,3 +350,26 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .sh-facts{grid-template-columns:1fr 1fr}
   .sh-facts div{padding:14px 16px}
 }
+
+/* bülten formu (genişletilmiş) */
+.nl2{flex-direction:column;gap:10px}
+.nl2 input{width:100%;min-width:0}
+.nl-opt{display:grid;gap:10px;margin-top:6px}
+.nl-opt>span{font-size:13px;font-weight:600;color:var(--muted)}
+.nl-tel{position:relative}
+.nl-tel b{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--ink);pointer-events:none}
+.nl-tel input{padding-left:32px}
+.nl-ilgi{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.nl-ilgi small{width:100%;font-size:13px;font-weight:600;color:var(--muted);margin:4px 0 2px}
+.nl-chip{font-size:13.5px;font-weight:600;padding:8px 13px;border-radius:999px;background:#fff;border:1.5px solid var(--line);transition:all .15s}
+.nl-chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.ck{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.45;color:var(--ink);cursor:pointer;margin-top:4px}
+.ck input{flex:none;width:18px!important;height:18px;margin-top:1px;accent-color:var(--blue);padding:0}
+.ck a{color:var(--blue);text-decoration:underline}
+.nl2 .btn{align-self:flex-start;margin-top:6px}
+/* KVKK sayfası */
+.legal{max-width:760px;padding-top:48px;padding-bottom:96px}
+.legal h1{font-family:var(--f-display);font-size:clamp(36px,4.4vw,56px);letter-spacing:-.03em;line-height:1;margin:8px 0 28px}
+.legal h2{font-family:var(--f-display);font-size:21px;margin:30px 0 8px}
+.legal p{font-size:16.5px;line-height:1.7;color:#33343a;margin-bottom:12px}
+.legal .crumb{color:var(--muted)}

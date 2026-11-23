@@ -45,8 +45,10 @@
     window.HATCH_LOAD_ERROR = ev.status!=="fulfilled";
     return ev.status==="fulfilled" ? ev.value.map(map) : [];
   };
-  window.hatchNewsletter = async function(email, metin){
-    const r = await fetch(URL_+"/rest/v1/rpc/site_bulten_kaydet", { method:"POST", headers:H, body:JSON.stringify({ p_email:email, p_izin_metni:metin }) });
+  window.hatchNewsletter = async function(email, metin, ek={}){
+    const body={ p_email:email, p_izin_metni:metin };
+    if(ek.ad) body.p_ad=ek.ad; if(ek.telefon) body.p_telefon=ek.telefon; if(ek.izinTel) body.p_izin_telefon=true; if(ek.ilgi&&ek.ilgi.length) body.p_ilgi=ek.ilgi;
+    const r = await fetch(URL_+"/rest/v1/rpc/site_bulten_kaydet", { method:"POST", headers:H, body:JSON.stringify(body) });
     if(!r.ok) throw new Error((await r.json().catch(()=>({}))).message || "Hata");
   };
 })();

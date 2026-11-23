@@ -94,8 +94,55 @@
   window.HATCH_DEMO_SETTINGS = {
     immersive_nedir:"Immersive (sarmalayıcı) deneyimde görüntü bir ekranda değil, bulunduğun mekânın duvarlarında ve zemininde akar. İzlemezsin; hikâyenin içinde durursun, dilediğin yere bakar, odada dolaşırsın. [Taslak — ekip düzenleyecek]",
     immersive_nedir_en:"In an immersive experience the images aren't on a screen; they flow across the walls and floor around you. You don't just watch; you stand inside the story, look wherever you like and move around the room. [Draft]",
-    genel_sss:"studioHATCH nerede?\nHighGarden, Balat · Bursa.\n\nGösterim dışında mekânda ne var?\nLounge, 16 bağımsız tasarımcının ürünleriyle tasarım mağazası, atölyeler ve etkinlikler.\n\nOtopark var mı?\n[Ekip] Bilgi buraya.",
-    genel_sss_en:"Where is studioHATCH?\nHighGarden, Balat · Bursa.\n\nWhat else is there besides the shows?\nA lounge, a design store with work by 16 independent designers, workshops and events.\n\nIs there parking?\n[Team] Info here." };
+    genel_sss:"studio HATCH nerede?\nHigh Garden AVM, Newline Konutları, Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa.\n\nGösterim dışında mekânda ne var?\nLounge, 16 bağımsız tasarımcının ürünleriyle tasarım mağazası, atölyeler ve etkinlikler.\n\nOtopark var mı?\n[Ekip] Bilgi buraya.",
+    genel_sss_en:"Where is studio HATCH?\nHigh Garden AVM, Newline Konutları, Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa.\n\nWhat else is there besides the shows?\nA lounge, a design store with work by 16 independent designers, workshops and events.\n\nIs there parking?\n[Team] Info here." };
+
+  // KVKK aydınlatma metni TASLAĞI — Flow → Website → Site bilgileri'nde "KVKK" alanı doldurulunca o kullanılır. Hukukçu kontrolü gerekir.
+  window.HATCH_KVKK_TASLAK = {
+    tr:`Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında, studio HATCH web sitesindeki bülten formu aracılığıyla paylaştığınız kişisel verilerin işlenmesine ilişkin olarak sizi bilgilendirmek amacıyla hazırlanmıştır.
+
+Veri sorumlusu
+[Şirket unvanı], High Garden AVM, Newline Konutları, Ahmet Yesevi Mah., Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa ("studio HATCH"). İletişim: hello@studiohatch.tv
+
+İşlenen kişisel veriler
+E-posta adresiniz; isteğe bağlı olarak paylaşmanız hâlinde adınız soyadınız, telefon numaranız ve seçtiğiniz ilgi alanları; onay verdiğiniz metin ve onay tarihi.
+
+İşleme amaçları
+Etkinlik, gösterim, atölye ve kampanyalarımız hakkında sizi e-posta ile (onay vermeniz hâlinde telefon ve SMS ile de) bilgilendirmek; ilgi alanlarınıza uygun içerik sunmak; ticari elektronik ileti onaylarını kayıt altına almak ve yasal yükümlülüklerimizi yerine getirmek.
+
+Hukuki sebep ve toplama yöntemi
+Verileriniz web sitemizdeki form aracılığıyla elektronik ortamda toplanır ve KVKK madde 5/1 uyarınca açık rızanız ile, ticari ileti onaylarının saklanması bakımından ise kanunlarda öngörülmesi ve hukuki yükümlülüğün yerine getirilmesi (KVKK madde 5/2-a ve 5/2-ç) hukuki sebeplerine dayanılarak işlenir.
+
+Aktarım
+Verileriniz yalnızca yukarıdaki amaçlarla sınırlı olarak; veri barındırma ve e-posta gönderim hizmeti aldığımız tedarikçilere (sunucuları yurt dışında bulunabilir) ve yasal zorunluluk hâlinde yetkili kamu kurum ve kuruluşlarına aktarılabilir. Ticari ileti onaylarınız İleti Yönetim Sistemi'ne (İYS) kaydedilebilir.
+
+Saklama süresi
+Verileriniz onayınızı geri alana kadar, onay kayıtları ise mevzuatın öngördüğü süre boyunca saklanır.
+
+Haklarınız
+KVKK madde 11 uyarınca kişisel verilerinizin işlenip işlenmediğini öğrenme, bilgi talep etme, düzeltilmesini veya silinmesini isteme, işlemeye itiraz etme ve zararın giderilmesini talep etme haklarına sahipsiniz. Taleplerinizi hello@studiohatch.tv adresine iletebilirsiniz. Ticari ileti almayı dilediğiniz zaman e-postalardaki bağlantı ile ücretsiz olarak durdurabilirsiniz.`,
+    en:`This notice explains how studio HATCH processes the personal data you share through the newsletter form on this website, under Turkish Personal Data Protection Law No. 6698 ("KVKK").
+
+Data controller
+[Company name], High Garden AVM, Newline Konutları, Ahmet Yesevi Mah., Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa, Türkiye ("studio HATCH"). Contact: hello@studiohatch.tv
+
+Data we process
+Your email address; if you choose to share them, your name, phone number and selected interests; the consent text you agreed to and its date.
+
+Purposes
+To send you news about our events, shows, workshops and offers by email (and by phone and SMS if you agree); to tailor content to your interests; and to keep records of your consent as required by law.
+
+Legal basis
+Data is collected electronically through our website form and processed based on your explicit consent (KVKK Art. 5/1) and, for consent records, our legal obligations (KVKK Art. 5/2-a and 5/2-ç).
+
+Transfers
+Your data may be shared only for these purposes with our hosting and email service providers (whose servers may be located abroad) and, where legally required, with authorised public authorities. Your consent may be registered in the Turkish Message Management System (İYS).
+
+Retention
+We keep your data until you withdraw your consent, and consent records for as long as the law requires.
+
+Your rights
+Under KVKK Art. 11 you may ask whether your data is processed, request information, correction or deletion, object to processing and claim compensation. Contact us at hello@studiohatch.tv. You can unsubscribe at any time, free of charge, via the link in our emails.` };
 
   window.HATCH_I18N = {
     tr:{ nav:["Immersive Gösterimler","Etkinlikler","Mağaza","Ziyaret"], tickets:"Bilet al",
@@ -111,11 +158,14 @@
       pillarsH:"Üç farklı <em>ritim</em>", pillarsSub:"Gündüz kültür, akşamüstü nefes, gece müzik. Hatch günün her saatinde başka bir yer.",
       pillars:{ culture:["Culture","Dijital gösterimler, atölyeler, söyleşiler ve tasarımcı buluşmaları."], wellness:["Wellness","Saran görüntüler içinde nefes, ses banyosu ve hareket seansları."], nocturne:["Nocturne","Gece programları: canlı setler, özel gösterimler ve geç saate kadar lounge."] },
       events:"etkinlik", spaceH:"Görselin <em>içinde</em> sen de varsın", spaceP:"Merkezimizde görüntülerin sizi dört bir yandan çevrelediği bir dijital deneyim alanı var. İçerik değiştikçe mekân da değişiyor: sergi, konser, ders ya da lansman.",
-      st:[["40'","dakikalık deneyim"],["4","duvar, tek hikâye"],["16","tasarımcı"]], spaceCap:"HighGarden, Balat · Bursa",
+      st:[["40'","dakikalık deneyim"],["4","duvar, tek hikâye"],["16","tasarımcı"]], spaceCap:"High Garden AVM · Nilüfer, Bursa",
       makersH:"Bir ürün, <em>bir hikâye</em>", makersP:"Tasarım mağazamızda 16 bağımsız tasarımcının ürünleri var. Satın aldığın her parça, doğrudan üreticisini destekliyor.", makersBtn:"Mağazayı keşfet",
       joinH:"Fikrin varsa, <em>sahne</em> burada.", joinP:"Tasarımcılara, atölye yürütücülerine ve etkinlik fikri olan herkese açığız.",
       joinOpts:[["01 / TASARIMCI","Ürünlerini mağazamıza getir"],["02 / ATÖLYE","Becerini paylaş, atölye aç"],["03 / ETKİNLİK","Performans, gösterim, buluşma"]],
       visitH:"Ziyaret", where:"Adres", hours:"Saatler", contact:"İletişim", map:"Haritada aç", hoursTodo:"Flow'dan girilecek",
+      nlOpt:"İstersen biraz tanışalım (isteğe bağlı)", nlAd:"Ad soyad", nlTel:"Telefon", nlIlgi:"Neler ilgini çeker?",
+      nlIzin:"{kvkk}'ni okudum; studio HATCH'in etkinlik, gösterim ve kampanyalarıyla ilgili bana e-posta ile ticari ileti göndermesine onay veriyorum.", kvkkLink:"KVKK Aydınlatma Metni",
+      nlTelIzin:"Telefonla ve SMS ile de bilgilendirilmeyi kabul ediyorum.",
       nlH:"İlk sen haberdar ol", nlP:"Yeni gösterimler, atölyeler ve gece programları ayda iki kez e-postanda.", nlPh:"E-posta adresin", nlBtn:"Kaydol", nlOk:"Teşekkürler! Listeye eklendin.", nlFine:"Dilediğin zaman tek tıkla ayrılabilirsin.",
       ftAbout:"Kreatif Yaşamın Merkezi", ftCols:["Program","Hatch","Takip et"], ftLinks:[["Immersive Gösterimler","#gosterimler"],["Etkinlikler","#program"],["Bülten","#visit"]], ftLinks2:[["Mağaza","#makers"],["Hatch'e katıl","#join"],["Ziyaret","#visit"]],
       rights:"Tüm hakları saklıdır.",
@@ -134,11 +184,14 @@
       pillarsH:"Three different <em>rhythms</em>", pillarsSub:"Culture by day, breath at dusk, music at night. Hatch is a different place at every hour.",
       pillars:{ culture:["Culture","Digital shows, workshops, talks and designer meet-ups."], wellness:["Wellness","Breathwork, sound baths and movement inside immersive visuals."], nocturne:["Nocturne","Night programs: live sets, special screenings and a late lounge."] },
       events:"events", spaceH:"Step <em>inside</em> the picture", spaceP:"At our heart is a digital space where images surround you on every side. As the content changes, so does the room: exhibition, concert, class or launch.",
-      st:[["40'","minute experience"],["4","walls, one story"],["16","designers"]], spaceCap:"HighGarden, Balat · Bursa",
+      st:[["40'","minute experience"],["4","walls, one story"],["16","designers"]], spaceCap:"High Garden AVM · Nilüfer, Bursa",
       makersH:"One product, <em>one story</em>", makersP:"Our design store carries work by 16 independent designers. Every piece you buy directly supports its maker.", makersBtn:"Explore the store",
       joinH:"Got an idea? <em>The stage</em> is here.", joinP:"We're open to designers, workshop leaders and anyone with an event idea.",
       joinOpts:[["01 / DESIGNERS","Bring your products to our store"],["02 / WORKSHOPS","Share a skill, run a workshop"],["03 / EVENTS","Performances, screenings, meet-ups"]],
       visitH:"Visit", where:"Address", hours:"Hours", contact:"Contact", map:"Open in Maps", hoursTodo:"to be set in Flow",
+      nlOpt:"Tell us a bit about you (optional)", nlAd:"Full name", nlTel:"Phone", nlIlgi:"What are you into?",
+      nlIzin:"I have read the {kvkk} and agree to receive commercial emails from studio HATCH about events, shows and offers.", kvkkLink:"Privacy Notice (KVKK)",
+      nlTelIzin:"I also agree to be contacted by phone and SMS.",
       nlH:"Be the first to know", nlP:"New shows, workshops and night programs, twice a month in your inbox.", nlPh:"Your email", nlBtn:"Sign up", nlOk:"Thanks! You're on the list.", nlFine:"Unsubscribe anytime with one click.",
       ftAbout:"The Home of Creative Living", ftCols:["Program","Hatch","Follow"], ftLinks:[["Immersive Shows","#gosterimler"],["Events","#program"],["Newsletter","#visit"]], ftLinks2:[["Store","#makers"],["Join Hatch","#join"],["Visit","#visit"]],
       rights:"All rights reserved.",

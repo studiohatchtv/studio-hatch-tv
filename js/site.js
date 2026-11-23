@@ -8,7 +8,8 @@
   const PREVIEW = true;   // alan adına bağlanınca false yapılacak
   const PILLAR_COLOR = { culture:["var(--culture)","var(--culture-soft)"], wellness:["var(--wellness)","var(--wellness-soft)"], nocturne:["var(--nocturne)","var(--nocturne-soft)"] };
   const JOIN_URL = "https://studiohatchtv.github.io/studio-hatch-flow/katil";
-  const MAPS = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("HighGarden Balat Bursa");
+  const MAPS = "https://maps.app.goo.gl/r5HJbLXDrATRkBp79";
+  const ADRES = "High Garden AVM, Newline Konutları, Ahmet Yesevi Mah., Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa";
 
   // dil: ?lang=en > kayıtlı tercih > tr
   let lang = new URLSearchParams(location.search).get("lang");
@@ -40,6 +41,7 @@
   const until = k => lang==="tr" ? fmt(k,{day:"numeric",month:"long"})+" "+t().until : t().until+" "+fmt(k,{day:"numeric",month:"long"});
   const shWhen = g => onNow(g) ? (g.end===FOREVER ? t().openEnded : until(g.end)) : `${t().opens} · ${fmt(g.date,{day:"numeric",month:"long",...(g.date.slice(0,4)!==today().slice(0,4)?{year:"numeric"}:{})})}`;
   const faqHtml = list => list.map(x=>`<details class="faq"><summary>${esc(x.q)}<i aria-hidden="true"></i></summary><p>${esc(x.a)}</p></details>`).join("");
+  const NL_ILGI = [["Immersive deneyimler","Immersive shows"],["Atölyeler","Workshops"],["Etkinlikler & konserler","Events & concerts"],["Wellness","Wellness"],["Nocturne","Nocturne"],["Tasarım ürünleri & mağaza","Design store"]];
   const ayar = k => (lang==="en" && SET[k+"_en"]) || SET[k] || "";
   const ARR = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
@@ -67,7 +69,7 @@
       <div><h4>${c[0]}</h4><ul>${t().ftLinks.map(([a,h])=>`<li><a href="index.html${qs()}${h}">${esc(a)}</a></li>`).join("")}</ul></div>
       <div><h4>${c[1]}</h4><ul>${t().ftLinks2.map(([a,h])=>`<li><a href="${h==="#join"?JOIN_URL:"index.html"+qs()+h}">${esc(a)}</a></li>`).join("")}</ul></div>
       <div><h4>${c[2]}</h4><ul><li><a href="https://instagram.com/${esc(SET.instagram||"studiohatchtv")}" target="_blank" rel="noopener">Instagram</a></li><li><a href="mailto:${esc(SET.eposta||"hello@studiohatch.tv")}">${esc(SET.eposta||"hello@studiohatch.tv")}</a></li></ul></div>
-    </div><div class="ft-b"><span>© ${new Date().getFullYear()} studio HATCH · ${esc(t().rights)}</span><span>HighGarden, Balat · Bursa</span></div></div>`;
+    </div><div class="ft-b"><span>© ${new Date().getFullYear()} studio HATCH · ${esc(t().rights)} · <a href="kvkk.html${qs()}" style="text-decoration:underline">${esc(t().kvkkLink)}</a></span><a href="${MAPS}" target="_blank" rel="noopener">${esc(ADRES)}</a></div></div>`;
   }
 
   // bugünkü seanslar: geçenler soluk, sıradaki vurgulu
@@ -90,7 +92,7 @@
     heroItem = f;
     const fUrl = f && (f.show ? shUrl(f) : evUrl(f));
     if(!f){
-      $("#hero").innerHTML = `<div class="wrap"><div class="rv"><div class="eyebrow">studio HATCH · Balat, Bursa</div>
+      $("#hero").innerHTML = `<div class="wrap"><div class="rv"><div class="eyebrow">studio HATCH · Nilüfer, Bursa</div>
         <h1><span>${lang==="tr"?"Deneyimler · Local Makers · Buluşmalar":"Experiences · Local Makers · Meet-ups"}</span>${esc(t().ftAbout)}</h1>
         <p class="lead">${esc(t().spaceP)}</p><div class="hero-cta" style="margin-top:28px"><a class="btn btn-white" href="#visit">${esc(t().visitH)} <span class="arr">${ARR}</span></a></div></div>
         <div class="hero-art"><img class="blend" src="assets/frida.jpg" alt=""></div></div>`;
@@ -125,13 +127,21 @@
     $("#join").innerHTML = `<div class="join rv"><div><h2 class="h2">${t().joinH}</h2><p class="sub" style="color:#fff;opacity:.85">${esc(t().joinP)}</p></div>
       <div class="join-opts">${t().joinOpts.map(([a,b])=>`<a class="join-opt" href="${JOIN_URL}"><span><small>${a}</small><b>${esc(b)}</b></span>${ARR}</a>`).join("")}</div></div>`;
     $("#visitG").innerHTML = `<div class="card rv"><h2 class="h2">${esc(t().visitH)}</h2>
-        <dl class="kv"><dt>${esc(t().where)}</dt><dd>studioHATCH — HighGarden<br>Balat, Bursa</dd>
+        <dl class="kv"><dt>${esc(t().where)}</dt><dd>studio HATCH — High Garden AVM<br>Newline Konutları, Farabi Cd.<br>E Blok No: 12-E<br>16140 Nilüfer / Bursa</dd>
         <dt>${esc(t().hours)}</dt><dd>${ayar("saatler") ? esc(ayar("saatler")).replace(/\n/g,"<br>") : `<span class="todo">${esc(t().hoursTodo)}</span>`}</dd>
         <dt>${esc(t().contact)}</dt><dd><a href="mailto:${esc(SET.eposta||"hello@studiohatch.tv")}">${esc(SET.eposta||"hello@studiohatch.tv")}</a><br><a href="https://instagram.com/${esc(SET.instagram||"studiohatchtv")}" target="_blank" rel="noopener">@${esc(SET.instagram||"studiohatchtv")}</a></dd></dl>
         <a class="btn btn-ink" style="margin-top:26px" href="${MAPS}" target="_blank" rel="noopener">${esc(t().map)} <span class="arr">${ARR}</span></a></div>
       <div class="card rv" style="background:var(--blue-soft)"><h2 class="h2">${esc(t().nlH)}</h2><p class="sub" style="color:var(--ink)">${esc(t().nlP)}</p>
-        <form class="nl-form" onsubmit="event.preventDefault(); hatchNl(this)">
-          <label class="sr" for="nlMail">${esc(t().nlPh)}</label><input id="nlMail" type="email" required placeholder="${esc(t().nlPh)}" autocomplete="email"><button class="btn btn-blue">${esc(t().nlBtn)}</button></form>
+        <form class="nl-form nl2" onsubmit="event.preventDefault(); hatchNl(this)">
+          <label class="sr" for="nlMail">${esc(t().nlPh)}</label><input id="nlMail" type="email" required placeholder="${esc(t().nlPh)} *" autocomplete="email" maxlength="200">
+          <div class="nl-opt"><span>${esc(t().nlOpt)}</span>
+            <label class="sr" for="nlAd">${esc(t().nlAd)}</label><input id="nlAd" placeholder="${esc(t().nlAd)}" autocomplete="name" maxlength="120">
+            <div class="nl-tel"><b>0</b><label class="sr" for="nlTel">${esc(t().nlTel)}</label><input id="nlTel" type="tel" inputmode="numeric" placeholder="${esc(t().nlTel)} · 5xx xxx xx xx" autocomplete="tel-national" maxlength="14" oninput="hatchTel(this)"></div>
+            <div class="nl-ilgi" role="group" aria-label="${esc(t().nlIlgi)}"><small>${esc(t().nlIlgi)}</small>${NL_ILGI.map(([v,en])=>`<button type="button" class="nl-chip" data-v="${esc(v)}" aria-pressed="false" onclick="this.classList.toggle('on'); this.setAttribute('aria-pressed',this.classList.contains('on'))">${esc(lang==="tr"?v:en)}</button>`).join("")}</div>
+          </div>
+          <label class="ck"><input type="checkbox" id="nlIzin" required><span>${t().nlIzin.replace("{kvkk}",`<a href="kvkk.html${qs()}" target="_blank">${esc(t().kvkkLink)}</a>`)}</span></label>
+          <label class="ck" id="nlTelIzinW" hidden><input type="checkbox" id="nlTelIzin"><span>${esc(t().nlTelIzin)}</span></label>
+          <button class="btn btn-blue">${esc(t().nlBtn)} <span class="arr">${ARR}</span></button></form>
         <div class="nl-ok" id="nlOk">${esc(t().nlOk)}</div><p class="fine">${esc(t().nlFine)}</p></div>`;
   }
   function showCard(g){
@@ -177,11 +187,21 @@
         <span class="go">${ARR}</span></article>`).join("")
       : `<div class="empty-msg">${esc(t().nothing)}</div>`;
   }
+  window.hatchTel = inp => {
+    let d=inp.value.replace(/\D/g,""); if(d.startsWith("90")&&d.length>10) d=d.slice(2); d=d.replace(/^0+/,"").slice(0,10);
+    inp.value=[d.slice(0,3),d.slice(3,6),d.slice(6,8),d.slice(8,10)].filter(Boolean).join(" ");
+    const w=$("#nlTelIzinW"); w.hidden=!d; if(!d) $("#nlTelIzin").checked=false;
+  };
   window.hatchNl = async form => {
-    const btn=form.querySelector("button"), mail=form.querySelector("input").value.trim();
+    const btn=form.querySelector("button.btn"), mail=$("#nlMail").value.trim();
+    const ad=$("#nlAd").value.trim(), tel=$("#nlTel").value.replace(/\D/g,""), izinTel=$("#nlTelIzin").checked;
+    const ilgi=[...form.querySelectorAll(".nl-chip.on")].map(b=>b.dataset.v);
+    if(tel && tel.length!==10){ alert(lang==="tr"?"Telefon numarasını 10 hane olarak yaz (ör. 532 123 45 67) ya da boş bırak.":"Enter a 10-digit phone number or leave it empty."); $("#nlTel").focus(); return; }
+    const kvkkUrl=new URL("kvkk.html",location.href).href;
+    const metin=(lang==="tr"?"Web sitesi bülten kaydı. Onaylanan: ":"Website newsletter sign-up. Agreed: ")+t().nlIzin.replace("{kvkk}",t().kvkkLink+" ("+kvkkUrl+")")+(izinTel?" | "+t().nlTelIzin:"");
     btn.disabled=true;
     try{
-      if(!DEMO) await window.hatchNewsletter(mail, (lang==="tr"?"Web sitesi bülten kaydı: ":"Website newsletter sign-up: ")+t().nlP+" "+t().nlFine);
+      if(!DEMO) await window.hatchNewsletter(mail, metin, { ad, telefon:tel?"0"+tel:"", izinTel, ilgi });
       form.style.display="none"; $("#nlOk").style.display="block";
     }catch(x){ btn.disabled=false; alert(lang==="tr"?"Kaydedilemedi. E-posta adresini kontrol edip tekrar dene.":"Couldn't sign you up. Check the address and try again."); }
   };
@@ -213,7 +233,7 @@
         <div><dt>${esc(t().evDate)}</dt><dd>${esc(dateTxt)}</dd></div>
         <div><dt>${esc(e.times.length>1?t().evSessions:t().evTime)}</dt><dd>${e.times.length>1&&isRun(e)?`<div class="slots-r" style="margin-top:6px">${slotsHtml(e).split('<div class="slots-r">')[1].replace(/<\/div>$/,"")}</div>`:esc(timeTxt(e))}</dd></div>
         ${dur?`<div><dt>${esc(t().evDuration)}</dt><dd>${esc(dur)}</dd></div>`:""}
-        <div><dt>${esc(t().evPlace)}</dt><dd>studioHATCH — HighGarden, Balat</dd></div>
+        <div><dt>${esc(t().evPlace)}</dt><dd>studio HATCH — High Garden AVM<br><span style="font-weight:400;font-size:14px;color:var(--muted)">Farabi Cd. E Blok No: 12-E, Nilüfer/Bursa</span><br><a href="${MAPS}" target="_blank" rel="noopener" style="font-size:14px;color:var(--blue)">${esc(t().map)} ↗</a></dd></div>
         <div><dt>${esc(t().evPrice)}</dt><dd>${esc(e.ticketUrl?L(e.price):t().noTicket)}</dd></div></dl>
         ${e.ticketUrl?`<a class="btn btn-blue" href="${esc(e.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}
         <div class="acts"><button class="btn" onclick="hatchIcs()">📅 ${esc(t().addCal)}</button><button class="btn" onclick="hatchShare()">↗ ${esc(t().share)}</button></div></aside>`;
@@ -227,7 +247,7 @@
       startDate: e.times[0] ? `${e.date}T${e.times[0]}:00+03:00` : e.date, endDate: e.endTime?`${e.date}T${e.endTime}:00+03:00`:`${endOf(e)}T23:00:00+03:00`,
       eventAttendanceMode:"https://schema.org/OfflineEventAttendanceMode", eventStatus:"https://schema.org/EventScheduled",
       image:[new URL(e.image,location.href).href],
-      location:{ "@type":"Place", name:"studioHATCH — HighGarden", address:{ "@type":"PostalAddress", addressLocality:"Bursa", addressRegion:"Bursa", addressCountry:"TR", streetAddress:"Balat" } },
+      location:{ "@type":"Place", name:"studio HATCH — High Garden AVM", address:{ "@type":"PostalAddress", streetAddress:"Ahmet Yesevi Mah., Farabi Cd. Newline Konutları E Blok No: 12-E", addressLocality:"Nilüfer", addressRegion:"Bursa", postalCode:"16140", addressCountry:"TR" } },
       organizer:{ "@type":"Organization", name:"studio HATCH", url:"https://www.studiohatch.tv" },
       ...(e.ticketUrl?{offers:{ "@type":"Offer", url:e.ticketUrl, availability:"https://schema.org/InStock" }}:{}) };
     let s=document.getElementById("ld"); if(!s){ s=document.createElement("script"); s.type="application/ld+json"; s.id="ld"; document.head.appendChild(s); }
@@ -236,7 +256,7 @@
       const st=(e.date+"T"+(e.times[0]||"10:00")).replace(/[-:]/g,"")+"00";
       const en=e.endTime ? (e.date+"T"+e.endTime).replace(/[-:]/g,"")+"00" : (()=>{ const d=new Date(`${e.date}T${e.times[0]||"10:00"}:00`); d.setMinutes(d.getMinutes()+(e.durationMin||60)); return dk(d).replace(/-/g,"")+"T"+String(d.getHours()).padStart(2,"0")+String(d.getMinutes()).padStart(2,"0")+"00"; })();
       const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//studio HATCH//TR","BEGIN:VEVENT",`UID:${e.id}@studiohatch.tv`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,"").slice(0,15)}Z`,
-        `DTSTART;TZID=Europe/Istanbul:${st}`,`DTEND;TZID=Europe/Istanbul:${en}`,`SUMMARY:${L(e.title).replace(/[,;]/g,"\\$&")}`,"LOCATION:studioHATCH — HighGarden\\, Balat\\, Bursa",`URL:${location.href}`,"END:VEVENT","END:VCALENDAR"].join("\r\n");
+        `DTSTART;TZID=Europe/Istanbul:${st}`,`DTEND;TZID=Europe/Istanbul:${en}`,`SUMMARY:${L(e.title).replace(/[,;]/g,"\\$&")}`,"LOCATION:studio HATCH — High Garden AVM\\, Farabi Cd. E Blok No: 12-E\\, 16140 Nilüfer/Bursa",`URL:${location.href}`,"END:VEVENT","END:VCALENDAR"].join("\r\n");
       const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"})); a.download=`studiohatch-${e.id}.ics`; a.click();
     };
     window.hatchShare = async () => {
@@ -273,14 +293,14 @@
         ${about?`<div class="about"><h3>${esc(t().shAbout)}</h3><p>${esc(about)}</p></div>`:""}
         ${faq.length?`<h2>${esc(t().shFaq)}</h2><div class="faqs">${faqHtml(faq)}</div>`:""}</div>
       <aside class="side">${g.times.length&&now?`<div class="slots-l" style="color:var(--muted)">${slotsHtml(g).split('<div class="slots-r">')[0].replace(/<[^>]+>/g,"")}</div><div class="slots-r" style="margin:8px 0 22px">${slotsHtml(g).split('<div class="slots-r">')[1].replace(/<\/div>$/,"")}</div>`:""}
-        <dl><div><dt>${esc(t().evPlace)}</dt><dd>studioHATCH — HighGarden, Balat</dd></div></dl>
+        <dl><div><dt>${esc(t().evPlace)}</dt><dd>studio HATCH — High Garden AVM<br><span style="font-weight:400;font-size:14px;color:var(--muted)">Farabi Cd. E Blok No: 12-E, Nilüfer/Bursa</span><br><a href="${MAPS}" target="_blank" rel="noopener" style="font-size:14px;color:var(--blue)">${esc(t().map)} ↗</a></dd></div></dl>
         ${g.ticketUrl?`<a class="btn btn-blue" href="${esc(g.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}
         <div class="acts" style="grid-template-columns:1fr"><button class="btn" onclick="hatchShare()">↗ ${esc(t().share)}</button></div></aside>`;
     $("#more").innerHTML = (SH.length>1 ? renderShows(g.id) : "") + `<div style="margin-top:40px"><a class="btn btn-ink" href="index.html${qs()}#program">${esc(t().shEvents)} <span class="arr">${ARR}</span></a></div>`;
     const ld=[{ "@context":"https://schema.org", "@type":"Event", name:L(g.sub)?`${L(g.sub)}: ${L(g.title)}`:L(g.title), description:L(g.short),
       startDate:g.start||today(), ...(g.end!==FOREVER?{endDate:g.end}:{}), eventAttendanceMode:"https://schema.org/OfflineEventAttendanceMode", eventStatus:"https://schema.org/EventScheduled",
       image:[new URL(g.image,location.href).href],
-      location:{ "@type":"Place", name:"studioHATCH — HighGarden", address:{ "@type":"PostalAddress", addressLocality:"Bursa", addressRegion:"Bursa", addressCountry:"TR", streetAddress:"Balat" } },
+      location:{ "@type":"Place", name:"studio HATCH — High Garden AVM", address:{ "@type":"PostalAddress", streetAddress:"Ahmet Yesevi Mah., Farabi Cd. Newline Konutları E Blok No: 12-E", addressLocality:"Nilüfer", addressRegion:"Bursa", postalCode:"16140", addressCountry:"TR" } },
       organizer:{ "@type":"Organization", name:"studio HATCH", url:"https://www.studiohatch.tv" },
       ...(g.ticketUrl?{offers:{ "@type":"Offer", url:g.ticketUrl, availability:"https://schema.org/InStock" }}:{}) }];
     if(faq.length) ld.push({ "@context":"https://schema.org", "@type":"FAQPage", mainEntity:faq.map(x=>({ "@type":"Question", name:x.q, acceptedAnswer:{ "@type":"Answer", text:x.a } })) });
@@ -302,7 +322,16 @@
     const io=new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting){ x.target.classList.add("in"); io.unobserve(x.target); } }),{ rootMargin:"0px 0px -8% 0px" });
     els.forEach(x=>io.observe(x));
   }
-  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else home(); reveal(); }
+  /* ---------- KVKK ---------- */
+  function kvkkPage(){
+    const metin = ayar("kvkk") || L(window.HATCH_KVKK_TASLAK);
+    document.title = `${t().kvkkLink} · studio HATCH`;
+    // tek satırlık kısa paragraflar başlık olur
+    $("#legal").innerHTML = `<div class="crumb"><a href="index.html${qs()}">← studio HATCH</a></div><h1>${esc(t().kvkkLink)}</h1>`+
+      metin.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>{ const [ilk,...kalan]=p.split("\n"); const bas=ilk.length<70 && !/[.:;,]$/.test(ilk.trim());
+        return bas ? `<h2>${esc(ilk)}</h2>${kalan.length?`<p>${esc(kalan.join("\n")).replace(/\n/g,"<br>")}</p>`:""}` : `<p>${esc(p).replace(/\n/g,"<br>")}</p>`; }).join("");
+  }
+  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else if(pg==="kvkk") kvkkPage(); else home(); reveal(); }
   window.addEventListener("scroll", ()=>$(".hd").classList.toggle("scrolled", scrollY>8), { passive:true });
   window.hatchMenu = () => $("#nav").classList.toggle("open");
   document.addEventListener("click", ev=>{ if(ev.target.closest("#nav a")) $("#nav").classList.remove("open"); });
