@@ -105,7 +105,7 @@
     const band = DEMO ? t().proto : hu ? hu : (ayar("duyuru") ? esc(ayar("duyuru")) : (PREVIEW ? (lang==="tr" ? "<b>Önizleme.</b> Site henüz yayında değil; program Flow'dan canlı geliyor." : "<b>Preview.</b> Not public yet; the program is live from Flow.") : ""));
     $("#proto").innerHTML = band; $("#proto").style.display = band ? "" : "none"; $("#proto").classList.toggle("hu-band", !!hu && !DEMO);
     $("#nav").innerHTML = n.map((x,i)=> i===0
-        ? `<div class="nav-dd"><a class="nav-top" href="index.html${qs()}#gosterimler" aria-haspopup="true">${esc(x)}<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+        ? `<div class="nav-dd"><a class="nav-top" href="index.html${qs()}#gosterimler" aria-haspopup="true">${esc(x)}</a>
             <div class="dd">${t().navArt.map(([a,b,h])=>`<a href="index.html${qs()}#${h}"><b>${esc(a)}</b><small>${esc(b)}</small></a>`).join("")}</div></div>`
         : `<a href="${ids[i]==="visit"?"ziyaret.html"+qs():"index.html"+qs()+"#"+ids[i]}">${esc(x)}</a>`).join("") + `<a class="nav-join" href="${JOIN_URL}">${esc(t().join)}</a>`;
     $("#hdR").innerHTML = `<div class="lang" role="group" aria-label="Dil / Language"><button class="${lang==="tr"?"on":""}" onclick="hatchLang('tr')">TR</button><button class="${lang==="en"?"on":""}" onclick="hatchLang('en')">EN</button></div>
