@@ -329,7 +329,7 @@
       ${mediaHtml(g)}</div>`;
     const facts=[[t().evDate, shWhen(g)], [t().evSessions, g.times.join(" · ")], [t().shHours, L(g.hours)], [t().evDuration, g.durationMin?`${g.durationMin} ${t().minutes}`:""], [t().shAge, L(g.age)], [t().evPrice, L(g.price)]].filter(x=>x[1]);
     $("#shFacts").innerHTML = facts.length ? `<div class="wrap"><dl class="sh-facts">${facts.map(([a,b])=>`<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl></div>` : "";
-    const is=L(g.is), isnt=L(g.isnt), faq=[...L(g.faq), ...window.hatchFaq(ayar("genel_sss"))], about=ayar("immersive_nedir");
+    const is=L(g.is), isnt=L(g.isnt), faq=[...L(g.faq), ...window.hatchFaq(ayar("genel_sss"))].filter((x,i,a)=>a.findIndex(y=>(y.q||y[0]||"").toLocaleLowerCase().trim()===(x.q||x[0]||"").toLocaleLowerCase().trim())===i), about=ayar("immersive_nedir");
     LB=g.gallery||[];
     $("#evBody").innerHTML = `<div class="txt">
         ${L(g.desc).map(p=>`<p>${esc(p)}</p>`).join("")}${galHtml(g)}
