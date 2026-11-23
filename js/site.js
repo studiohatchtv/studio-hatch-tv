@@ -3,6 +3,7 @@
   const I = window.HATCH_I18N;
   const EV = await window.hatchLoad();
   const SET = window.HATCH_SETTINGS || {};
+  const FOREVER = "2999-12-31";
   const DEMO = !!window.HATCH_DEMO_MODE;
   const PREVIEW = true;   // alan adına bağlanınca false yapılacak
   const PILLAR_COLOR = { culture:["var(--culture)","var(--culture-soft)"], wellness:["var(--wellness)","var(--wellness-soft)"], nocturne:["var(--nocturne)","var(--nocturne-soft)"] };
@@ -32,6 +33,13 @@
   const evUrl = e => `etkinlik.html${qs({id:e.id})}`;
   const allDay = () => lang==="tr" ? "Tüm gün" : "All day";
   const timeTxt = e => !e.times.length ? allDay() : e.endTime ? `${e.times[0]}–${e.endTime}` : e.times.join(" · ");
+  // gösterimler: etkinlik yardımcılarıyla uyumlu olsun diye date/end alanları da var
+  const SH = (window.HATCH_SHOWS||[]).map(g=>({ ...g, date:g.start||"2000-01-01", end:g.end||FOREVER, show:true })).filter(g=>g.end>=today());
+  const shUrl = g => `gosterim.html${qs({id:g.id})}`;
+  const onNow = g => g.date<=today();
+  const until = k => lang==="tr" ? fmt(k,{day:"numeric",month:"long"})+" "+t().until : t().until+" "+fmt(k,{day:"numeric",month:"long"});
+  const shWhen = g => onNow(g) ? (g.end===FOREVER ? t().openEnded : until(g.end)) : `${t().opens} · ${fmt(g.date,{day:"numeric",month:"long",...(g.date.slice(0,4)!==today().slice(0,4)?{year:"numeric"}:{})})}`;
+  const faqHtml = list => list.map(x=>`<details class="faq"><summary>${esc(x.q)}<i aria-hidden="true"></i></summary><p>${esc(x.a)}</p></details>`).join("");
   const ayar = k => (lang==="en" && SET[k+"_en"]) || SET[k] || "";
   const ARR = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
@@ -44,12 +52,12 @@
 
   function shell(){
     document.documentElement.lang = lang;
-    const n=t().nav, ids=["program","program","program","makers","visit"];
+    const n=t().nav, ids=["gosterimler","program","makers","visit"];
     const band = DEMO ? t().proto : (ayar("duyuru") ? esc(ayar("duyuru")) : (PREVIEW ? (lang==="tr" ? "<b>Önizleme.</b> Site henüz yayında değil; program Flow'dan canlı geliyor." : "<b>Preview.</b> Not public yet; the program is live from Flow.") : ""));
     $("#proto").innerHTML = band; $("#proto").style.display = band ? "" : "none";
     $("#nav").innerHTML = n.map((x,i)=>`<a href="index.html${qs()}#${ids[i]}">${esc(x)}</a>`).join("") + `<a href="${JOIN_URL}">${esc(t().join)}</a>`;
     $("#hdR").innerHTML = `<div class="lang" role="group" aria-label="Dil / Language"><button class="${lang==="tr"?"on":""}" onclick="hatchLang('tr')">TR</button><button class="${lang==="en"?"on":""}" onclick="hatchLang('en')">EN</button></div>
-      <a class="btn btn-blue" href="index.html${qs()}#program">${esc(t().tickets)}</a>`;
+      <a class="btn btn-blue" href="index.html${qs()}#gosterimler">${esc(t().tickets)}</a>`;
     $("#ft").innerHTML = footer();
   }
   function footer(){
@@ -75,10 +83,12 @@
   }
 
   /* ---------- ANA SAYFA ---------- */
-  const st = { pillar:"", day:null };
+  const st = { pillar:"", day:null }; let heroItem=null;
   function home(){
     const gelecek = EV.filter(e=>endOf(e)>=today());
-    const f = gelecek.find(e=>e.featured) || gelecek.find(isRun) || gelecek[0];
+    const f = SH.find(g=>g.featured&&onNow(g)) || SH.find(onNow) || SH.find(g=>g.featured) || gelecek.find(e=>e.featured) || SH[0] || gelecek.find(isRun) || gelecek[0];
+    heroItem = f;
+    const fUrl = f && (f.show ? shUrl(f) : evUrl(f));
     if(!f){
       $("#hero").innerHTML = `<div class="wrap"><div class="rv"><div class="eyebrow">studio HATCH · Balat, Bursa</div>
         <h1><span>${lang==="tr"?"Deneyimler · Local Makers · Buluşmalar":"Experiences · Local Makers · Meet-ups"}</span>${esc(t().ftAbout)}</h1>
@@ -88,20 +98,21 @@
     const simdi = f.date<=today();
     $("#hero").innerHTML = `<div class="wrap">
       <div class="rv">
-        <div class="eyebrow">${simdi?`<span class="live"></span>${esc(t().nowShowing)}`:(lang==="tr"?"Yakında":"Coming up")} · ${esc(L(f.tur))}</div>
-        <h1>${(()=>{ const [a,b]=L(f.title).split(": "); return b?`<span>${esc(a)}</span>${esc(b)}`:esc(a); })()}</h1>
+        <div class="eyebrow">${simdi?`<span class="live"></span>${esc(t().nowShowing)}`:(lang==="tr"?"Yakında":"Coming up")} · ${esc(f.show ? (lang==="tr"?"Immersive gösterim":"Immersive show") : L(f.tur))}</div>
+        <h1>${f.show ? `${L(f.sub)?`<span>${esc(L(f.sub))}</span>`:""}${esc(L(f.title))}` : (()=>{ const [a,b]=L(f.title).split(": "); return b?`<span>${esc(a)}</span>${esc(b)}`:esc(a); })()}</h1>
         <p class="lead">${esc(L(f.short))}</p>
         <div class="slots">${slotsHtml(f)}</div>
-        <div class="hero-cta">${f.ticketUrl?`<a class="btn btn-white" href="${esc(f.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}<a class="btn ${f.ticketUrl?"btn-line":"btn-white"}" href="${evUrl(f)}">${esc(t().details)}</a></div>
+        <div class="hero-cta">${f.ticketUrl?`<a class="btn btn-white" href="${esc(f.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}<a class="btn ${f.ticketUrl?"btn-line":"btn-white"}" href="${fUrl}">${esc(f.show?t().explore:t().details)}</a></div>
       </div>
       <div class="hero-art"><img class="${f.blend?"blend":""}" src="${esc(f.image)}" alt="" fetchpriority="high">${f.durationMin?`<div class="badge-40"><b>${f.durationMin}'</b><small>${esc(t().minutes)}</small></div>`:""}</div>
     </div>`;
     }
     const tk=["Deneyimler","Local Makers","Buluşmalar","Culture","Wellness","Nocturne"]; const tkH=tk.map(x=>`<span>${x}</span>`).join("");
     $("#ticker").innerHTML = `<div class="ticker-t" aria-hidden="true">${tkH+tkH+tkH+tkH}</div>`;
+    $("#showsW").innerHTML = renderShows();
     $("#programH").innerHTML = `<div><h2 class="h2">${esc(t().upcoming)}</h2><p class="sub">${esc(t().upcomingSub)}</p></div><div class="filters" id="filters"></div>`;
     renderProgram();
-    const cnt = p => EV.filter(e=>!isRun(e) && e.pillar===p && e.date>=today()).length;
+    const cnt = p => EV.filter(e=>e.pillar===p && endOf(e)>=today()).length;
     $("#pillarsH").innerHTML = `<div><h2 class="h2">${t().pillarsH}</h2><p class="sub">${esc(t().pillarsSub)}</p></div>`;
     $("#pillars").innerHTML = ["culture","wellness","nocturne"].map(p=>`<a class="pillar ${p} rv" href="#program" onclick="hatchPillar('${p}')"><span class="shape"></span>
       <div><h3>${t().pillars[p][0]}</h3><p>${esc(t().pillars[p][1])}</p></div>
@@ -123,25 +134,43 @@
           <label class="sr" for="nlMail">${esc(t().nlPh)}</label><input id="nlMail" type="email" required placeholder="${esc(t().nlPh)}" autocomplete="email"><button class="btn btn-blue">${esc(t().nlBtn)}</button></form>
         <div class="nl-ok" id="nlOk">${esc(t().nlOk)}</div><p class="fine">${esc(t().nlFine)}</p></div>`;
   }
+  function showCard(g){
+    const now=onNow(g);
+    return `<article class="sh-card rv"><a class="row-link" href="${shUrl(g)}" aria-label="${esc(L(g.title))}"></a>
+      <div class="sh-img ${g.blend?"blend":""}"><img src="${esc(g.image)}" alt="" loading="lazy"><span class="sh-badge ${now?"on":""}">${now?`<span class="live"></span>`:""}${esc(now?t().showing:t().soon)}</span></div>
+      <div class="sh-txt">${L(g.sub)?`<small>${esc(L(g.sub))}</small>`:""}<h3>${esc(L(g.title))}</h3><p>${esc(L(g.short))}</p>
+        <div class="sh-meta"><b>${esc(shWhen(g))}</b>${g.durationMin?`<span class="sep">·</span><span>${g.durationMin} ${esc(t().minutes)}</span>`:""}</div>
+        <span class="sh-go">${esc(t().explore)} ${ARR}</span></div></article>`;
+  }
+  function renderShows(skip){
+    const list=SH.filter(g=>g.id!==skip);
+    const ghost=`<article class="sh-card sh-ghost rv"><div><span class="shape"></span><h3>${esc(t().ghostH)}</h3><p>${esc(t().ghostP)}</p></div>
+      <a class="btn btn-white" href="index.html${qs()}#visit" onclick="setTimeout(()=>document.getElementById('nlMail')&&document.getElementById('nlMail').focus(),600)">${esc(t().ghostBtn)} <span class="arr">${ARR}</span></a></article>`;
+    return `<div class="sec-h"><div><h2 class="h2">${skip?esc(t().shOther):t().showsH}</h2>${skip?"":`<p class="sub">${esc(t().showsSub)}</p>`}</div>
+        <div class="sh-arrows"><button onclick="hatchSlide(this,-1)" aria-label="${esc(t().prev)}">${ARR}</button><button onclick="hatchSlide(this,1)" aria-label="${esc(t().next)}">${ARR}</button></div></div>
+      <div class="sh-track" tabindex="0">${list.map(showCard).join("")}${ghost}</div>`;
+  }
+  window.hatchSlide = (btn,d) => { const tr=btn.closest(".sec,#more").querySelector(".sh-track"); const c=tr.querySelector(".sh-card"); tr.scrollBy({ left:d*((c?c.offsetWidth:300)+20), behavior:"smooth" }); };
   function renderProgram(){
     const chips=[["",t().all,"var(--ink)"],["culture","Culture","var(--culture)"],["wellness","Wellness","var(--wellness)"],["nocturne","Nocturne","var(--nocturne)"]];
     $("#filters").innerHTML = chips.map(([k,l,c])=>`<button class="fchip ${st.pillar===k?"on":""}" style="--c:${c}" onclick="hatchPillar('${k}')"><i></i>${esc(l)}</button>`).join("");
-    const list0 = EV.filter(e=>!isRun(e) && (!st.pillar || e.pillar===st.pillar));
+    const list0 = EV.filter(e=>!st.pillar || e.pillar===st.pillar);
+    const onDay = (e,k) => e.date<=k && endOf(e)>=k;
     const t0=today();
     let days="";
     for(let i=0;i<14;i++){
-      const k=addDays(t0,i), on=list0.filter(e=>e.date===k);
+      const k=addDays(t0,i), on=list0.filter(e=>onDay(e,k));
       days+=`<button class="day ${i===0?"today":""} ${st.day===k?"on":""} ${on.length?"":"empty"}" onclick="hatchDay('${k}')" aria-pressed="${st.day===k}">
         <small>${i===0?(lang==="tr"?"Bugün":"Today"):esc(fmt(k,{weekday:"short"}))}</small><b>${pd(k).getDate()}</b>
         <span class="dots">${on.slice(0,3).map(e=>`<i style="background:${PILLAR_COLOR[e.pillar][0]}"></i>`).join("")}</span></button>`;
     }
     $("#days").innerHTML = days;
     $("#clearDay").innerHTML = st.day ? `<button class="clear-day" onclick="hatchDay(null)">← ${esc(t().showAll)}</button>` : "";
-    const list = (st.day ? list0.filter(e=>e.date===st.day) : list0.filter(e=>endOf(e)>=t0 && e.date<=addDays(t0,45)))
+    const list = (st.day ? list0.filter(e=>onDay(e,st.day)) : list0.filter(e=>endOf(e)>=t0 && e.date<=addDays(t0,45)))
       .sort((a,b)=>(a.date+(a.times[0]||"")).localeCompare(b.date+(b.times[0]||"")));
     $("#rows").innerHTML = list.length ? list.map(e=>`<article class="row">
         <a class="row-link" href="${evUrl(e)}" aria-label="${esc(L(e.title))}"></a>
-        <div class="dt"><b>${pd(e.date).getDate()}</b><small>${esc(fmt(e.date,{month:"short"}))} · ${esc(fmt(e.date,{weekday:"short"}))}</small></div>
+        <div class="dt">${isRun(e)&&e.date<t0?`<b style="font-size:.62em">${esc(t().everyDay)}</b><small>→ ${esc(fmt(endOf(e),{day:"numeric",month:"short"}))}</small>`:`<b>${pd(e.date).getDate()}</b><small>${esc(fmt(e.date,{month:"short"}))} · ${esc(fmt(e.date,{weekday:"short"}))}</small>`}</div>
         <div>${tag(e)}<h3>${esc(L(e.title))}</h3><p>${esc(L(e.short))}</p>
           <div class="meta"><b>${esc(timeTxt(e))}</b><span class="sep">·</span><span>${e.ticketUrl?esc(L(e.price)):esc(t().free)}</span></div></div>
         <div class="th" style="--cs:${PILLAR_COLOR[e.pillar][1]}"><img src="${esc(e.image)}" alt="" loading="lazy"></div>
@@ -215,6 +244,53 @@
       try{ await navigator.clipboard.writeText(location.href); toast(t().copied); }catch(x){}
     };
   }
+  /* ---------- GÖSTERİM SAYFASI ---------- */
+  function showPage(){
+    const id=new URLSearchParams(location.search).get("id");
+    const g=SH.find(x=>x.id===id);
+    const back=`<div class="crumb"><a href="index.html${qs()}#gosterimler">← ${esc(t().shBack)}</a></div>`;
+    if(!g){
+      $("#evHero").style.setProperty("--c","var(--blue)");
+      $("#evHero").innerHTML=`<div class="wrap" style="grid-template-columns:1fr"><div>${back}<h1>${esc(t().shNotFound)}</h1></div></div>`;
+      $("#shFacts").innerHTML=""; $("#evBody").innerHTML=""; $("#more").innerHTML=SH.length?renderShows():""; return;
+    }
+    const now=onNow(g);
+    document.title = `${L(g.title)}${L(g.sub)?" · "+L(g.sub):""} · studio HATCH`;
+    $("#evHero").style.setProperty("--c","var(--blue)");
+    $("#evHero").innerHTML = `<div class="wrap"><div>${back}
+        <span class="tag" style="background:rgba(255,255,255,.16);color:#fff">${now?`<span class="live"></span>`:""}${esc(now?t().showing:t().soon)} · ${lang==="tr"?"Immersive gösterim":"Immersive show"}</span>
+        <h1>${L(g.sub)?`<span>${esc(L(g.sub))}</span>`:""}${esc(L(g.title))}</h1><p class="lead">${esc(L(g.short))}</p>
+        <div class="hero-cta" style="margin-top:26px">${g.ticketUrl?`<a class="btn btn-white" href="${esc(g.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}</div></div>
+      <div class="ev-img ${g.blend?"blend":""}"><img src="${esc(g.image)}" alt=""></div></div>`;
+    const facts=[[t().evDate, shWhen(g)], [t().evSessions, g.times.join(" · ")], [t().evDuration, g.durationMin?`${g.durationMin} ${t().minutes}`:""], [t().shAge, L(g.age)], [t().evPrice, L(g.price)]].filter(x=>x[1]);
+    $("#shFacts").innerHTML = facts.length ? `<div class="wrap"><dl class="sh-facts">${facts.map(([a,b])=>`<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl></div>` : "";
+    const is=L(g.is), isnt=L(g.isnt), faq=[...L(g.faq), ...window.hatchFaq(ayar("genel_sss"))], about=ayar("immersive_nedir");
+    $("#evBody").innerHTML = `<div class="txt">
+        ${L(g.desc).map(p=>`<p>${esc(p)}</p>`).join("")}
+        ${is.length||isnt.length?`<h2>${esc(t().shWhat)}</h2><div class="isnt">
+          ${is.length?`<div class="yes"><h3>${esc(t().shIs)}</h3><ul>${is.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
+          ${isnt.length?`<div class="no"><h3>${esc(t().shIsnt)}</h3><ul>${isnt.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}</div>`:""}
+        ${about?`<div class="about"><h3>${esc(t().shAbout)}</h3><p>${esc(about)}</p></div>`:""}
+        ${faq.length?`<h2>${esc(t().shFaq)}</h2><div class="faqs">${faqHtml(faq)}</div>`:""}</div>
+      <aside class="side">${g.times.length&&now?`<div class="slots-l" style="color:var(--muted)">${slotsHtml(g).split('<div class="slots-r">')[0].replace(/<[^>]+>/g,"")}</div><div class="slots-r" style="margin:8px 0 22px">${slotsHtml(g).split('<div class="slots-r">')[1].replace(/<\/div>$/,"")}</div>`:""}
+        <dl><div><dt>${esc(t().evPlace)}</dt><dd>studioHATCH — HighGarden, Balat</dd></div></dl>
+        ${g.ticketUrl?`<a class="btn btn-blue" href="${esc(g.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}
+        <div class="acts" style="grid-template-columns:1fr"><button class="btn" onclick="hatchShare()">↗ ${esc(t().share)}</button></div></aside>`;
+    $("#more").innerHTML = (SH.length>1 ? renderShows(g.id) : "") + `<div style="margin-top:40px"><a class="btn btn-ink" href="index.html${qs()}#program">${esc(t().shEvents)} <span class="arr">${ARR}</span></a></div>`;
+    const ld=[{ "@context":"https://schema.org", "@type":"Event", name:L(g.sub)?`${L(g.sub)}: ${L(g.title)}`:L(g.title), description:L(g.short),
+      startDate:g.start||today(), ...(g.end!==FOREVER?{endDate:g.end}:{}), eventAttendanceMode:"https://schema.org/OfflineEventAttendanceMode", eventStatus:"https://schema.org/EventScheduled",
+      image:[new URL(g.image,location.href).href],
+      location:{ "@type":"Place", name:"studioHATCH — HighGarden", address:{ "@type":"PostalAddress", addressLocality:"Bursa", addressRegion:"Bursa", addressCountry:"TR", streetAddress:"Balat" } },
+      organizer:{ "@type":"Organization", name:"studio HATCH", url:"https://www.studiohatch.tv" },
+      ...(g.ticketUrl?{offers:{ "@type":"Offer", url:g.ticketUrl, availability:"https://schema.org/InStock" }}:{}) }];
+    if(faq.length) ld.push({ "@context":"https://schema.org", "@type":"FAQPage", mainEntity:faq.map(x=>({ "@type":"Question", name:x.q, acceptedAnswer:{ "@type":"Answer", text:x.a } })) });
+    let sc=document.getElementById("ld"); if(!sc){ sc=document.createElement("script"); sc.type="application/ld+json"; sc.id="ld"; document.head.appendChild(sc); }
+    sc.textContent=JSON.stringify(ld);
+    window.hatchShare = async () => {
+      if(navigator.share){ try{ await navigator.share({ title:L(g.title), url:location.href }); }catch(x){} return; }
+      try{ await navigator.clipboard.writeText(location.href); toast(t().copied); }catch(x){}
+    };
+  }
   function toast(m){ const el=$("#toast"); el.textContent=m; el.classList.add("on"); setTimeout(()=>el.classList.remove("on"),1800); }
 
   /* ---------- ortak ---------- */
@@ -226,10 +302,10 @@
     const io=new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting){ x.target.classList.add("in"); io.unobserve(x.target); } }),{ rootMargin:"0px 0px -8% 0px" });
     els.forEach(x=>io.observe(x));
   }
-  function render(){ shell(); if(document.body.dataset.page==="event") eventPage(); else home(); reveal(); }
+  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else home(); reveal(); }
   window.addEventListener("scroll", ()=>$(".hd").classList.toggle("scrolled", scrollY>8), { passive:true });
   window.hatchMenu = () => $("#nav").classList.toggle("open");
   document.addEventListener("click", ev=>{ if(ev.target.closest("#nav a")) $("#nav").classList.remove("open"); });
   render();
-  setInterval(()=>{ if(document.body.dataset.page!=="event" && $("#hero")){ const f=EV.find(e=>e.featured); const s=$("#hero .slots"); if(f&&s) s.innerHTML=slotsHtml(f); } }, 60000);
+  setInterval(()=>{ const s=$("#hero .slots"); if(heroItem&&s) s.innerHTML=slotsHtml(heroItem); }, 60000);
 })();

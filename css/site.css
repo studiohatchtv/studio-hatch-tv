@@ -278,3 +278,75 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .kv dd{margin-bottom:10px}
   .ft-g{grid-template-columns:1fr}
 }
+
+/* IMMERSIVE GÖSTERİMLER — yan yana kayan kartlar */
+.sh-sec{padding-bottom:72px}
+.sh-arrows{display:flex;gap:8px}
+.sh-arrows button{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;transition:all .2s;background:#fff}
+.sh-arrows button:first-child svg{transform:rotate(180deg)}
+.sh-arrows button:hover{background:var(--blue);border-color:var(--blue);color:#fff}
+.sh-track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 40px)/2.35);gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 28px;padding:4px 28px 18px;margin:0 -28px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.sh-track::-webkit-scrollbar{display:none}
+.sh-card{scroll-snap-align:start;position:relative;background:#fff;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 0 var(--line),0 24px 60px -40px rgba(10,0,80,.35);transition:transform .3s}
+.sh-card:hover{transform:translateY(-4px)}
+.sh-img{position:relative;aspect-ratio:16/11;background:var(--blue);overflow:hidden}
+.sh-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.sh-img.blend img{mix-blend-mode:screen}
+.sh-card:hover .sh-img img{transform:scale(1.04)}
+.sh-badge{position:absolute;left:16px;top:16px;display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--ink);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;border-radius:999px}
+.sh-badge.on{background:var(--blue);color:#fff}
+.sh-txt{padding:24px 26px 26px;display:flex;flex-direction:column;gap:8px;flex:1}
+.sh-txt small{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--blue)}
+.sh-txt h3{font-family:var(--f-display);font-size:clamp(28px,2.8vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1}
+.sh-txt p{color:var(--muted);font-size:15px}
+.sh-meta{display:flex;gap:10px;flex-wrap:wrap;font-size:14px;margin-top:auto;padding-top:8px}
+.sh-meta .sep{color:var(--line)}
+.sh-go{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--blue);font-size:15px;margin-top:6px}
+.sh-card:hover .sh-go svg{transform:translateX(4px)}
+.sh-go svg{transition:transform .2s}
+.sh-ghost{background:var(--blue);color:#fff;padding:32px 30px;justify-content:space-between;gap:28px;box-shadow:none}
+.sh-ghost h3{font-family:var(--f-display);font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:26px 0 10px}
+.sh-ghost p{opacity:.85}
+.sh-ghost .btn{align-self:flex-start;position:relative;z-index:2}
+.sh-ghost .shape{display:block;width:64px;height:64px;border-radius:18px;border:2px solid rgba(255,255,255,.6);transform:rotate(45deg);margin:10px}
+.sh-hero .ev-img{aspect-ratio:16/11}
+.ev-hero h1 span{display:block;font-weight:300;font-size:.5em;letter-spacing:-.02em;opacity:.85;margin-bottom:.12em}
+.sh-facts-w{background:var(--blue);color:#fff;padding-bottom:28px}
+.sh-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:rgba(255,255,255,.22);border-radius:18px;overflow:hidden}
+.sh-facts div{background:var(--blue-ink);padding:18px 22px}
+.sh-facts dt{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.sh-facts dd{font-family:var(--f-display);font-size:20px;font-weight:600;margin-top:4px;font-variant-numeric:tabular-nums}
+.isnt{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.isnt>div{border-radius:var(--r);padding:24px 24px 20px}
+.isnt .yes{background:var(--blue-soft)}
+.isnt .no{background:var(--paper-2)}
+.isnt h3{font-family:var(--f-display);font-size:19px;margin-bottom:12px}
+.isnt ul{display:grid;gap:10px}
+.isnt li{list-style:none;display:flex;gap:12px;font-size:15.5px;line-height:1.5}
+.isnt li::before{flex:none;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px}
+.isnt .yes li::before{content:"✓";background:var(--blue);color:#fff}
+.isnt .no li::before{content:"✕";background:var(--ink);color:#fff}
+.about{margin-top:28px;border-left:4px solid var(--blue);padding:6px 0 6px 22px}
+.about h3{font-family:var(--f-display);font-size:19px;margin-bottom:6px}
+.about p{font-size:16px!important;color:var(--muted);margin:0!important}
+.faqs{border-top:1px solid var(--line)}
+.faq{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:20px 4px;font-weight:600;font-size:17px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--paper-2);position:relative;transition:transform .25s,background .2s}
+.faq summary i::before,.faq summary i::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:currentColor;transform:translate(-50%,-50%)}
+.faq summary i::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq[open] summary i{transform:rotate(45deg);background:var(--blue);color:#fff}
+.faq p{padding:0 4px 20px;color:var(--muted);font-size:16px!important;margin:0!important;max-width:40em}
+.sh-more{margin-top:88px}
+.sh-more .sh-track{grid-auto-columns:calc((100% - 40px)/3)}
+@media (max-width:980px){
+  .sh-track,.sh-more .sh-track{grid-auto-columns:72%}
+  .isnt{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .sh-track,.sh-more .sh-track{grid-auto-columns:86%;padding:4px 18px 18px;margin:0 -18px;scroll-padding:0 18px}
+  .sh-arrows{display:none}
+  .sh-facts{grid-template-columns:1fr 1fr}
+  .sh-facts div{padding:14px 16px}
+}

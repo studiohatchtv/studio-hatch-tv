@@ -22,12 +22,25 @@
       durationMin:r.sure_dk||null, price:{tr:r.fiyat||"", en:r.fiyat_en||r.fiyat||""}, ticketUrl:safeUrl(r.bilet_url),
       image:gorsel(r.gorsel)||FALLBACK[r.program]||FALLBACK.culture, blend:false };
   }
+  // SSS: bloklar boş satırla ayrılır; ilk satır soru, kalanı cevap
+  const faq = s => String(s||"").split(/\n\s*\n/).map(b=>b.trim().split("\n")).filter(b=>b[0]&&b[0].trim())
+    .map(([q,...a])=>({ q:q.trim(), a:a.join(" ").trim() })).filter(x=>x.a);
+  window.hatchFaq = faq;
+  function mapShow(g){
+    const two = (a,b,f=x=>x||"") => ({ tr:f(a), en:f(b||a) });
+    return { id:g.id, featured:!!g.one_cikan, title:two(g.baslik,g.baslik_en), sub:two(g.alt_baslik,g.alt_baslik_en),
+      short:two(g.ozet,g.ozet_en), desc:two(g.aciklama,g.aciklama_en,paras), is:two(g.nedir,g.nedir_en,lines), isnt:two(g.ne_degildir,g.ne_degildir_en,lines),
+      faq:two(g.sss,g.sss_en,faq), start:g.baslangic||null, end:g.bitis||null, times:g.seanslar||[], durationMin:g.sure_dk||null,
+      age:two(g.yas,g.yas_en), price:two(g.fiyat,g.fiyat_en), ticketUrl:safeUrl(g.bilet_url), image:gorsel(g.gorsel)||"assets/immersive.jpg", blend:false };
+  }
   window.hatchLoad = async function(){
-    if(window.HATCH_DEMO_MODE){ window.HATCH_SETTINGS={}; return window.HATCH_DEMO; }
-    const [ev, ay] = await Promise.allSettled([
+    if(window.HATCH_DEMO_MODE){ window.HATCH_SETTINGS=window.HATCH_DEMO_SETTINGS||{}; window.HATCH_SHOWS=window.HATCH_DEMO_SHOWS||[]; return window.HATCH_DEMO; }
+    const [ev, ay, gs] = await Promise.allSettled([
       fetch(URL_+"/rest/v1/rpc/site_etkinlikler", { method:"POST", headers:H, body:"{}" }).then(r=>r.ok?r.json():Promise.reject(r.status)),
       fetch(URL_+"/rest/v1/site_ayarlar?select=anahtar,deger", { headers:H }).then(r=>r.ok?r.json():Promise.reject(r.status)),
+      fetch(URL_+"/rest/v1/gosterimler?select=*&order=sira.asc,baslangic.asc", { headers:H }).then(r=>r.ok?r.json():Promise.reject(r.status)),
     ]);
+    window.HATCH_SHOWS = gs.status==="fulfilled" ? gs.value.map(mapShow) : [];
     window.HATCH_SETTINGS = ay.status==="fulfilled" ? Object.fromEntries(ay.value.map(x=>[x.anahtar,x.deger||""])) : {};
     window.HATCH_LOAD_ERROR = ev.status!=="fulfilled";
     return ev.status==="fulfilled" ? ev.value.map(map) : [];
