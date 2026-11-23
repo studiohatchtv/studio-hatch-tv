@@ -7,7 +7,7 @@
   const DEMO = !!window.HATCH_DEMO_MODE;
   const PREVIEW = false;  // canlı: www.studiohatch.tv
   const PILLAR_COLOR = { culture:["var(--culture)","var(--culture-soft)"], wellness:["var(--wellness)","var(--wellness-soft)"], nocturne:["var(--nocturne)","var(--nocturne-soft)"] };
-  const JOIN_URL = "https://studiohatchtv.github.io/studio-hatch-flow/katil";
+  const JOIN_URL = "katil.html";
   const MAPS = "https://maps.app.goo.gl/r5HJbLXDrATRkBp79";
   const ADRES = "High Garden AVM, Newline Konutları, Ahmet Yesevi Mah., Farabi Cd. E Blok No: 12-E, 16140 Nilüfer/Bursa";
 
@@ -172,7 +172,7 @@
     $("#makers").innerHTML = `<div class="makers-txt rv"><h2 class="h2">${t().makersH}</h2><p class="sub" style="color:var(--ink)">${esc(t().makersP)}</p><div><a class="btn btn-blue" href="#visit">${esc(t().makersBtn)} <span class="arr">${ARR}</span></a></div></div>
       <div class="makers-img rv"><img src="assets/magaza.jpg" alt="" loading="lazy"></div>`;
     $("#join").innerHTML = (huBand() ? `<a class="hu-join rv" href="hatch-up.html"><span class="mono">HATCH Up · 20 Aralık</span><b>Immersive Pop-Up başvuru formu</b><small>${lang==="tr"?(new Date()<new Date("2026-12-02T00:00:00+03:00")?"Yeme-İçme · Satış · Atölye — son başvuru 1 Aralık":"Başvurular kapandı · sonuçlar 3 Aralık"):"Food · Makers · Workshops — deadline 1 Dec"}</small><span class="go">${ARR}</span></a>` : "") + `<div class="join rv"><div><h2 class="h2">${t().joinH}</h2><p class="sub" style="color:#fff;opacity:.85">${esc(t().joinP)}</p></div>
-      <div class="join-opts">${t().joinOpts.map(([a,b])=>`<a class="join-opt" href="${JOIN_URL}"><span><small>${a}</small><b>${esc(b)}</b></span>${ARR}</a>`).join("")}</div></div>`;
+      <div class="join-opts">${t().joinOpts.map(([a,b],i)=>`<a class="join-opt" href="${JOIN_URL}?tur=${["tasarimci","atolye","etkinlik"][i]}#form"><span><small>${a}</small><b>${esc(b)}</b></span>${ARR}</a>`).join("")}</div></div>`;
     $("#visitG").innerHTML = `<div class="card rv"><h2 class="h2">${esc(t().visitH)}</h2>
         <dl class="kv"><dt>${esc(t().where)}</dt><dd>studio HATCH — High Garden AVM<br>Newline Konutları, Farabi Cd.<br>E Blok No: 12-E<br>16140 Nilüfer / Bursa</dd>
         <dt>${esc(t().hours)}</dt><dd>${ayar("saatler") ? esc(ayar("saatler")).replace(/\n/g,"<br>") : `<span class="todo">${esc(t().hoursTodo)}</span>`}</dd>
@@ -405,7 +405,7 @@
       metin.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>{ const [ilk,...kalan]=p.split("\n"); const bas=ilk.length<70 && !/[.:;,]$/.test(ilk.trim());
         return bas ? `<h2>${esc(ilk)}</h2>${kalan.length?`<p>${esc(kalan.join("\n")).replace(/\n/g,"<br>")}</p>`:""}` : `<p>${esc(p).replace(/\n/g,"<br>")}</p>`; }).join("");
   }
-  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else if(pg==="kvkk") kvkkPage(); else if(pg==="hatchup") window.hatchupPage(); else home(); reveal(); stories(); }
+  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else if(pg==="kvkk") kvkkPage(); else if(pg==="hatchup") window.hatchupPage(); else if(pg==="katil") window.katilPage(); else home(); reveal(); stories(); }
   window.addEventListener("scroll", ()=>$(".hd").classList.toggle("scrolled", scrollY>8), { passive:true });
   window.hatchMenu = () => $("#nav").classList.toggle("open");
   document.addEventListener("click", ev=>{ if(ev.target.closest("#nav a")) $("#nav").classList.remove("open"); });
