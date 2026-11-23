@@ -383,6 +383,15 @@
     document.addEventListener("visibilitychange", ()=>{ if(!v.isConnected) return; document.hidden ? v.pause() : v.play().catch(()=>{}); });
   }
 
+  // Art görünümü: hero alt etiketi + fareyle hareket eden ışık (fener)
+  function artHero(){
+    const hero=$("#hero"); if(!hero || !document.body.classList.contains("art")) return;
+    const ek=()=>{ if(!hero.querySelector(".art-meta")){ const d=document.createElement("div"); d.className="art-meta"; d.innerHTML=`<div class="wrap"><span><i></i>${lang==="tr"?"Kaydır":"Scroll"}</span><span>Art · Culture · Technology — Nilüfer, Bursa</span></div>`; hero.appendChild(d);} };
+    new MutationObserver(ek).observe(hero,{childList:true}); ek();
+    if(matchMedia("(pointer:fine)").matches) hero.addEventListener("pointermove",e=>{ const a=hero.querySelector(".hero-art"); if(!a) return; const r=hero.getBoundingClientRect(); a.style.setProperty("--mx",((e.clientX-r.left)/r.width*100).toFixed(1)+"%"); a.style.setProperty("--my",((e.clientY-r.top)/r.height*100).toFixed(1)+"%"); }, { passive:true });
+  }
+  artHero();
+
   function stories(){
     const az = matchMedia("(prefers-reduced-motion: reduce)").matches || (navigator.connection && navigator.connection.saveData);
     document.querySelectorAll("[data-story]").forEach(box=>{
