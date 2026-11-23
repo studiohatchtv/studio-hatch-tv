@@ -35,7 +35,9 @@
   const allDay = () => lang==="tr" ? "Tüm gün" : "All day";
   const timeTxt = e => !e.times.length ? allDay() : e.endTime ? `${e.times[0]}–${e.endTime}` : e.times.join(" · ");
   // gösterimler: etkinlik yardımcılarıyla uyumlu olsun diye date/end alanları da var
-  const SH = (window.HATCH_SHOWS||[]).map(g=>({ ...g, date:g.start||"2000-01-01", end:g.end||FOREVER, show:true })).filter(g=>g.end>=today());
+  const ALLSH = (window.HATCH_SHOWS||[]).map(g=>({ ...g, date:g.start||"2000-01-01", end:g.end||FOREVER, show:true })).filter(g=>g.end>=today());
+  const SH = ALLSH.filter(g=>g.cat!=="galeri");   // biletli immersive gösterimler
+  const GL = ALLSH.filter(g=>g.cat==="galeri");   // Dijital Galeri: ücretsiz eserler
   const shUrl = g => `gosterim.html${qs({id:g.id})}`;
   const onNow = g => g.date<=today();
   const until = k => lang==="tr" ? fmt(k,{day:"numeric",month:"long"})+" "+t().until : t().until+" "+fmt(k,{day:"numeric",month:"long"});
@@ -43,7 +45,7 @@
   // dikey story video: sessiz başlar, görünürken oynar; ses ve durdurma düğmeleri
   const VB = `<span class="vid-badge mono"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg>Video</span>`;
   const mediaHtml = x => x.video
-    ? `<div class="story" data-story><video src="${esc(x.video)}" poster="${esc(x.poster||x.image)}" muted loop playsinline preload="metadata" aria-label="${esc(L(x.title))}"></video>
+    ? `<div class="story${x.cat==="galeri"?" wide":""}" data-story><video src="${esc(x.video)}" poster="${esc(x.poster||x.image)}" muted loop playsinline preload="metadata" aria-label="${esc(L(x.title))}"></video>
         <div class="st-bar"><i></i></div><span class="st-tag mono">${esc(lang==="tr"?"Video":"Video")}</span>
         <button class="st-play" type="button" aria-label="${lang==="tr"?"Oynat":"Play"}"><svg width="30" height="30" viewBox="0 0 10 10"><path d="M2.5 1.2l6.2 3.8-6.2 3.8z" fill="currentColor"/></svg></button>
         <button class="st-snd" type="button" aria-label="${lang==="tr"?"Sesi aç":"Unmute"}" data-off="1">${SND_OFF}</button></div>`
@@ -102,7 +104,10 @@
     const hu = huBand();
     const band = DEMO ? t().proto : hu ? hu : (ayar("duyuru") ? esc(ayar("duyuru")) : (PREVIEW ? (lang==="tr" ? "<b>Önizleme.</b> Site henüz yayında değil; program Flow'dan canlı geliyor." : "<b>Preview.</b> Not public yet; the program is live from Flow.") : ""));
     $("#proto").innerHTML = band; $("#proto").style.display = band ? "" : "none"; $("#proto").classList.toggle("hu-band", !!hu && !DEMO);
-    $("#nav").innerHTML = n.map((x,i)=>`<a href="${ids[i]==="visit"?"ziyaret.html"+qs():"index.html"+qs()+"#"+ids[i]}">${esc(x)}</a>`).join("") + `<a class="nav-join" href="${JOIN_URL}">${esc(t().join)}</a>`;
+    $("#nav").innerHTML = n.map((x,i)=> i===0
+        ? `<div class="nav-dd"><a class="nav-top" href="index.html${qs()}#gosterimler" aria-haspopup="true">${esc(x)}<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+            <div class="dd">${t().navArt.map(([a,b,h])=>`<a href="index.html${qs()}#${h}"><b>${esc(a)}</b><small>${esc(b)}</small></a>`).join("")}</div></div>`
+        : `<a href="${ids[i]==="visit"?"ziyaret.html"+qs():"index.html"+qs()+"#"+ids[i]}">${esc(x)}</a>`).join("") + `<a class="nav-join" href="${JOIN_URL}">${esc(t().join)}</a>`;
     $("#hdR").innerHTML = `<div class="lang" role="group" aria-label="Dil / Language"><button class="${lang==="tr"?"on":""}" onclick="hatchLang('tr')">TR</button><button class="${lang==="en"?"on":""}" onclick="hatchLang('en')">EN</button></div>
       <a class="btn hd-join" href="${JOIN_URL}">${esc(t().join)}</a><a class="btn btn-blue" href="index.html${qs()}#gosterimler">${esc(t().tickets)}</a>`;
     $("#ft").innerHTML = footer();
@@ -158,7 +163,7 @@
     heroVideo();
     const tk=["Deneyimler","Local Makers","Buluşmalar",...["culture","wellness","nocturne"].map(p=>t().pillars[p][0])]; const tkH=tk.map(x=>`<span>${x}</span>`).join("");
     $("#ticker").innerHTML = `<div class="ticker-t" aria-hidden="true">${tkH+tkH+tkH+tkH}</div>`;
-    $("#showsW").innerHTML = renderShows();
+    $("#showsW").innerHTML = GL.length ? renderArt() : renderShows();
     $("#programH").innerHTML = `<div><h2 class="h2">${esc(t().upcoming)}</h2><p class="sub">${esc(t().upcomingSub)}</p></div><div class="filters" id="filters"></div>`;
     renderProgram();
     const cnt = p => EV.filter(e=>e.pillar===p && endOf(e)>=today()).length + (p==="culture"?SH.length:0);
@@ -319,9 +324,64 @@
     };
   }
   /* ---------- GÖSTERİM SAYFASI ---------- */
+  // Dijital Galeri: müze duvar etiketi dili (biletli gösterim kartlarından ayrışsın)
+  const labelRow = (g,i) => `<li class="rv"><a href="${shUrl(g)}">
+      <span class="lb-img"><img src="${esc(g.image)}" alt="" loading="lazy"></span>
+      <span class="lb-txt"><span class="lb-no mono">${esc(t().glWork)} ${String(i+1).padStart(2,"0")}${L(g.place)?` · ${esc(L(g.place))}`:""}</span>
+        ${g.artist?`<span class="lb-artist"${/^[\x00-\x7F]*$/.test(g.artist)?' lang="en"':""}>${esc(g.artist)}</span>`:""}<span class="lb-title">${esc(L(g.title))}</span>${L(g.tech)?`<span class="lb-tech">${esc(L(g.tech))}</span>`:""}</span>
+      <span class="lb-go" aria-hidden="true">${ARR}</span></a></li>`;
+  const galPanel = list => `<div class="art-lh mono"><span><i class="gl-dot"></i>${esc(t().glBack)}</span><span class="free">${esc(t().glFree)}</span></div>
+      <ol class="labels">${list.map(labelRow).join("")}</ol><p class="gl-note">${esc(t().glFreeP)}</p>`;
+  function renderGallery(skip){
+    const list=GL.filter(g=>g.id!==skip);
+    if(!list.length) return "";
+    return `<div class="sec-h"><div><h2 class="h2">${esc(t().glOther)}</h2></div></div><div class="art-r solo">${galPanel(list)}</div>`;
+  }
+  // Ana sayfa: biletli gösterimler (sol) + ücretsiz galeri (sağ) tek bölümde
+  function renderArt(){
+    const many=SH.length>1;
+    return `<div class="sec-h"><div><h2 class="h2">${t().artH}</h2><p class="sub">${esc(t().artSub)}</p></div></div>
+      <div class="art-split">
+        <div class="art-l"><div class="art-lh mono"><span>${esc(t().navArt[0][0])}</span><span>${many?`<span class="sh-arrows"><button onclick="hatchSlide(this,-1)" aria-label="${esc(t().prev)}">${ARR}</button><button onclick="hatchSlide(this,1)" aria-label="${esc(t().next)}">${ARR}</button></span>`:esc(t().artTicket)}</span></div>
+          ${SH.length?`<div class="sh-track art-track" tabindex="0">${SH.map(showCard).join("")}</div>`:`<div class="art-empty">${esc(t().ghostH)}</div>`}</div>
+        <aside class="art-r" id="galeri">${galPanel(GL)}</aside>
+      </div>`;
+  }
+  function galPage(g){
+    document.title = `${L(g.title)}${g.artist?" · "+g.artist:""} · Dijital Galeri · studio HATCH`;
+    $("#evHero").style.setProperty("--c","#0B0B12");
+    $("#evHero").classList.add("gl-hero");
+    $("#evHero").innerHTML = `<div class="wrap"><div><div class="crumb"><a href="index.html${qs()}#galeri">← ${esc(t().glBack)}</a></div>
+        <span class="tag" style="background:rgba(124,255,178,.14);color:#7CFFB2"><span class="live"></span>${esc(t().glFree)}</span>
+        <h1>${g.artist?`<span>${esc(g.artist)}</span>`:""}${esc(L(g.title))}</h1><p class="lead">${esc(L(g.short))}</p>
+        <div class="hero-cta" style="margin-top:26px"><a class="btn btn-white" href="ziyaret.html${qs()}">${esc(t().glVisit)} <span class="arr">${ARR}</span></a></div></div>
+      ${mediaHtml(g)}</div>`;
+    const facts=[[t().glArtist, g.artist], [t().glTech, L(g.tech)], [t().glWhere, L(g.place)], [t().shHours, L(g.hours)], [t().glEntry, t().glEntryV]].filter(x=>x[1]);
+    $("#shFacts").innerHTML = `<div class="wrap"><dl class="sh-facts">${facts.map(([a,b])=>`<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl></div>`;
+    $("#shFacts").classList.add("gl-facts");
+    LB=g.gallery||[];
+    $("#evBody").innerHTML = `<div class="txt">${L(g.desc).map(p=>`<p>${esc(p)}</p>`).join("")}${galHtml(g)}
+        ${g.artistUrl?`<p style="margin-top:22px"><a class="text-link" href="${esc(g.artistUrl)}" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">${esc(t().glArtistSite)} ↗</a></p>`:""}</div>
+      <aside class="side"><div class="gl-free-card"><b>${esc(t().glEntryV)}</b><p>${esc(t().glFreeP)}</p></div>
+        <dl><div><dt>${esc(t().glWhere)}</dt><dd>${esc(L(g.place)||"studio HATCH")}<br><span style="font-weight:400;font-size:14px;color:var(--muted)">studio HATCH — High Garden AVM, Farabi Cd. E Blok No: 12-E, Nilüfer/Bursa</span><br><a href="${MAPS}" target="_blank" rel="noopener" style="font-size:14px;color:var(--blue)">${esc(t().map)} ↗</a></dd></div></dl>
+        <div class="acts" style="grid-template-columns:1fr"><button class="btn" onclick="hatchShare()">↗ ${esc(t().share)}</button></div></aside>`;
+    $("#more").innerHTML = renderGallery(g.id) + (SH.length ? `<div style="margin-top:56px">${renderShows()}</div>` : "");
+    const ld={ "@context":"https://schema.org", "@type":"ExhibitionEvent", name:L(g.title), description:L(g.short), isAccessibleForFree:true,
+      startDate:g.start||today(), eventAttendanceMode:"https://schema.org/OfflineEventAttendanceMode", eventStatus:"https://schema.org/EventScheduled",
+      image:[new URL(g.image,location.href).href], ...(g.artist?{performer:{ "@type":"Person", name:g.artist }}:{}),
+      location:{ "@type":"Place", name:"studio HATCH — High Garden AVM", address:{ "@type":"PostalAddress", streetAddress:"Ahmet Yesevi Mah., Farabi Cd. Newline Konutları E Blok No: 12-E", addressLocality:"Nilüfer", addressRegion:"Bursa", postalCode:"16140", addressCountry:"TR" } },
+      organizer:{ "@type":"Organization", name:"studio HATCH", url:"https://www.studiohatch.tv" } };
+    let sc=document.getElementById("ld"); if(!sc){ sc=document.createElement("script"); sc.type="application/ld+json"; sc.id="ld"; document.head.appendChild(sc); }
+    sc.textContent=JSON.stringify(ld);
+    window.hatchShare = async () => {
+      if(navigator.share){ try{ await navigator.share({ title:L(g.title), url:location.href }); }catch(x){} return; }
+      try{ await navigator.clipboard.writeText(location.href); toast(t().copied); }catch(x){}
+    };
+  }
   function showPage(){
     const id=new URLSearchParams(location.search).get("id");
-    const g=SH.find(x=>x.id===id);
+    const g=ALLSH.find(x=>x.id===id);
+    if(g && g.cat==="galeri") return galPage(g);
     const back=`<div class="crumb"><a href="index.html${qs()}#gosterimler">← ${esc(t().shBack)}</a></div>`;
     if(!g){
       $("#evHero").style.setProperty("--c","var(--blue)");

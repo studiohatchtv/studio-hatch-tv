@@ -147,7 +147,9 @@ Your rights
 Under KVKK Art. 11 you may ask whether your data is processed, request information, correction or deletion, object to processing and claim compensation. Contact us at hello@studiohatch.tv. You can unsubscribe at any time, free of charge, via the link in our emails.` };
 
   window.HATCH_I18N = {
-    tr:{ nav:["Immersive Gösterimler","Etkinlikler","HATCH Shop","Ziyaretini Planla"], tickets:"Bilet al",
+    tr:{ nav:["Dijital Sanat","Etkinlikler","HATCH Shop","Ziyaretini Planla"], tickets:"Bilet al",
+      artH:"Dijital <em>Sanat</em>", artSub:"İçinde dolaştığın biletli immersive gösterimler ve mekânın dört bir yanında ücretsiz görebileceğin dijital eserler.", artTicket:"Biletli", glWork:"Eser", glH:"Dijital <em>Galeri</em>", glSub:"studio HATCH'in farklı köşelerinde sergilenen dijital sanat eserleri. Bilet gerekmez; mekânı ziyaret eden herkes görebilir.", glFree:"Ücretsiz · Serbest giriş", glOther:"Galerideki diğer eserler", glBack:"Dijital Galeri", glVisit:"Nasıl gelinir", glArtist:"Sanatçı", glTech:"Teknik", glWhere:"Nerede", glEntry:"Giriş", glEntryV:"Ücretsiz — bilet gerekmez", glFreeP:"Mekânın açık olduğu saatlerde istediğin zaman gelip görebilirsin.", glArtistSite:"Sanatçının sitesi",
+      navArt:[["Immersive Gösterimler","Biletli, içinde dolaşılan deneyimler","gosterimler"],["Dijital Galeri","Ücretsiz dijital sanat eserleri","galeri"]],
       showsH:"Immersive <em>Gösterimler</em>", showsSub:"Görüntülerin dört bir yanını sardığı dijital deneyimler. Her birinin kendi hikâyesi, seansları ve sayfası var.",
       showing:"Gösterimde", soon:"Yakında", opens:"Başlangıç", explore:"İncele", prev:"Önceki", next:"Sonraki",
       ghostH:"Yeni gösterimler yolda", ghostP:"Yeni içerikler geldiğinde ilk sen haberdar ol.", ghostBtn:"Bültene kaydol",
@@ -169,11 +171,13 @@ Under KVKK Art. 11 you may ask whether your data is processed, request informati
       nlIzin:"{kvkk}'ni okudum; studio HATCH'in etkinlik, gösterim ve kampanyalarıyla ilgili bana e-posta ile ticari ileti göndermesine onay veriyorum.", kvkkLink:"KVKK Aydınlatma Metni",
       nlTelIzin:"Telefonla ve SMS ile de bilgilendirilmeyi kabul ediyorum.",
       nlH:"İlk sen haberdar ol", nlP:"Yeni gösterimler, atölyeler ve gece programları ayda iki kez e-postanda.", nlPh:"E-posta adresin", nlBtn:"Kaydol", nlOk:"Teşekkürler! Listeye eklendin.", nlFine:"Dilediğin zaman tek tıkla ayrılabilirsin.",
-      ftAbout:"Art · Culture · Technology", ftCols:["Program","Hatch","Takip et"], ftLinks:[["Immersive Gösterimler","#gosterimler"],["Etkinlikler","#program"],["Bülten","#visit"]], ftLinks2:[["HATCH Shop","#makers"],["Hatch'e katıl","#join"],["Ziyaretini Planla","#visit"]],
+      ftAbout:"Art · Culture · Technology", ftCols:["Program","Hatch","Takip et"], ftLinks:[["Immersive Gösterimler","#gosterimler"],["Dijital Galeri","#galeri"],["Etkinlikler","#program"],["Bülten","#visit"]], ftLinks2:[["HATCH Shop","#makers"],["Hatch'e katıl","#join"],["Ziyaretini Planla","#visit"]],
       rights:"Tüm hakları saklıdır.",
       evBack:"Etkinlikler", evDate:"Tarih", evTime:"Saat", evSessions:"Seanslar", evDuration:"Süre", evPlace:"Yer", evPrice:"Bilet", evKnow:"Bilmen gerekenler", evMore:"Bunlar da ilgini çekebilir",
       addCal:"Takvime ekle", share:"Paylaş", copied:"Bağlantı kopyalandı", everyDay:"Her gün", until:"tarihine kadar", noTicket:"Kayıt gerekmez", gise:"Biletleri Passo uygulaması ve passo.com.tr’nin yanı sıra studio HATCH’teki gişeden de alabilirsiniz.", giseKisa:"Gişeden de satılır", giseH:"Bilet" },
-    en:{ nav:["Immersive Shows","Events","HATCH Shop","Plan Your Visit"], tickets:"Tickets",
+    en:{ nav:["Digital Art","Events","HATCH Shop","Plan Your Visit"], tickets:"Tickets",
+      artH:"Digital <em>Art</em>", artSub:"Ticketed immersive shows you walk through, and digital works you can see for free around the space.", artTicket:"Ticketed", glWork:"Work", glH:"Digital <em>Gallery</em>", glSub:"Digital artworks on display around studio HATCH. No ticket needed; anyone visiting the space can see them.", glFree:"Free · Walk in", glOther:"More in the gallery", glBack:"Digital Gallery", glVisit:"Getting here", glArtist:"Artist", glTech:"Medium", glWhere:"Where", glEntry:"Entry", glEntryV:"Free — no ticket needed", glFreeP:"Drop by any time during opening hours.", glArtistSite:"Artist's website",
+      navArt:[["Immersive Shows","Ticketed experiences you walk through","gosterimler"],["Digital Gallery","Free digital artworks","galeri"]],
       showsH:"Immersive <em>Shows</em>", showsSub:"Digital experiences where the images surround you. Each has its own story, sessions and page.",
       showing:"Now showing", soon:"Coming soon", opens:"Opens", explore:"Explore", prev:"Previous", next:"Next",
       ghostH:"New shows on the way", ghostP:"Be the first to hear when new content arrives.", ghostBtn:"Join the newsletter",
@@ -195,7 +199,7 @@ Under KVKK Art. 11 you may ask whether your data is processed, request informati
       nlIzin:"I have read the {kvkk} and agree to receive commercial emails from studio HATCH about events, shows and offers.", kvkkLink:"Privacy Notice (KVKK)",
       nlTelIzin:"I also agree to be contacted by phone and SMS.",
       nlH:"Be the first to know", nlP:"New shows, workshops and night programs, twice a month in your inbox.", nlPh:"Your email", nlBtn:"Sign up", nlOk:"Thanks! You're on the list.", nlFine:"Unsubscribe anytime with one click.",
-      ftAbout:"Art · Culture · Technology", ftCols:["Program","Hatch","Follow"], ftLinks:[["Immersive Shows","#gosterimler"],["Events","#program"],["Newsletter","#visit"]], ftLinks2:[["HATCH Shop","#makers"],["Join Hatch","#join"],["Plan Your Visit","#visit"]],
+      ftAbout:"Art · Culture · Technology", ftCols:["Program","Hatch","Follow"], ftLinks:[["Immersive Shows","#gosterimler"],["Digital Gallery","#galeri"],["Events","#program"],["Newsletter","#visit"]], ftLinks2:[["HATCH Shop","#makers"],["Join Hatch","#join"],["Plan Your Visit","#visit"]],
       rights:"All rights reserved.",
       evBack:"Events", evDate:"Date", evTime:"Time", evSessions:"Sessions", evDuration:"Duration", evPlace:"Venue", evPrice:"Tickets", evKnow:"Good to know", evMore:"You might also like",
       addCal:"Add to calendar", share:"Share", copied:"Link copied", everyDay:"Daily", until:"until", noTicket:"No registration needed", gise:"Tickets are available on the Passo app and passo.com.tr, and also at the box office at studio HATCH.", giseKisa:"Also at our box office", giseH:"Tickets" }

@@ -99,3 +99,26 @@ body.art{--void:#06060A;--void-2:#0E0E16;--glow:#5B5CFF;--glow-2:#00E0FF;--pink:
 @media (prefers-reduced-motion:reduce){.art .hero-art img,.art-meta i{animation:none}}
 .art .dark-zone .h2 em{color:#7C83FF;text-shadow:0 0 40px rgba(91,92,255,.5)}
 .art .sh-img .vid-badge{left:auto;right:16px;top:16px;bottom:auto;font-family:"JetBrains Mono",ui-monospace,monospace;border-radius:4px;padding:7px 10px;background:rgba(6,6,10,.6);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(8px)}
+/* koyu başlıkta açılır menü */
+.art .nav-dd .dd{background:#101018;color:#fff;border-color:rgba(255,255,255,.1)}
+.art .nav-dd .dd a small{color:rgba(255,255,255,.55)}
+.art .nav-dd .dd a:hover{background:rgba(255,255,255,.06)}
+.art .gl-card .sh-img{aspect-ratio:4/3}
+/* Dijital Sanat bölümü (koyu) */
+.art .art-lh{border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+.art .art-lh .free{color:#7CFFB2}
+.art .art-r{background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(6px)}
+.art .labels li+li,.art .gl-note{border-color:rgba(255,255,255,.1)}
+.art .lb-no,.art .lb-tech,.art .gl-note{color:rgba(255,255,255,.55)}
+.art .lb-title{color:#fff}
+.art .art-empty{border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.6)}
+/* galeri sayfasının "diğer eserler" alanı açık zeminde */
+.art #more .art-r{background:#fff;color:var(--ink);border-color:var(--line)}
+.art #more .lb-title{color:var(--ink)}
+.art #more .lb-no,.art #more .lb-tech,.art #more .gl-note{color:var(--muted)}
+.art #more .art-lh{color:var(--ink);border-color:var(--line)}
+.art #more .labels li+li,.art #more .gl-note{border-color:var(--line)}
+.art #more .art-lh .free{color:#0a8a52}
+/* .dg artık açık bölümlerin arasında koyu bant */
+.art .dg{background:#0B0B12;padding-top:110px}
+.art .dark-zone .sec.sh-sec{padding-bottom:40px}
