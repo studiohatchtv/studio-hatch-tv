@@ -3,7 +3,7 @@
 (function(){
   const gun = n => { const d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+n); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
   const PASSO = "https://www.passo.com.tr/";
-  window.HATCH_EVENTS = [
+  window.HATCH_DEMO = [
     { id:"frida", pillar:"culture", kind:"run", featured:true,
       tur:{tr:"Dijital gösterim",en:"Digital show"},
       title:{tr:"Kökler ve İzler: Frida Kahlo",en:"Roots and Traces: Frida Kahlo"},

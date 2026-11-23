@@ -1,6 +1,10 @@
 /* studio HATCH site — ortak + ana sayfa + etkinlik sayfası */
-(function(){
-  const EV = window.HATCH_EVENTS, I = window.HATCH_I18N;
+(async function(){
+  const I = window.HATCH_I18N;
+  const EV = await window.hatchLoad();
+  const SET = window.HATCH_SETTINGS || {};
+  const DEMO = !!window.HATCH_DEMO_MODE;
+  const PREVIEW = true;   // alan adına bağlanınca false yapılacak
   const PILLAR_COLOR = { culture:["var(--culture)","var(--culture-soft)"], wellness:["var(--wellness)","var(--wellness-soft)"], nocturne:["var(--nocturne)","var(--nocturne-soft)"] };
   const JOIN_URL = "https://studiohatchtv.github.io/studio-hatch-flow/katil";
   const MAPS = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("HighGarden Balat Bursa");
@@ -23,8 +27,12 @@
   const endOf = e => e.end || e.date;
   const isRun = e => e.kind==="run";
   const tag = e => `<span class="tag" style="--c:${PILLAR_COLOR[e.pillar][0]};--cs:${PILLAR_COLOR[e.pillar][1]}">${esc(L(e.tur))}</span>`;
-  const evUrl = e => `etkinlik.html?id=${encodeURIComponent(e.id)}${lang==="en"?"&lang=en":""}`;
-  const timeTxt = e => e.endTime ? `${e.times[0]}–${e.endTime}` : e.times.join(" · ");
+  // bağlantılarda dil ve demo modu korunur
+  const qs = (o={}) => { const p=new URLSearchParams(o); if(lang==="en") p.set("lang","en"); if(DEMO) p.set("demo","1"); const x=p.toString(); return x?"?"+x:""; };
+  const evUrl = e => `etkinlik.html${qs({id:e.id})}`;
+  const allDay = () => lang==="tr" ? "Tüm gün" : "All day";
+  const timeTxt = e => !e.times.length ? allDay() : e.endTime ? `${e.times[0]}–${e.endTime}` : e.times.join(" · ");
+  const ayar = k => (lang==="en" && SET[k+"_en"]) || SET[k] || "";
   const ARR = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
   function setLang(l){
@@ -37,47 +45,58 @@
   function shell(){
     document.documentElement.lang = lang;
     const n=t().nav, ids=["program","program","program","makers","visit"];
-    $("#proto").innerHTML = t().proto;
-    $("#nav").innerHTML = n.map((x,i)=>`<a href="index.html${lang==="en"?"?lang=en":""}#${ids[i]}">${esc(x)}</a>`).join("") + `<a href="${JOIN_URL}">${esc(t().join)}</a>`;
+    const band = DEMO ? t().proto : (ayar("duyuru") ? esc(ayar("duyuru")) : (PREVIEW ? (lang==="tr" ? "<b>Önizleme.</b> Site henüz yayında değil; program Flow'dan canlı geliyor." : "<b>Preview.</b> Not public yet; the program is live from Flow.") : ""));
+    $("#proto").innerHTML = band; $("#proto").style.display = band ? "" : "none";
+    $("#nav").innerHTML = n.map((x,i)=>`<a href="index.html${qs()}#${ids[i]}">${esc(x)}</a>`).join("") + `<a href="${JOIN_URL}">${esc(t().join)}</a>`;
     $("#hdR").innerHTML = `<div class="lang" role="group" aria-label="Dil / Language"><button class="${lang==="tr"?"on":""}" onclick="hatchLang('tr')">TR</button><button class="${lang==="en"?"on":""}" onclick="hatchLang('en')">EN</button></div>
-      <a class="btn btn-blue" href="index.html${lang==="en"?"?lang=en":""}#program">${esc(t().tickets)}</a>`;
+      <a class="btn btn-blue" href="index.html${qs()}#program">${esc(t().tickets)}</a>`;
     $("#ft").innerHTML = footer();
   }
   function footer(){
     const c=t().ftCols;
     return `<div class="wrap"><div class="ft-g">
       <div><span class="logo" aria-label="studio HATCH"></span><div class="slogan">${esc(t().ftAbout)}</div></div>
-      <div><h4>${c[0]}</h4><ul>${t().ftLinks.map(([a,h])=>`<li><a href="index.html${h}">${esc(a)}</a></li>`).join("")}</ul></div>
-      <div><h4>${c[1]}</h4><ul>${t().ftLinks2.map(([a,h])=>`<li><a href="${h==="#join"?JOIN_URL:"index.html"+h}">${esc(a)}</a></li>`).join("")}</ul></div>
-      <div><h4>${c[2]}</h4><ul><li><a href="https://instagram.com/studiohatchtv" target="_blank" rel="noopener">Instagram</a></li><li><a href="mailto:hello@studiohatch.tv">hello@studiohatch.tv</a></li></ul></div>
+      <div><h4>${c[0]}</h4><ul>${t().ftLinks.map(([a,h])=>`<li><a href="index.html${qs()}${h}">${esc(a)}</a></li>`).join("")}</ul></div>
+      <div><h4>${c[1]}</h4><ul>${t().ftLinks2.map(([a,h])=>`<li><a href="${h==="#join"?JOIN_URL:"index.html"+qs()+h}">${esc(a)}</a></li>`).join("")}</ul></div>
+      <div><h4>${c[2]}</h4><ul><li><a href="https://instagram.com/${esc(SET.instagram||"studiohatchtv")}" target="_blank" rel="noopener">Instagram</a></li><li><a href="mailto:${esc(SET.eposta||"hello@studiohatch.tv")}">${esc(SET.eposta||"hello@studiohatch.tv")}</a></li></ul></div>
     </div><div class="ft-b"><span>© ${new Date().getFullYear()} studio HATCH · ${esc(t().rights)}</span><span>HighGarden, Balat · Bursa</span></div></div>`;
   }
 
   // bugünkü seanslar: geçenler soluk, sıradaki vurgulu
   function slotsHtml(e){
+    if(!e.times.length) return "";
     const now=new Date(), hm=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
     const running = e.date<=today() && endOf(e)>=today();
+    const kalan = running ? e.times.filter(x=>x>hm).length : 0;
+    const label = !running ? fmt(e.date,{weekday:"long",day:"numeric",month:"long"}) : kalan ? t().todaySlots : (endOf(e)>today() ? t().noMoreToday : (lang==="tr"?"Bugünkü seanslar bitti":"Today's sessions are over"));
     let nextFound=false;
-    const kalan=e.times.filter(x=>x>hm).length;
-    const label = running && kalan ? t().todaySlots : t().noMoreToday;
-    const chips=e.times.map(x=>{ let c="slot"; if(running && kalan){ if(x<=hm) c+=" past"; else if(!nextFound){ c+=" next"; nextFound=true; } } return `<span class="${c}">${x}</span>`; }).join("");
+    const chips=e.times.map(x=>{ let c="slot"; if(kalan){ if(x<=hm) c+=" past"; else if(!nextFound){ c+=" next"; nextFound=true; } } return `<span class="${c}">${esc(x)}</span>`; }).join("");
     return `<div class="slots-l">${esc(label)}</div><div class="slots-r">${chips}</div>`;
   }
 
   /* ---------- ANA SAYFA ---------- */
   const st = { pillar:"", day:null };
   function home(){
-    const f = EV.find(e=>e.featured && endOf(e)>=today()) || EV[0];
+    const gelecek = EV.filter(e=>endOf(e)>=today());
+    const f = gelecek.find(e=>e.featured) || gelecek.find(isRun) || gelecek[0];
+    if(!f){
+      $("#hero").innerHTML = `<div class="wrap"><div class="rv"><div class="eyebrow">studio HATCH · Balat, Bursa</div>
+        <h1><span>${lang==="tr"?"Deneyimler · Local Makers · Buluşmalar":"Experiences · Local Makers · Meet-ups"}</span>${esc(t().ftAbout)}</h1>
+        <p class="lead">${esc(t().spaceP)}</p><div class="hero-cta" style="margin-top:28px"><a class="btn btn-white" href="#visit">${esc(t().visitH)} <span class="arr">${ARR}</span></a></div></div>
+        <div class="hero-art"><img class="blend" src="assets/frida.jpg" alt=""></div></div>`;
+    } else {
+    const simdi = f.date<=today();
     $("#hero").innerHTML = `<div class="wrap">
       <div class="rv">
-        <div class="eyebrow"><span class="live"></span>${esc(t().nowShowing)} · ${esc(L(f.tur))}</div>
+        <div class="eyebrow">${simdi?`<span class="live"></span>${esc(t().nowShowing)}`:(lang==="tr"?"Yakında":"Coming up")} · ${esc(L(f.tur))}</div>
         <h1>${(()=>{ const [a,b]=L(f.title).split(": "); return b?`<span>${esc(a)}</span>${esc(b)}`:esc(a); })()}</h1>
         <p class="lead">${esc(L(f.short))}</p>
         <div class="slots">${slotsHtml(f)}</div>
-        <div class="hero-cta"><a class="btn btn-white" href="${esc(f.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a><a class="btn btn-line" href="${evUrl(f)}">${esc(t().details)}</a></div>
+        <div class="hero-cta">${f.ticketUrl?`<a class="btn btn-white" href="${esc(f.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}<a class="btn ${f.ticketUrl?"btn-line":"btn-white"}" href="${evUrl(f)}">${esc(t().details)}</a></div>
       </div>
-      <div class="hero-art rv"><img src="${esc(f.image)}" alt="" fetchpriority="high"><div class="badge-40"><b>${f.durationMin}'</b><small>${esc(t().minutes)}</small></div></div>
+      <div class="hero-art"><img class="${f.blend?"blend":""}" src="${esc(f.image)}" alt="" fetchpriority="high">${f.durationMin?`<div class="badge-40"><b>${f.durationMin}'</b><small>${esc(t().minutes)}</small></div>`:""}</div>
     </div>`;
+    }
     const tk=["Deneyimler","Local Makers","Buluşmalar","Culture","Wellness","Nocturne"]; const tkH=tk.map(x=>`<span>${x}</span>`).join("");
     $("#ticker").innerHTML = `<div class="ticker-t" aria-hidden="true">${tkH+tkH+tkH+tkH}</div>`;
     $("#programH").innerHTML = `<div><h2 class="h2">${esc(t().upcoming)}</h2><p class="sub">${esc(t().upcomingSub)}</p></div><div class="filters" id="filters"></div>`;
@@ -96,11 +115,11 @@
       <div class="join-opts">${t().joinOpts.map(([a,b])=>`<a class="join-opt" href="${JOIN_URL}"><span><small>${a}</small><b>${esc(b)}</b></span>${ARR}</a>`).join("")}</div></div>`;
     $("#visitG").innerHTML = `<div class="card rv"><h2 class="h2">${esc(t().visitH)}</h2>
         <dl class="kv"><dt>${esc(t().where)}</dt><dd>studioHATCH — HighGarden<br>Balat, Bursa</dd>
-        <dt>${esc(t().hours)}</dt><dd><span class="todo">${esc(t().hoursTodo)}</span></dd>
-        <dt>${esc(t().contact)}</dt><dd><a href="mailto:hello@studiohatch.tv">hello@studiohatch.tv</a><br><a href="https://instagram.com/studiohatchtv" target="_blank" rel="noopener">@studiohatchtv</a></dd></dl>
+        <dt>${esc(t().hours)}</dt><dd>${ayar("saatler") ? esc(ayar("saatler")).replace(/\n/g,"<br>") : `<span class="todo">${esc(t().hoursTodo)}</span>`}</dd>
+        <dt>${esc(t().contact)}</dt><dd><a href="mailto:${esc(SET.eposta||"hello@studiohatch.tv")}">${esc(SET.eposta||"hello@studiohatch.tv")}</a><br><a href="https://instagram.com/${esc(SET.instagram||"studiohatchtv")}" target="_blank" rel="noopener">@${esc(SET.instagram||"studiohatchtv")}</a></dd></dl>
         <a class="btn btn-ink" style="margin-top:26px" href="${MAPS}" target="_blank" rel="noopener">${esc(t().map)} <span class="arr">${ARR}</span></a></div>
       <div class="card rv" style="background:var(--blue-soft)"><h2 class="h2">${esc(t().nlH)}</h2><p class="sub" style="color:var(--ink)">${esc(t().nlP)}</p>
-        <form class="nl-form" onsubmit="event.preventDefault(); this.style.display='none'; document.getElementById('nlOk').style.display='block';">
+        <form class="nl-form" onsubmit="event.preventDefault(); hatchNl(this)">
           <label class="sr" for="nlMail">${esc(t().nlPh)}</label><input id="nlMail" type="email" required placeholder="${esc(t().nlPh)}" autocomplete="email"><button class="btn btn-blue">${esc(t().nlBtn)}</button></form>
         <div class="nl-ok" id="nlOk">${esc(t().nlOk)}</div><p class="fine">${esc(t().nlFine)}</p></div>`;
   }
@@ -119,7 +138,7 @@
     $("#days").innerHTML = days;
     $("#clearDay").innerHTML = st.day ? `<button class="clear-day" onclick="hatchDay(null)">← ${esc(t().showAll)}</button>` : "";
     const list = (st.day ? list0.filter(e=>e.date===st.day) : list0.filter(e=>endOf(e)>=t0 && e.date<=addDays(t0,45)))
-      .sort((a,b)=>(a.date+a.times[0]).localeCompare(b.date+b.times[0]));
+      .sort((a,b)=>(a.date+(a.times[0]||"")).localeCompare(b.date+(b.times[0]||"")));
     $("#rows").innerHTML = list.length ? list.map(e=>`<article class="row">
         <a class="row-link" href="${evUrl(e)}" aria-label="${esc(L(e.title))}"></a>
         <div class="dt"><b>${pd(e.date).getDate()}</b><small>${esc(fmt(e.date,{month:"short"}))} · ${esc(fmt(e.date,{weekday:"short"}))}</small></div>
@@ -129,20 +148,33 @@
         <span class="go">${ARR}</span></article>`).join("")
       : `<div class="empty-msg">${esc(t().nothing)}</div>`;
   }
+  window.hatchNl = async form => {
+    const btn=form.querySelector("button"), mail=form.querySelector("input").value.trim();
+    btn.disabled=true;
+    try{
+      if(!DEMO) await window.hatchNewsletter(mail, (lang==="tr"?"Web sitesi bülten kaydı: ":"Website newsletter sign-up: ")+t().nlP+" "+t().nlFine);
+      form.style.display="none"; $("#nlOk").style.display="block";
+    }catch(x){ btn.disabled=false; alert(lang==="tr"?"Kaydedilemedi. E-posta adresini kontrol edip tekrar dene.":"Couldn't sign you up. Check the address and try again."); }
+  };
   window.hatchPillar = p => { st.pillar=p; renderProgram(); };
   window.hatchDay = k => { st.day = st.day===k ? null : k; renderProgram(); };
 
   /* ---------- ETKİNLİK SAYFASI ---------- */
   function eventPage(){
     const id=new URLSearchParams(location.search).get("id");
-    const e=EV.find(x=>x.id===id) || EV[0];
+    const e=EV.find(x=>x.id===id);
+    if(!e){
+      $("#evHero").className="ev-hero"; $("#evHero").style.setProperty("--c","var(--blue)");
+      $("#evHero").innerHTML=`<div class="wrap" style="grid-template-columns:1fr"><div><div class="crumb"><a href="index.html${qs()}#program">← ${esc(t().evBack)}</a></div><h1>${lang==="tr"?"Bu etkinlik artık programda değil":"This event is no longer listed"}</h1></div></div>`;
+      $("#evBody").innerHTML=""; $("#more").innerHTML=""; return;
+    }
     const [c]=PILLAR_COLOR[e.pillar];
     document.title = `${L(e.title)} · studio HATCH`;
     const dateTxt = isRun(e) ? `${t().everyDay} · ${lang==="tr" ? fmt(endOf(e),{day:"numeric",month:"long"})+" "+t().until : t().until+" "+fmt(endOf(e),{day:"numeric",month:"long"})}` : fmt(e.date,{weekday:"long",day:"numeric",month:"long"});
-    const dur = e.durationMin ? `${e.durationMin} ${t().minutes}` : (e.endTime ? (()=>{ const [h1,m1]=e.times[0].split(":"), [h2,m2]=e.endTime.split(":"); return ((h2*60+ +m2)-(h1*60+ +m1))+" "+t().minutes; })() : "");
+    const dur = e.durationMin ? `${e.durationMin} ${t().minutes}` : (e.endTime && e.times[0] ? (()=>{ const [h1,m1]=e.times[0].split(":"), [h2,m2]=e.endTime.split(":"); return ((h2*60+ +m2)-(h1*60+ +m1))+" "+t().minutes; })() : "");
     $("#evHero").className = "ev-hero "+e.pillar; $("#evHero").style.setProperty("--c", c);
     $("#evHero").innerHTML = `<div class="wrap"><div>
-        <div class="crumb"><a href="index.html${lang==="en"?"?lang=en":""}#program">← ${esc(t().evBack)}</a></div>
+        <div class="crumb"><a href="index.html${qs()}#program">← ${esc(t().evBack)}</a></div>
         <span class="tag" style="background:rgba(255,255,255,.16);color:#fff">${esc(L(e.tur))}</span>
         <h1>${esc(L(e.title))}</h1><p class="lead">${esc(L(e.short))}</p></div>
       <div class="ev-img ${e.blend?"blend":""}"><img src="${esc(e.image)}" alt=""></div></div>`;
@@ -163,7 +195,7 @@
         <div class="th" style="--cs:${PILLAR_COLOR[x.pillar][1]}"><img src="${esc(x.image)}" alt="" loading="lazy"></div><span class="go">${ARR}</span></article>`).join("")}</div>`;
     // Google etkinlik kartı için yapılandırılmış veri
     const ld={ "@context":"https://schema.org", "@type":"Event", name:L(e.title), description:L(e.short),
-      startDate:`${e.date}T${e.times[0]}:00+03:00`, endDate: e.endTime?`${e.date}T${e.endTime}:00+03:00`:`${endOf(e)}T23:00:00+03:00`,
+      startDate: e.times[0] ? `${e.date}T${e.times[0]}:00+03:00` : e.date, endDate: e.endTime?`${e.date}T${e.endTime}:00+03:00`:`${endOf(e)}T23:00:00+03:00`,
       eventAttendanceMode:"https://schema.org/OfflineEventAttendanceMode", eventStatus:"https://schema.org/EventScheduled",
       image:[new URL(e.image,location.href).href],
       location:{ "@type":"Place", name:"studioHATCH — HighGarden", address:{ "@type":"PostalAddress", addressLocality:"Bursa", addressRegion:"Bursa", addressCountry:"TR", streetAddress:"Balat" } },
@@ -172,8 +204,8 @@
     let s=document.getElementById("ld"); if(!s){ s=document.createElement("script"); s.type="application/ld+json"; s.id="ld"; document.head.appendChild(s); }
     s.textContent=JSON.stringify(ld);
     window.hatchIcs = () => {
-      const st=(e.date+"T"+e.times[0]).replace(/[-:]/g,"")+"00";
-      const en=e.endTime ? (e.date+"T"+e.endTime).replace(/[-:]/g,"")+"00" : (()=>{ const d=new Date(`${e.date}T${e.times[0]}:00`); d.setMinutes(d.getMinutes()+(e.durationMin||60)); return dk(d).replace(/-/g,"")+"T"+String(d.getHours()).padStart(2,"0")+String(d.getMinutes()).padStart(2,"0")+"00"; })();
+      const st=(e.date+"T"+(e.times[0]||"10:00")).replace(/[-:]/g,"")+"00";
+      const en=e.endTime ? (e.date+"T"+e.endTime).replace(/[-:]/g,"")+"00" : (()=>{ const d=new Date(`${e.date}T${e.times[0]||"10:00"}:00`); d.setMinutes(d.getMinutes()+(e.durationMin||60)); return dk(d).replace(/-/g,"")+"T"+String(d.getHours()).padStart(2,"0")+String(d.getMinutes()).padStart(2,"0")+"00"; })();
       const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//studio HATCH//TR","BEGIN:VEVENT",`UID:${e.id}@studiohatch.tv`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,"").slice(0,15)}Z`,
         `DTSTART;TZID=Europe/Istanbul:${st}`,`DTEND;TZID=Europe/Istanbul:${en}`,`SUMMARY:${L(e.title).replace(/[,;]/g,"\\$&")}`,"LOCATION:studioHATCH — HighGarden\\, Balat\\, Bursa",`URL:${location.href}`,"END:VEVENT","END:VCALENDAR"].join("\r\n");
       const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"})); a.download=`studiohatch-${e.id}.ics`; a.click();
@@ -187,7 +219,9 @@
 
   /* ---------- ortak ---------- */
   function reveal(){
-    const els=document.querySelectorAll(".rv:not(.in)");
+    const els=[...document.querySelectorAll(".rv:not(.in)")];
+    // ilk ekranda görünenler beklemeden belirsin
+    els.filter(x=>x.getBoundingClientRect().top < innerHeight).forEach(x=>requestAnimationFrame(()=>x.classList.add("in")));
     if(!("IntersectionObserver" in window)){ els.forEach(x=>x.classList.add("in")); return; }
     const io=new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting){ x.target.classList.add("in"); io.unobserve(x.target); } }),{ rootMargin:"0px 0px -8% 0px" });
     els.forEach(x=>io.observe(x));
