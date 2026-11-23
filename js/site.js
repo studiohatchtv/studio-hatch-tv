@@ -114,7 +114,7 @@
     $("#showsW").innerHTML = renderShows();
     $("#programH").innerHTML = `<div><h2 class="h2">${esc(t().upcoming)}</h2><p class="sub">${esc(t().upcomingSub)}</p></div><div class="filters" id="filters"></div>`;
     renderProgram();
-    const cnt = p => EV.filter(e=>e.pillar===p && endOf(e)>=today()).length;
+    const cnt = p => EV.filter(e=>e.pillar===p && endOf(e)>=today()).length + (p==="culture"?SH.length:0);
     $("#pillarsH").innerHTML = `<div><h2 class="h2">${t().pillarsH}</h2><p class="sub">${esc(t().pillarsSub)}</p></div>`;
     $("#pillars").innerHTML = ["culture","wellness","nocturne"].map(p=>`<a class="pillar ${p} rv" href="#program" onclick="hatchPillar('${p}')"><span class="shape"></span>
       <div><h3>${t().pillars[p][0]}</h3><p>${esc(t().pillars[p][1])}</p></div>
@@ -165,7 +165,10 @@
   function renderProgram(){
     const chips=[["",t().all,"var(--ink)"],["culture",t().pillars.culture[0],"var(--culture)"],["wellness",t().pillars.wellness[0],"var(--wellness)"],["nocturne",t().pillars.nocturne[0],"var(--nocturne)"]];
     $("#filters").innerHTML = chips.map(([k,l,c])=>`<button class="fchip ${st.pillar===k?"on":""}" style="--c:${c}" onclick="hatchPillar('${k}')"><i></i>${esc(l)}</button>`).join("");
-    const list0 = EV.filter(e=>!st.pillar || e.pillar===st.pillar);
+    // gösterimler de takvimde: her gün, Immersive Gösteri olarak
+    const SHEV = SH.map(g=>({ ...g, pillar:"culture", kind:"run", tur:{tr:"Immersive gösterim",en:"Immersive show"},
+      title:{tr:(L(g.sub)?g.sub.tr+": ":"")+g.title.tr, en:(L(g.sub)?(g.sub.en||g.sub.tr)+": ":"")+(g.title.en||g.title.tr)} }));
+    const list0 = [...SHEV, ...EV].filter(e=>!st.pillar || e.pillar===st.pillar);
     const onDay = (e,k) => e.date<=k && endOf(e)>=k;
     const t0=today();
     let days="";
@@ -180,10 +183,10 @@
     const list = (st.day ? list0.filter(e=>onDay(e,st.day)) : list0.filter(e=>endOf(e)>=t0 && e.date<=addDays(t0,45)))
       .sort((a,b)=>(a.date+(a.times[0]||"")).localeCompare(b.date+(b.times[0]||"")));
     $("#rows").innerHTML = list.length ? list.map(e=>`<article class="row">
-        <a class="row-link" href="${evUrl(e)}" aria-label="${esc(L(e.title))}"></a>
-        <div class="dt">${isRun(e)&&e.date<t0?`<b style="font-size:.62em">${esc(t().everyDay)}</b><small>→ ${esc(fmt(endOf(e),{day:"numeric",month:"short"}))}</small>`:`<b>${pd(e.date).getDate()}</b><small>${esc(fmt(e.date,{month:"short"}))} · ${esc(fmt(e.date,{weekday:"short"}))}</small>`}</div>
+        <a class="row-link" href="${e.show?shUrl(e):evUrl(e)}" aria-label="${esc(L(e.title))}"></a>
+        <div class="dt">${isRun(e)&&e.date<=(st.day||t0)?`<b style="font-size:.62em">${esc(t().everyDay)}</b><small>${endOf(e)===FOREVER?esc(t().showing):"→ "+esc(fmt(endOf(e),{day:"numeric",month:"short"}))}</small>`:`<b>${pd(e.date).getDate()}</b><small>${esc(fmt(e.date,{month:"short"}))} · ${esc(fmt(e.date,{weekday:"short"}))}</small>`}</div>
         <div>${tag(e)}<h3>${esc(L(e.title))}</h3><p>${esc(L(e.short))}</p>
-          <div class="meta"><b>${esc(timeTxt(e))}</b><span class="sep">·</span><span>${e.ticketUrl?esc(L(e.price)):esc(t().free)}</span></div></div>
+          <div class="meta"><b>${esc(e.show ? (L(e.hours) || (e.times.length?e.times.join(" · "):"")) : timeTxt(e))}</b>${e.show&&e.durationMin?`<span class="sep">·</span><span>${e.durationMin} ${esc(t().minutes)}</span>`:""}<span class="sep">·</span><span>${e.ticketUrl?esc(L(e.price)):esc(t().free)}</span></div></div>
         <div class="th" style="--cs:${PILLAR_COLOR[e.pillar][1]}"><img src="${esc(e.image)}" alt="" loading="lazy"></div>
         <span class="go">${ARR}</span></article>`).join("")
       : `<div class="empty-msg">${esc(t().nothing)}</div>`;
