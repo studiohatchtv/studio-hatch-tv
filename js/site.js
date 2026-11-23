@@ -89,11 +89,19 @@
   }
   window.hatchLang = setLang;
 
+  // GEÇİCİ: HATCH Up · Immersive Pop-Up (20 Aralık) — başvurular 1 Aralık'ta kapanır, bant 3 Aralık sonunda kendiliğinden kalkar
+  function huBand(){
+    const n=new Date(), tr=lang==="tr";
+    if(n < new Date("2026-12-02T00:00:00+03:00")) return `<a href="hatch-up.html"><b>HATCH Up Başvuru Formu</b> · ${tr?"20 Aralık Immersive Pop-Up için üretici başvuruları açık · Son başvuru 1 Aralık":"Maker applications open for the 20 Dec Immersive Pop-Up · Deadline 1 Dec"} <span aria-hidden="true">→</span></a>`;
+    if(n < new Date("2026-12-04T00:00:00+03:00")) return `<a href="hatch-up.html"><b>HATCH Up</b> · ${tr?"Başvurular kapandı · Sonuçlar 3 Aralık'ta açıklanıyor":"Applications closed · Results on 3 Dec"} <span aria-hidden="true">→</span></a>`;
+    return "";
+  }
   function shell(){
     document.documentElement.lang = lang;
     const n=t().nav, ids=["gosterimler","program","makers","visit"];
-    const band = DEMO ? t().proto : (ayar("duyuru") ? esc(ayar("duyuru")) : (PREVIEW ? (lang==="tr" ? "<b>Önizleme.</b> Site henüz yayında değil; program Flow'dan canlı geliyor." : "<b>Preview.</b> Not public yet; the program is live from Flow.") : ""));
-    $("#proto").innerHTML = band; $("#proto").style.display = band ? "" : "none";
+    const hu = huBand();
+    const band = DEMO ? t().proto : hu ? hu : (ayar("duyuru") ? esc(ayar("duyuru")) : (PREVIEW ? (lang==="tr" ? "<b>Önizleme.</b> Site henüz yayında değil; program Flow'dan canlı geliyor." : "<b>Preview.</b> Not public yet; the program is live from Flow.") : ""));
+    $("#proto").innerHTML = band; $("#proto").style.display = band ? "" : "none"; $("#proto").classList.toggle("hu-band", !!hu && !DEMO);
     $("#nav").innerHTML = n.map((x,i)=>`<a href="index.html${qs()}#${ids[i]}">${esc(x)}</a>`).join("") + `<a href="${JOIN_URL}">${esc(t().join)}</a>`;
     $("#hdR").innerHTML = `<div class="lang" role="group" aria-label="Dil / Language"><button class="${lang==="tr"?"on":""}" onclick="hatchLang('tr')">TR</button><button class="${lang==="en"?"on":""}" onclick="hatchLang('en')">EN</button></div>
       <a class="btn btn-blue" href="index.html${qs()}#gosterimler">${esc(t().tickets)}</a>`;
@@ -163,7 +171,7 @@
       <div class="dg-grid">${GAL.map((g,i)=>`<figure class="dg-f f${i} rv"><img src="assets/${g}.jpg" alt="${esc(t().gal[i])}" loading="lazy"><figcaption class="mono">${String(i+1).padStart(2,"0")} / ${esc(t().gal[i])}</figcaption></figure>`).join("")}</div></div>`;
     $("#makers").innerHTML = `<div class="makers-txt rv"><h2 class="h2">${t().makersH}</h2><p class="sub" style="color:var(--ink)">${esc(t().makersP)}</p><div><a class="btn btn-blue" href="#visit">${esc(t().makersBtn)} <span class="arr">${ARR}</span></a></div></div>
       <div class="makers-img rv"><img src="assets/magaza.jpg" alt="" loading="lazy"></div>`;
-    $("#join").innerHTML = `<div class="join rv"><div><h2 class="h2">${t().joinH}</h2><p class="sub" style="color:#fff;opacity:.85">${esc(t().joinP)}</p></div>
+    $("#join").innerHTML = (huBand() ? `<a class="hu-join rv" href="hatch-up.html"><span class="mono">HATCH Up · 20 Aralık</span><b>Immersive Pop-Up başvuru formu</b><small>${lang==="tr"?(new Date()<new Date("2026-12-02T00:00:00+03:00")?"Yeme-İçme · Satış · Atölye — son başvuru 1 Aralık":"Başvurular kapandı · sonuçlar 3 Aralık"):"Food · Makers · Workshops — deadline 1 Dec"}</small><span class="go">${ARR}</span></a>` : "") + `<div class="join rv"><div><h2 class="h2">${t().joinH}</h2><p class="sub" style="color:#fff;opacity:.85">${esc(t().joinP)}</p></div>
       <div class="join-opts">${t().joinOpts.map(([a,b])=>`<a class="join-opt" href="${JOIN_URL}"><span><small>${a}</small><b>${esc(b)}</b></span>${ARR}</a>`).join("")}</div></div>`;
     $("#visitG").innerHTML = `<div class="card rv"><h2 class="h2">${esc(t().visitH)}</h2>
         <dl class="kv"><dt>${esc(t().where)}</dt><dd>studio HATCH — High Garden AVM<br>Newline Konutları, Farabi Cd.<br>E Blok No: 12-E<br>16140 Nilüfer / Bursa</dd>
@@ -397,7 +405,7 @@
       metin.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>{ const [ilk,...kalan]=p.split("\n"); const bas=ilk.length<70 && !/[.:;,]$/.test(ilk.trim());
         return bas ? `<h2>${esc(ilk)}</h2>${kalan.length?`<p>${esc(kalan.join("\n")).replace(/\n/g,"<br>")}</p>`:""}` : `<p>${esc(p).replace(/\n/g,"<br>")}</p>`; }).join("");
   }
-  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else if(pg==="kvkk") kvkkPage(); else home(); reveal(); stories(); }
+  function render(){ shell(); const pg=document.body.dataset.page; if(pg==="event") eventPage(); else if(pg==="show") showPage(); else if(pg==="kvkk") kvkkPage(); else if(pg==="hatchup") window.hatchupPage(); else home(); reveal(); stories(); }
   window.addEventListener("scroll", ()=>$(".hd").classList.toggle("scrolled", scrollY>8), { passive:true });
   window.hatchMenu = () => $("#nav").classList.toggle("open");
   document.addEventListener("click", ev=>{ if(ev.target.closest("#nav a")) $("#nav").classList.remove("open"); });
