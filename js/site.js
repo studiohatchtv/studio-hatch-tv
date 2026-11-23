@@ -41,7 +41,7 @@
   const until = k => lang==="tr" ? fmt(k,{day:"numeric",month:"long"})+" "+t().until : t().until+" "+fmt(k,{day:"numeric",month:"long"});
   const shWhen = g => onNow(g) ? (g.end===FOREVER ? t().openEnded : until(g.end)) : `${t().opens} · ${fmt(g.date,{day:"numeric",month:"long",...(g.date.slice(0,4)!==today().slice(0,4)?{year:"numeric"}:{})})}`;
   const faqHtml = list => list.map(x=>`<details class="faq"><summary>${esc(x.q)}<i aria-hidden="true"></i></summary><p>${esc(x.a)}</p></details>`).join("");
-  const NL_ILGI = [["Immersive deneyimler","Immersive shows"],["Atölyeler","Workshops"],["Etkinlikler & konserler","Events & concerts"],["Wellness","Wellness"],["Nocturne","Nocturne"],["Tasarım ürünleri & mağaza","Design store"]];
+  const NL_ILGI = [["Immersive deneyimler","Immersive shows"],["Atölyeler","Workshops"],["Etkinlikler & konserler","Events & concerts"],["Wellness","Wellness"],["Tasarım ürünleri & mağaza","Design store"]];
   const ayar = k => (lang==="en" && SET[k+"_en"]) || SET[k] || "";
   const ARR = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
@@ -109,7 +109,7 @@
       <div class="hero-art"><img class="${f.blend?"blend":""}" src="${esc(f.image)}" alt="" fetchpriority="high">${f.durationMin?`<div class="badge-40"><b>${f.durationMin}'</b><small>${esc(t().minutes)}</small></div>`:""}</div>
     </div>`;
     }
-    const tk=["Deneyimler","Local Makers","Buluşmalar","Culture","Wellness","Nocturne"]; const tkH=tk.map(x=>`<span>${x}</span>`).join("");
+    const tk=["Deneyimler","Local Makers","Buluşmalar",...["culture","wellness","nocturne"].map(p=>t().pillars[p][0])]; const tkH=tk.map(x=>`<span>${x}</span>`).join("");
     $("#ticker").innerHTML = `<div class="ticker-t" aria-hidden="true">${tkH+tkH+tkH+tkH}</div>`;
     $("#showsW").innerHTML = renderShows();
     $("#programH").innerHTML = `<div><h2 class="h2">${esc(t().upcoming)}</h2><p class="sub">${esc(t().upcomingSub)}</p></div><div class="filters" id="filters"></div>`;
@@ -162,7 +162,7 @@
   }
   window.hatchSlide = (btn,d) => { const tr=btn.closest(".sec,#more").querySelector(".sh-track"); const c=tr.querySelector(".sh-card"); tr.scrollBy({ left:d*((c?c.offsetWidth:300)+20), behavior:"smooth" }); };
   function renderProgram(){
-    const chips=[["",t().all,"var(--ink)"],["culture","Culture","var(--culture)"],["wellness","Wellness","var(--wellness)"],["nocturne","Nocturne","var(--nocturne)"]];
+    const chips=[["",t().all,"var(--ink)"],["culture",t().pillars.culture[0],"var(--culture)"],["wellness",t().pillars.wellness[0],"var(--wellness)"],["nocturne",t().pillars.nocturne[0],"var(--nocturne)"]];
     $("#filters").innerHTML = chips.map(([k,l,c])=>`<button class="fchip ${st.pillar===k?"on":""}" style="--c:${c}" onclick="hatchPillar('${k}')"><i></i>${esc(l)}</button>`).join("");
     const list0 = EV.filter(e=>!st.pillar || e.pillar===st.pillar);
     const onDay = (e,k) => e.date<=k && endOf(e)>=k;
