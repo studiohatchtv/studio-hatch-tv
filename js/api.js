@@ -31,7 +31,7 @@
     return { id:g.id, featured:!!g.one_cikan, title:two(g.baslik,g.baslik_en), sub:two(g.alt_baslik,g.alt_baslik_en),
       short:two(g.ozet,g.ozet_en), desc:two(g.aciklama,g.aciklama_en,paras), is:two(g.nedir,g.nedir_en,lines), isnt:two(g.ne_degildir,g.ne_degildir_en,lines),
       faq:two(g.sss,g.sss_en,faq), start:g.baslangic||null, end:g.bitis||null, times:g.seanslar||[], durationMin:g.sure_dk||null,
-      age:two(g.yas,g.yas_en), price:two(g.fiyat,g.fiyat_en), ticketUrl:safeUrl(g.bilet_url), image:gorsel(g.gorsel)||"assets/oda-frida.jpg", blend:false };
+      hours:two(g.saatler,g.saatler_en), age:two(g.yas,g.yas_en), price:two(g.fiyat,g.fiyat_en), ticketUrl:safeUrl(g.bilet_url), image:gorsel(g.gorsel)||"assets/oda-frida.jpg", blend:false };
   }
   window.hatchLoad = async function(){
     if(window.HATCH_DEMO_MODE){ window.HATCH_SETTINGS=window.HATCH_DEMO_SETTINGS||{}; window.HATCH_SHOWS=window.HATCH_DEMO_SHOWS||[]; return window.HATCH_DEMO; }

@@ -103,7 +103,7 @@
         <div class="eyebrow mono">${simdi?`<span class="live"></span>${esc(t().nowShowing)}`:(lang==="tr"?"Yakında":"Coming up")} · ${esc(f.show ? (lang==="tr"?"Immersive gösterim":"Immersive show") : L(f.tur))}</div>
         <h1>${f.show ? `${L(f.sub)?`<span>${esc(L(f.sub))}</span>`:""}${esc(L(f.title))}` : (()=>{ const [a,b]=L(f.title).split(": "); return b?`<span>${esc(a)}</span>${esc(b)}`:esc(a); })()}</h1>
         <p class="lead">${esc(L(f.short))}</p>
-        <div class="slots">${slotsHtml(f)}</div>
+        <div class="slots">${f.show && !f.times.length && L(f.hours) ? `<div class="slots-l">${esc(t().shHours)}</div><div class="slots-r"><span class="slot next">${esc(L(f.hours))}</span></div>` : slotsHtml(f)}</div>
         <div class="hero-cta">${f.ticketUrl?`<a class="btn btn-white" href="${esc(f.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}<a class="btn ${f.ticketUrl?"btn-line":"btn-white"}" href="${fUrl}">${esc(f.show?t().explore:t().details)}</a></div>
       </div>
       <div class="hero-art tech"><img class="${f.blend?"blend":""}" src="${esc(f.image)}" alt="" fetchpriority="high">${f.durationMin?`<div class="badge-40"><b>${f.durationMin}'</b><small>${esc(t().minutes)}</small></div>`:""}</div>
@@ -150,7 +150,7 @@
     return `<article class="sh-card rv"><a class="row-link" href="${shUrl(g)}" aria-label="${esc(L(g.title))}"></a>
       <div class="sh-img ${g.blend?"blend":""}"><img src="${esc(g.image)}" alt="" loading="lazy"><span class="sh-badge ${now?"on":""}">${now?`<span class="live"></span>`:""}${esc(now?t().showing:t().soon)}</span></div>
       <div class="sh-txt">${L(g.sub)?`<small>${esc(L(g.sub))}</small>`:""}<h3>${esc(L(g.title))}</h3><p>${esc(L(g.short))}</p>
-        <div class="sh-meta"><b>${esc(shWhen(g))}</b>${g.durationMin?`<span class="sep">·</span><span>${g.durationMin} ${esc(t().minutes)}</span>`:""}</div>
+        <div class="sh-meta"><b>${esc(shWhen(g))}</b>${L(g.hours)?`<span class="sep">·</span><span>${esc(L(g.hours))}</span>`:""}${g.durationMin?`<span class="sep">·</span><span>${g.durationMin} ${esc(t().minutes)}</span>`:""}</div>
         <span class="sh-go">${esc(t().explore)} ${ARR}</span></div></article>`;
   }
   function renderShows(skip){
@@ -283,7 +283,7 @@
         <h1>${L(g.sub)?`<span>${esc(L(g.sub))}</span>`:""}${esc(L(g.title))}</h1><p class="lead">${esc(L(g.short))}</p>
         <div class="hero-cta" style="margin-top:26px">${g.ticketUrl?`<a class="btn btn-white" href="${esc(g.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}</div></div>
       <div class="ev-img ${g.blend?"blend":""}"><img src="${esc(g.image)}" alt=""></div></div>`;
-    const facts=[[t().evDate, shWhen(g)], [t().evSessions, g.times.join(" · ")], [t().evDuration, g.durationMin?`${g.durationMin} ${t().minutes}`:""], [t().shAge, L(g.age)], [t().evPrice, L(g.price)]].filter(x=>x[1]);
+    const facts=[[t().evDate, shWhen(g)], [t().evSessions, g.times.join(" · ")], [t().shHours, L(g.hours)], [t().evDuration, g.durationMin?`${g.durationMin} ${t().minutes}`:""], [t().shAge, L(g.age)], [t().evPrice, L(g.price)]].filter(x=>x[1]);
     $("#shFacts").innerHTML = facts.length ? `<div class="wrap"><dl class="sh-facts">${facts.map(([a,b])=>`<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl></div>` : "";
     const is=L(g.is), isnt=L(g.isnt), faq=[...L(g.faq), ...window.hatchFaq(ayar("genel_sss"))], about=ayar("immersive_nedir");
     $("#evBody").innerHTML = `<div class="txt">
