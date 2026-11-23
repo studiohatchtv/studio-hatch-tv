@@ -55,7 +55,7 @@
 
   const SSS = [
     ["HATCH Up nedir?","HATCH Up, studio HATCH'in yerel üreticileri, tasarımcıları ve atölye yürütücülerini ziyaretçilerle buluşturduğu pop-up buluşmasıdır. 20 Aralık'ta bir günlüğüne, dijital sanatla çevrili immersive alanımızda yılbaşı öncesi bir pop-up kuruyoruz."],
-    ["Katılım ücreti ne kadar?","1 stant bedeli 5.000 ₺'dir. Başvurmak ücretsizdir; ödeme yalnızca seçilen katılımcılardan, sonuç duyurusunun ardından istenir."],
+    ["Katılım ücreti ne kadar?","1 stant bedeli 5.000 ₺ + KDV'dir. Başvurmak ücretsizdir; ödeme yalnızca seçilen katılımcılardan, sonuç duyurusunun ardından istenir."],
     ["Stantta neler sağlanıyor?","Her stanta 120×60 cm 1 masa ve masa örtüsü veriyoruz. Masa dışında ihtiyacın olan ekipmanı (raf, askılık, sandalye, elektrik vb.) formda belirt; imkânlar ölçüsünde planlıyoruz."],
     ["Katılımcılar nasıl seçiliyor?","Stant sayısı sınırlı olduğu için katılımcıları başvurular arasından seçiyoruz. Ürünlerin özgünlüğü ve kalitesi, gönderdiğin fotoğraflar, etkinliğin konseptine uyum ve alanlar arasında çeşitlilik (aynı kategoriden çok fazla stant olmaması) değerlendirmede öne çıkar."],
     ["Son başvuru ve sonuç tarihi ne zaman?","Son başvuru 1 Aralık Salı 23:59. Sonuçları 3 Aralık Perşembe günü e-posta ve telefonla bildiriyoruz; seçilmeyen başvurulara da dönüş yapıyoruz."],
@@ -95,7 +95,6 @@
         <div><dt>Etkinlik</dt><dd>${fmtGun}</dd></div>
         <div><dt>Son başvuru</dt><dd>1 Aralık · 23:59</dd></div>
         <div><dt>Sonuçlar</dt><dd>3 Aralık</dd></div>
-        <div><dt>Stant bedeli</dt><dd>5.000 ₺</dd></div>
       </dl>
     </div></section>
 
@@ -107,7 +106,7 @@
           <li><b>Başvur</b><span>Formu 1 Aralık 23:59'a kadar doldur, ürün ya da atölye fotoğraflarını ekle.</span></li>
           <li><b>Seçim</b><span>Başvuruları ürün kalitesi, konsepte uyum ve çeşitliliğe göre değerlendiriyoruz.</span></li>
           <li><b>Duyuru</b><span>3 Aralık'ta sonuçları e-posta ve telefonla bildiriyoruz.</span></li>
-          <li><b>Onay</b><span>Seçilen katılımcılar 5.000 ₺ stant bedelini öder, katılım rehberini alır.</span></li>
+          <li><b>Onay</b><span>Seçilen katılımcılar stant bedelini öder, katılım rehberini alır.</span></li>
           <li><b>20 Aralık</b><span>Immersive alanda pop-up günü.</span></li>
         </ol>
       </div>
@@ -126,7 +125,7 @@
         </fieldset>
         <fieldset><legend>3 · Markan ve stantın</legend><div class="hu-grid">${SON.map(alanHtml).join("")}<div class="hu-thumbs wide" id="huThumbs"></div></div></fieldset>
         <label class="ck"><input type="checkbox" name="kvkk" required><span>Başvuru bilgilerimin değerlendirme ve iletişim amacıyla işlenmesine ilişkin <a href="kvkk.html" target="_blank" rel="noopener">KVKK Aydınlatma Metni</a>'ni okudum. <i>*</i></span></label>
-        <label class="ck"><input type="checkbox" name="kosul" required><span>Seçilmem durumunda 5.000 ₺ stant bedelini belirtilen sürede ödemem gerektiğini ve bu sayfadaki katılım koşullarını okudum. <i>*</i></span></label>
+        <label class="ck"><input type="checkbox" name="kosul" required><span>Seçilmem durumunda 5.000 ₺ + KDV stant bedelini belirtilen sürede ödemem gerektiğini ve bu sayfadaki katılım koşullarını okudum. <i>*</i></span></label>
         <button class="btn hu-btn" type="submit" id="huGonder">Başvuruyu gönder <span class="arr">${ARR}</span></button>
         <p class="hu-status" id="huDurum" role="status" aria-live="polite"></p>
         <p class="hu-mini">Bu bir ön başvurudur; katılım, seçim sonucunun ve ödemenin ardından kesinleşir.</p>
@@ -187,7 +186,7 @@
         const satir=d=>({ etiket:d[0], deger:get(d[2]) });
         const alanlar=[ { etiket:"Etkinlik", deger:"HATCH Up · Immersive Pop-Up · 20 Aralık 2026" }, { etiket:"Katılım alanı", deger:alan.ad },
           satir(ORTAK[1]), satir(ORTAK[6]), ...alan.sorular.map(satir), ...SON.filter(d=>d[1]!=="file").map(satir),
-          { etiket:"Onay", deger:"KVKK metnini okudu · seçilirse 5.000 ₺ stant bedelini ödemeyi kabul etti" } ].filter(x=>x.deger);
+          { etiket:"Onay", deger:"KVKK metnini okudu · seçilirse 5.000 ₺ + KDV stant bedelini ödemeyi kabul etti" } ].filter(x=>x.deger);
         const { error }=await sb.rpc("katilim_basvuru_gonder",{ p_tur:TUR, p_ad:get("marka"), p_email:get("email"), p_telefon:get("telefon"), p_sosyal:get("instagram"), p_website:get("web")||null, p_alanlar:alanlar, p_dosyalar:yuklenen });
         if(error) throw new Error(error.message);
         form.outerHTML=`<div class="hu-done"><h3>Başvurun bize ulaştı 🎄</h3><p>Teşekkürler, <b>${esc(get("marka"))}</b>! Başvuruları 1 Aralık'tan sonra değerlendirip <b>3 Aralık</b>'ta sonuçları <b>${esc(get("email"))}</b> adresine ve telefonla bildireceğiz.</p><a class="btn btn-ink" href="index.html">studio HATCH ana sayfa <span class="arr">${ARR}</span></a></div>`;
