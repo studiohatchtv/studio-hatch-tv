@@ -60,6 +60,7 @@
     ["Katılımcılar nasıl seçiliyor?","Stant sayısı sınırlı olduğu için katılımcıları başvurular arasından seçiyoruz. Ürünlerin özgünlüğü ve kalitesi, gönderdiğin fotoğraflar, etkinliğin konseptine uyum ve alanlar arasında çeşitlilik (aynı kategoriden çok fazla stant olmaması) değerlendirmede öne çıkar."],
     ["Son başvuru ve sonuç tarihi ne zaman?","Son başvuru 1 Aralık Salı 23:59. Sonuçları 3 Aralık Perşembe günü e-posta ve telefonla bildiriyoruz; seçilmeyen başvurulara da dönüş yapıyoruz."],
     ["Seçilirsem ödemeyi nasıl ve ne zaman yapacağım?","Seçilen katılımcılara 3 Aralık'ta ödeme bilgileri ve katılım rehberi gönderilir. Belirtilen süre içinde ödemesi tamamlanmayan stantlar yedek listedeki başvurulara verilir."],
+    ["Satışlardan komisyon alınıyor mu?","Hayır. Satışlarından komisyon almıyoruz; stant bedeli dışında satışlarından herhangi bir pay ödemezsin."],
     ["Satışları kim yapıyor, ödeme nasıl alınıyor?","Satışlarını kendin yaparsın. Kart, nakit veya havale; hangi ödeme yöntemlerini kabul edeceksen (POS cihazı, QR, IBAN vb.) yanında getirmelisin."],
     ["Kurulum ve etkinlik saatleri nedir?","Kurulum, etkinlik ve toplama saatleri seçilen katılımcılara gönderilen katılım rehberinde yer alır. Stantların ziyaretçiler gelmeden önce hazır olması gerekir."],
     ["Elektrik var mı?","Alanda sınırlı sayıda priz var. Telefon, POS ve ışık için priz ihtiyacını, yüksek güçlü cihaz (ısıtıcı, kahve makinesi vb.) kullanacaksan bunu formda mutlaka belirt; yüksek güçlü cihazlar önceden onaylanmalıdır."],

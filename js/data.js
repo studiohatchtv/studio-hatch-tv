@@ -169,7 +169,7 @@ Under KVKK Art. 11 you may ask whether your data is processed, request informati
       nlIzin:"{kvkk}'ni okudum; studio HATCH'in etkinlik, gösterim ve kampanyalarıyla ilgili bana e-posta ile ticari ileti göndermesine onay veriyorum.", kvkkLink:"KVKK Aydınlatma Metni",
       nlTelIzin:"Telefonla ve SMS ile de bilgilendirilmeyi kabul ediyorum.",
       nlH:"İlk sen haberdar ol", nlP:"Yeni gösterimler, atölyeler ve gece programları ayda iki kez e-postanda.", nlPh:"E-posta adresin", nlBtn:"Kaydol", nlOk:"Teşekkürler! Listeye eklendin.", nlFine:"Dilediğin zaman tek tıkla ayrılabilirsin.",
-      ftAbout:"Kreatif Yaşamın Merkezi", ftCols:["Program","Hatch","Takip et"], ftLinks:[["Immersive Gösterimler","#gosterimler"],["Etkinlikler","#program"],["Bülten","#visit"]], ftLinks2:[["Mağaza","#makers"],["Hatch'e katıl","#join"],["Ziyaret","#visit"]],
+      ftAbout:"Art · Culture · Technology", ftCols:["Program","Hatch","Takip et"], ftLinks:[["Immersive Gösterimler","#gosterimler"],["Etkinlikler","#program"],["Bülten","#visit"]], ftLinks2:[["Mağaza","#makers"],["Hatch'e katıl","#join"],["Ziyaret","#visit"]],
       rights:"Tüm hakları saklıdır.",
       evBack:"Etkinlikler", evDate:"Tarih", evTime:"Saat", evSessions:"Seanslar", evDuration:"Süre", evPlace:"Yer", evPrice:"Bilet", evKnow:"Bilmen gerekenler", evMore:"Bunlar da ilgini çekebilir",
       addCal:"Takvime ekle", share:"Paylaş", copied:"Bağlantı kopyalandı", everyDay:"Her gün", until:"tarihine kadar", noTicket:"Kayıt gerekmez", gise:"Biletleri Passo uygulaması ve passo.com.tr’nin yanı sıra studio HATCH’teki gişeden de alabilirsiniz.", giseKisa:"Gişeden de satılır", giseH:"Bilet" },
@@ -195,7 +195,7 @@ Under KVKK Art. 11 you may ask whether your data is processed, request informati
       nlIzin:"I have read the {kvkk} and agree to receive commercial emails from studio HATCH about events, shows and offers.", kvkkLink:"Privacy Notice (KVKK)",
       nlTelIzin:"I also agree to be contacted by phone and SMS.",
       nlH:"Be the first to know", nlP:"New shows, workshops and night programs, twice a month in your inbox.", nlPh:"Your email", nlBtn:"Sign up", nlOk:"Thanks! You're on the list.", nlFine:"Unsubscribe anytime with one click.",
-      ftAbout:"The Home of Creative Living", ftCols:["Program","Hatch","Follow"], ftLinks:[["Immersive Shows","#gosterimler"],["Events","#program"],["Newsletter","#visit"]], ftLinks2:[["Store","#makers"],["Join Hatch","#join"],["Visit","#visit"]],
+      ftAbout:"Art · Culture · Technology", ftCols:["Program","Hatch","Follow"], ftLinks:[["Immersive Shows","#gosterimler"],["Events","#program"],["Newsletter","#visit"]], ftLinks2:[["Store","#makers"],["Join Hatch","#join"],["Visit","#visit"]],
       rights:"All rights reserved.",
       evBack:"Events", evDate:"Date", evTime:"Time", evSessions:"Sessions", evDuration:"Duration", evPlace:"Venue", evPrice:"Tickets", evKnow:"Good to know", evMore:"You might also like",
       addCal:"Add to calendar", share:"Share", copied:"Link copied", everyDay:"Daily", until:"until", noTicket:"No registration needed", gise:"Tickets are available on the Passo app and passo.com.tr, and also at the box office at studio HATCH.", giseKisa:"Also at our box office", giseH:"Tickets" }
