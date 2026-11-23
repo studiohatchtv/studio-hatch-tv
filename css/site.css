@@ -705,3 +705,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .vz-show img{width:88px;height:88px}
   .vz-map{min-height:280px}
 }
+/* masaüstü menü dar ekranda tek satırda kalsın */
+.nav a{white-space:nowrap}
+@media (min-width:981px) and (max-width:1199px){.nav a{padding:8px 8px;font-size:14px}.hd .wrap{gap:14px}.hd-r .btn{padding-left:16px;padding-right:16px}}

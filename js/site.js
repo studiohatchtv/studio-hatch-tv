@@ -92,7 +92,7 @@
   // GEÇİCİ: HATCH Up · Immersive Pop-Up (20 Aralık) — başvurular 1 Aralık'ta kapanır, bant 3 Aralık sonunda kendiliğinden kalkar
   function huBand(){
     const n=new Date(), tr=lang==="tr";
-    if(n < new Date("2026-12-02T00:00:00+03:00")) return `<a href="hatch-up.html"><b>HATCH Up Başvuru Formu</b> · ${tr?"20 Aralık Immersive Pop-Up için üretici başvuruları açık · Son başvuru 1 Aralık":"Maker applications open for the 20 Dec Immersive Pop-Up · Deadline 1 Dec"} <span aria-hidden="true">→</span></a>`;
+    if(n < new Date("2026-12-02T00:00:00+03:00")) return `<a href="hatch-up.html"><b>${tr?"HATCH Up Başvuru Formu":"HATCH Up open call"}</b> · ${tr?"20 Aralık Immersive Pop-Up için üretici başvuruları açık · Son başvuru 1 Aralık":"Maker applications open for the 20 Dec Immersive Pop-Up · Deadline 1 Dec"} <span aria-hidden="true">→</span></a>`;
     if(n < new Date("2026-12-04T00:00:00+03:00")) return `<a href="hatch-up.html"><b>HATCH Up</b> · ${tr?"Başvurular kapandı · Sonuçlar 3 Aralık'ta açıklanıyor":"Applications closed · Results on 3 Dec"} <span aria-hidden="true">→</span></a>`;
     return "";
   }
@@ -112,7 +112,7 @@
     return `<div class="wrap"><div class="ft-g">
       <div><span class="logo" aria-label="studio HATCH"></span><div class="slogan">${esc(t().ftAbout)}</div></div>
       <div><h4>${c[0]}</h4><ul>${t().ftLinks.map(([a,h])=>`<li><a href="index.html${qs()}${h}">${esc(a)}</a></li>`).join("")}</ul></div>
-      <div><h4>${c[1]}</h4><ul>${t().ftLinks2.map(([a,h])=>`<li><a href="${h==="#join"?JOIN_URL:"index.html"+qs()+h}">${esc(a)}</a></li>`).join("")}</ul></div>
+      <div><h4>${c[1]}</h4><ul>${t().ftLinks2.map(([a,h])=>`<li><a href="${h==="#join"?JOIN_URL:h==="#visit"?"ziyaret.html"+qs():"index.html"+qs()+h}">${esc(a)}</a></li>`).join("")}</ul></div>
       <div><h4>${c[2]}</h4><ul><li><a href="https://instagram.com/${esc(SET.instagram||"studiohatchtv")}" target="_blank" rel="noopener">Instagram</a></li><li><a href="mailto:${esc(SET.eposta||"hello@studiohatch.tv")}">${esc(SET.eposta||"hello@studiohatch.tv")}</a></li></ul></div>
     </div><div class="ft-gise">${giseHtml()}</div><div class="ft-b"><span>© ${new Date().getFullYear()} studio HATCH · ${esc(t().rights)} · <a href="kvkk.html${qs()}" style="text-decoration:underline">${esc(t().kvkkLink)}</a></span><a href="${MAPS}" target="_blank" rel="noopener">${esc(ADRES)}</a></div></div>`;
   }
@@ -419,7 +419,7 @@
       eH:"Erişilebilirlik",
       nH:"Seni neler bekliyor?", nP:"Bir ziyarette gösterim, alışveriş ve atölyeyi bir araya getirebilirsin.",
       n:[["oda-frida","Immersive gösterimler","Dört bir yanını saran görüntü ve sesle, içinde dolaştığın dijital sanat deneyimleri.","index.html#gosterimler","Gösterimler"],
-         ["magaza","Hatch Shop","Bağımsız tasarımcıların ürünlerinden oluşan tasarım mağazası; her gün 12:00'den itibaren açık.","index.html#makers","Mağaza"],
+         ["magaza","HATCH Shop","Bağımsız tasarımcıların ürünlerinden oluşan tasarım mağazası; her gün 12:00–22:00 arası açık.","index.html#makers","HATCH Shop"],
          ["seramik","Atölyeler & etkinlikler","Seramikten amuta, buluşmalardan konserlere; takvimde her hafta yeni bir program.","index.html#program","Takvim"],
          ["wellness-yoga","Wellness","Immersive alanda yoga, nefes ve meditasyon seansları.","index.html#program","Seanslar"]],
       sure:"Ziyaretin ne kadar sürer?", sureT:"Immersive gösterim yaklaşık 40 dakika sürer. Mağaza ile birlikte 1–1,5 saat ayırmanı öneririz.",
@@ -442,7 +442,7 @@
       eH:"Accessibility",
       nH:"What's waiting for you", nP:"Combine a show, some shopping and a workshop in one visit.",
       n:[["oda-frida","Immersive shows","Digital art experiences you walk through, with image and sound all around you.","index.html#gosterimler","Shows"],
-         ["magaza","Hatch Shop","A design store featuring independent designers; open daily from 12pm.","index.html#makers","Store"],
+         ["magaza","HATCH Shop","A design store featuring independent designers; open daily 12pm–10pm.","index.html#makers","HATCH Shop"],
          ["seramik","Workshops & events","From ceramics to handstands, meet-ups to concerts — something new every week.","index.html#program","Calendar"],
          ["wellness-yoga","Wellness","Yoga, breathwork and meditation sessions in the immersive room.","index.html#program","Sessions"]],
       sure:"How long should I plan?", sureT:"The immersive show takes about 40 minutes. Allow 1–1.5 hours including the store.",
