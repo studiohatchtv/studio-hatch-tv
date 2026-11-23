@@ -5,7 +5,7 @@
   const SET = window.HATCH_SETTINGS || {};
   const FOREVER = "2999-12-31";
   const DEMO = !!window.HATCH_DEMO_MODE;
-  const PREVIEW = true;   // alan adına bağlanınca false yapılacak
+  const PREVIEW = false;  // canlı: www.studiohatch.tv
   const PILLAR_COLOR = { culture:["var(--culture)","var(--culture-soft)"], wellness:["var(--wellness)","var(--wellness-soft)"], nocturne:["var(--nocturne)","var(--nocturne-soft)"] };
   const JOIN_URL = "https://studiohatchtv.github.io/studio-hatch-flow/katil";
   const MAPS = "https://maps.app.goo.gl/r5HJbLXDrATRkBp79";
