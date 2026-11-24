@@ -164,10 +164,7 @@
     heroVideo();
     if($("#huStrip")){ const tr=lang==="tr", n=new Date(), acik=n<new Date("2026-12-02T00:00:00+03:00"), goster=n<new Date("2026-12-04T00:00:00+03:00");
       $("#huStrip").hidden=!goster;
-      $("#huStrip").innerHTML = goster ? `<a class="hu-strip-a" href="hatch-up.html${qs()}"><div class="wrap">
-        <span class="hu-s-eye mono">HATCH Up · ${tr?"20 Aralık":"20 Dec"}</span>
-        <span class="hu-s-t"><b>${acik?(tr?"HATCH Up Başvuru Formu":"HATCH Up open call"):(tr?"Başvurular kapandı":"Applications closed")}</b> ${acik?(tr?"Immersive Pop-Up için üretici başvuruları açık · Son başvuru 1 Aralık":"Maker applications open for the Immersive Pop-Up · Deadline 1 Dec"):(tr?"Sonuçlar 3 Aralık'ta açıklanıyor":"Results on 3 Dec")}</span>
-        <span class="hu-s-btn">${acik?(tr?"Başvur":"Apply"):(tr?"Detaylar":"Details")} <span class="arr">${ARR}</span></span></div></a>` : ""; }
+      $("#huStrip").innerHTML = goster ? `<div class="wrap"><a class="hu-join" href="hatch-up.html${qs()}"><span class="mono">HATCH Up · ${tr?"20 Aralık":"20 Dec"}</span><b>${tr?"Immersive Pop-Up başvuru formu":"Immersive Pop-Up open call"}</b><small>${acik?(tr?"Yeme-İçme · Satış · Atölye — son başvuru 1 Aralık":"Food · Makers · Workshops — deadline 1 Dec"):(tr?"Başvurular kapandı · sonuçlar 3 Aralık":"Applications closed · results on 3 Dec")}</small><span class="go">${ARR}</span></a></div>` : ""; }
     const tk=["Deneyimler","Local Makers","Buluşmalar",...["culture","wellness","nocturne"].map(p=>t().pillars[p][0])]; const tkH=tk.map(x=>`<span>${x}</span>`).join("");
     $("#ticker").innerHTML = `<div class="ticker-t" aria-hidden="true">${tkH+tkH+tkH+tkH}</div>`;
     $("#showsW").innerHTML = GL.length ? renderArt() : renderShows();
@@ -184,7 +181,7 @@
       <div class="dg-grid">${GAL.map((g,i)=>`<figure class="dg-f f${i} rv"><img src="assets/${g}.jpg" alt="${esc(t().gal[i])}" loading="lazy"><figcaption class="mono">${String(i+1).padStart(2,"0")} / ${esc(t().gal[i])}</figcaption></figure>`).join("")}</div></div>`;
     $("#makers").innerHTML = `<div class="makers-txt rv"><h2 class="h2">${t().makersH}</h2><p class="sub" style="color:var(--ink)">${esc(t().makersP)}</p><div><a class="btn btn-blue" href="#visit">${esc(t().makersBtn)} <span class="arr">${ARR}</span></a></div></div>
       <div class="makers-img rv"><img src="assets/magaza.jpg" alt="" loading="lazy"></div>`;
-    $("#join").innerHTML = (huBand() ? `<a class="hu-join rv" href="hatch-up.html"><span class="mono">HATCH Up · 20 Aralık</span><b>Immersive Pop-Up başvuru formu</b><small>${lang==="tr"?(new Date()<new Date("2026-12-02T00:00:00+03:00")?"Yeme-İçme · Satış · Atölye — son başvuru 1 Aralık":"Başvurular kapandı · sonuçlar 3 Aralık"):"Food · Makers · Workshops — deadline 1 Dec"}</small><span class="go">${ARR}</span></a>` : "") + `<div class="join rv"><div><h2 class="h2">${t().joinH}</h2><p class="sub" style="color:#fff;opacity:.85">${esc(t().joinP)}</p></div>
+    $("#join").innerHTML = `<div class="join rv"><div><h2 class="h2">${t().joinH}</h2><p class="sub" style="color:#fff;opacity:.85">${esc(t().joinP)}</p></div>
       <div class="join-opts">${t().joinOpts.map(([a,b],i)=>`<a class="join-opt" href="${JOIN_URL}?tur=${["tasarimci","atolye","etkinlik"][i]}#form"><span><small>${a}</small><b>${esc(b)}</b></span>${ARR}</a>`).join("")}</div></div>`;
     $("#visitG").innerHTML = `<div class="card rv"><h2 class="h2">${esc(t().visitH)}</h2>
         <dl class="kv"><dt>${esc(t().where)}</dt><dd>studio HATCH — High Garden AVM<br>Newline Konutları, Farabi Cd.<br>E Blok No: 12-E<br>16140 Nilüfer / Bursa</dd>
