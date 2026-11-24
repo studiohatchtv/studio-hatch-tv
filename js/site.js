@@ -611,6 +611,15 @@
   window.addEventListener("scroll", ()=>$(".hd").classList.toggle("scrolled", scrollY>8), { passive:true });
   window.hatchMenu = () => $("#nav").classList.toggle("open");
   document.addEventListener("click", ev=>{ if(ev.target.closest("#nav a")) $("#nav").classList.remove("open"); });
+  // Türkçe büyük harfte "Immersive" → "İMMERSİVE" olmasın: kelimeyi lang="en" ile sar
+  const enWord=/immersive/i, enWords=/(immersive)/gi;
+  function fixEn(root){
+    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>enWord.test(n.nodeValue)&&!n.parentElement.closest('[lang^="en"],script,style,title,textarea')?1:2});
+    const list=[];while(w.nextNode())list.push(w.currentNode);
+    list.forEach(n=>{const f=document.createDocumentFragment();n.nodeValue.split(enWords).forEach((part,i)=>{if(!part)return;if(i%2){const sp=document.createElement("span");sp.lang="en";sp.textContent=part;f.appendChild(sp);}else f.appendChild(document.createTextNode(part));});n.replaceWith(f);});
+  }
+  new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)fixEn(n);else if(n.nodeType===3&&n.parentElement)fixEn(n.parentElement);}))).observe(document.body,{childList:true,subtree:true,characterData:false});
+  fixEn(document.body);
   render();
   setInterval(()=>{ const s=$("#hero .slots"); if(heroItem&&s) s.innerHTML=slotsHtml(heroItem); }, 60000);
 })();
