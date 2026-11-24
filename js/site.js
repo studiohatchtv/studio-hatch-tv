@@ -101,7 +101,8 @@
   function shell(){
     document.documentElement.lang = lang;
     const n=t().nav, ids=["gosterimler","program","makers","visit"];
-    const hu = huBand();
+    const home = !document.body.dataset.page || document.body.dataset.page==="home";
+    const hu = home ? "" : huBand();   // ana sayfada kırmızı bant banner'ın altında (#huStrip)
     const band = DEMO ? t().proto : hu ? hu : (ayar("duyuru") ? esc(ayar("duyuru")) : (PREVIEW ? (lang==="tr" ? "<b>Önizleme.</b> Site henüz yayında değil; program Flow'dan canlı geliyor." : "<b>Preview.</b> Not public yet; the program is live from Flow.") : ""));
     $("#proto").innerHTML = band; $("#proto").style.display = band ? "" : "none"; $("#proto").classList.toggle("hu-band", !!hu && !DEMO);
     $("#nav").innerHTML = n.map((x,i)=> i===0
@@ -161,6 +162,12 @@
     </div>`;
     }
     heroVideo();
+    if($("#huStrip")){ const tr=lang==="tr", n=new Date(), acik=n<new Date("2026-12-02T00:00:00+03:00"), goster=n<new Date("2026-12-04T00:00:00+03:00");
+      $("#huStrip").hidden=!goster;
+      $("#huStrip").innerHTML = goster ? `<a class="hu-strip-a" href="hatch-up.html${qs()}"><div class="wrap">
+        <span class="hu-s-eye mono">HATCH Up · ${tr?"20 Aralık":"20 Dec"}</span>
+        <span class="hu-s-t"><b>${acik?(tr?"HATCH Up Başvuru Formu":"HATCH Up open call"):(tr?"Başvurular kapandı":"Applications closed")}</b> ${acik?(tr?"Immersive Pop-Up için üretici başvuruları açık · Son başvuru 1 Aralık":"Maker applications open for the Immersive Pop-Up · Deadline 1 Dec"):(tr?"Sonuçlar 3 Aralık'ta açıklanıyor":"Results on 3 Dec")}</span>
+        <span class="hu-s-btn">${acik?(tr?"Başvur":"Apply"):(tr?"Detaylar":"Details")} <span class="arr">${ARR}</span></span></div></a>` : ""; }
     const tk=["Deneyimler","Local Makers","Buluşmalar",...["culture","wellness","nocturne"].map(p=>t().pillars[p][0])]; const tkH=tk.map(x=>`<span>${x}</span>`).join("");
     $("#ticker").innerHTML = `<div class="ticker-t" aria-hidden="true">${tkH+tkH+tkH+tkH}</div>`;
     $("#showsW").innerHTML = GL.length ? renderArt() : renderShows();

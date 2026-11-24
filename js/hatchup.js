@@ -47,7 +47,7 @@
   const SON = [
     ["Markanı ve getireceklerini kısaca anlat","textarea","hakkinda",true,null,"Seni diğerlerinden ayıran ne? Yılbaşına özel bir ürünün / konseptin var mı?"],
     ["Ürün / atölye fotoğrafları","file","foto",true,null,`En az 1, en fazla ${MAX_FOTO} fotoğraf · her biri en fazla ${MAX_MB} MB`],
-    ["Elektrik ihtiyacın","select","elektrik",true,["Yok","Var – telefon / POS / ışık için priz yeterli","Var – ısıtıcı, kahve makinesi gibi yüksek güçlü cihaz"]],
+    ["Elektrik ihtiyacın","select","elektrik",true,["Var","Yok"]],
     ["Stantta kaç kişi olacaksınız?","select","kisi",true,["1","2","3 veya daha fazla"]],
     ["Daha önce pop-up / market etkinliğine katıldın mı?","text","deneyim",false,null,"Hangi etkinlikler? (varsa)"],
     ["Bizi nereden duydun?","select","kaynak",false,["Instagram","Arkadaş / tavsiye","studio HATCH ziyareti","Web sitesi","Diğer"]],
@@ -63,7 +63,7 @@
     ["Satışlardan komisyon alınıyor mu?","Hayır. Satışlarından komisyon almıyoruz; stant bedeli dışında satışlarından herhangi bir pay ödemezsin."],
     ["Satışları kim yapıyor, ödeme nasıl alınıyor?","Satışlarını kendin yaparsın. Kart, nakit veya havale; hangi ödeme yöntemlerini kabul edeceksen (POS cihazı, QR, IBAN vb.) yanında getirmelisin."],
     ["Kurulum ve etkinlik saatleri nedir?","Kurulum, etkinlik ve toplama saatleri seçilen katılımcılara gönderilen katılım rehberinde yer alır. Stantların ziyaretçiler gelmeden önce hazır olması gerekir."],
-    ["Elektrik var mı?","Alanda sınırlı sayıda priz var. Telefon, POS ve ışık için priz ihtiyacını, yüksek güçlü cihaz (ısıtıcı, kahve makinesi vb.) kullanacaksan bunu formda mutlaka belirt; yüksek güçlü cihazlar önceden onaylanmalıdır."],
+    ["Elektrik var mı?","Alanda sınırlı sayıda priz var. Elektrik ihtiyacın varsa formda belirt; yüksek güçlü cihazlar (ısıtıcı, kahve makinesi vb.) önceden onaylanmalıdır."],
     ["Yeme-içme stantları için kurallar neler?","Ürünlerin gıda mevzuatına uygun üretilmiş ve hijyenik paketlenmiş olması gerekir; içerik ve alerjen bilgisini ziyaretçiye verebilmelisin. Immersive alanda açık ateş, kızartma ve yoğun duman veya koku oluşturan pişirme yapılamaz."],
     ["Atölyeler nasıl işliyor?","Atölyeler gün içinde seanslar hâlinde yapılır. Seans saatleri, kontenjan ve katılımcı kaydı seçimden sonra birlikte planlanır; kişi başı ücreti sen belirlersin."],
     ["Stantı başka bir markayla paylaşabilir miyim?","Evet. Ortak stant açmak istiyorsanız başvuruyu tek marka adına yapıp diğer markayı “Markanı ve getireceklerini anlat” alanında belirtin. Bir stant için tek bedel ödenir; iki marka da değerlendirmeye dahil edilir."],

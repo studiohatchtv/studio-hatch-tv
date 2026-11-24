@@ -16,7 +16,7 @@ body.art{--void:#06060A;--void-2:#0E0E16;--glow:#5B5CFF;--glow-2:#00E0FF;--pink:
 @media (max-width:980px){.art .nav.open{background:var(--void);border-color:rgba(255,255,255,.1)}}
 
 /* HERO: tam ekran, görüntü kenardan kenara, yazı üstünde */
-.art .hero{background:var(--void);min-height:min(calc(100svh - 114px),920px);display:flex;isolation:isolate}
+.art .hero{background:var(--void);min-height:min(calc(100svh - 146px),920px);display:flex;isolation:isolate}
 .art .hero .wrap{grid-template-columns:minmax(0,1fr);min-height:auto;width:100%;align-items:end;padding-top:120px;padding-bottom:84px;position:static}
 .art .hero .rv{position:relative;z-index:2}
 .art .hero .rv{max-width:760px}
