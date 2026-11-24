@@ -28,7 +28,8 @@
   const fmt = (k,o) => new Intl.DateTimeFormat(loc(), o).format(pd(k));
   const endOf = e => e.end || e.date;
   const isRun = e => e.kind==="run";
-  const tag = e => `<span class="tag" style="--c:${PILLAR_COLOR[e.pillar][0]};--cs:${PILLAR_COLOR[e.pillar][1]}">${esc(L(e.tur))}</span>`;
+  const tag = e => `<span class="tag" style="--c:${PILLAR_COLOR[e.pillar][0]};--cs:${PILLAR_COLOR[e.pillar][1]}">${esc(L(e.tur))}</span>${e.soldOut?`<span class="sold-tag">${esc(t().soldOut)}</span>`:""}`;
+  const soldBtn = () => `<span class="btn sold-btn" aria-disabled="true">${esc(t().soldOut)}</span>`;
   // bağlantılarda dil ve demo modu korunur
   const qs = (o={}) => { const p=new URLSearchParams(o); if(lang==="en") p.set("lang","en"); if(DEMO) p.set("demo","1"); const x=p.toString(); return x?"?"+x:""; };
   const evUrl = e => `etkinlik.html${qs({id:e.id})}`;
@@ -76,7 +77,7 @@
     lb._geri=document.activeElement; lb.dataset.i=i; lb.hidden=false; document.documentElement.style.overflow="hidden"; lb._goster(); lb.querySelector(".lb-x").focus();
   };
   const giseHtml = () => `<p class="gise"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9a2 2 0 0 0 0 4v5a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-5a2 2 0 0 0 0-4V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1z"/><path d="M13 5v2M13 17v2M13 11v2"/></svg><span>${esc(t().gise)}</span></p>`;
-  const buyBar = x => x.ticketUrl ? `<div class="buybar"><div><b>${esc(L(x.title))}</b><small>${esc([L(x.price),t().giseKisa].filter(Boolean).join(" · "))}</small></div><a class="btn btn-blue" href="${esc(x.ticketUrl)}" target="_blank" rel="noopener">${esc(t().tickets)} <span class="arr">${ARR}</span></a></div>` : "";
+  const buyBar = x => x.ticketUrl && !x.soldOut ? `<div class="buybar"><div><b>${esc(L(x.title))}</b><small>${esc([L(x.price),t().giseKisa].filter(Boolean).join(" · "))}</small></div><a class="btn btn-blue" href="${esc(x.ticketUrl)}" target="_blank" rel="noopener">${esc(t().tickets)} <span class="arr">${ARR}</span></a></div>` : "";
   const faqHtml = list => list.map(x=>`<details class="faq"><summary>${esc(x.q)}<i aria-hidden="true"></i></summary><p>${esc(x.a)}</p></details>`).join("");
   const NL_ILGI = [["Immersive deneyimler","Immersive shows"],["Atölyeler","Workshops"],["Etkinlikler & konserler","Events & concerts"],["Wellness","Wellness"],["Tasarım ürünleri & mağaza","Design store"]];
   const ayar = k => (lang==="en" && SET[k+"_en"]) || SET[k] || "";
@@ -156,7 +157,7 @@
         <h1>${f.show ? `${L(f.sub)?`<span>${esc(L(f.sub))}</span>`:""}${esc(L(f.title))}` : (()=>{ const [a,b]=L(f.title).split(": "); return b?`<span>${esc(a)}</span>${esc(b)}`:esc(a); })()}</h1>
         <p class="lead">${esc(L(f.short))}</p>
         <div class="slots">${f.show && !f.times.length && L(f.hours) ? `<div class="slots-l">${esc(t().shHours)}</div><div class="slots-r"><span class="slot next">${esc(L(f.hours))}</span></div>` : slotsHtml(f)}</div>
-        <div class="hero-cta">${f.ticketUrl?`<a class="btn btn-white" href="${esc(f.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}<a class="btn ${f.ticketUrl?"btn-line":"btn-white"}" href="${fUrl}">${esc(f.show?t().explore:t().details)}</a></div>
+        <div class="hero-cta">${f.soldOut?soldBtn():""}${f.ticketUrl&&!f.soldOut?`<a class="btn btn-white" href="${esc(f.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>`:""}<a class="btn ${f.ticketUrl&&!f.soldOut?"btn-line":"btn-white"}" href="${fUrl}">${esc(f.show?t().explore:t().details)}</a></div>
       </div>
       <div class="hero-art tech"><img class="${f.blend?"blend":""}" src="${esc(f.image)}" alt="" fetchpriority="high">${f.durationMin?`<div class="badge-40"><b>${f.durationMin}'</b><small>${esc(t().minutes)}</small></div>`:""}</div>
     </div>`;
@@ -246,7 +247,7 @@
         <a class="row-link" href="${e.show?shUrl(e):evUrl(e)}" aria-label="${esc(L(e.title))}"></a>
         <div class="dt">${isRun(e)&&e.date<=(st.day||t0)?`<b style="font-size:.62em">${esc(t().everyDay)}</b><small>${endOf(e)===FOREVER?esc(t().showing):"→ "+esc(fmt(endOf(e),{day:"numeric",month:"short"}))}</small>`:`<b>${pd(e.date).getDate()}</b><small>${esc(fmt(e.date,{month:"short"}))} · ${esc(fmt(e.date,{weekday:"short"}))}</small>`}</div>
         <div>${tag(e)}<h3>${esc(L(e.title))}</h3><p>${esc(L(e.short))}</p>
-          <div class="meta"><b>${esc(e.show ? (L(e.hours) || (e.times.length?e.times.join(" · "):"")) : timeTxt(e))}</b>${e.show&&e.durationMin?`<span class="sep">·</span><span>${e.durationMin} ${esc(t().minutes)}</span>`:""}<span class="sep">·</span><span>${e.ticketUrl?esc(L(e.price)):esc(t().free)}</span></div></div>
+          <div class="meta"><b>${esc(e.show ? (L(e.hours) || (e.times.length?e.times.join(" · "):"")) : timeTxt(e))}</b>${e.show&&e.durationMin?`<span class="sep">·</span><span>${e.durationMin} ${esc(t().minutes)}</span>`:""}<span class="sep">·</span><span>${e.soldOut?`<b class="sold-txt">${esc(t().soldOut)}</b>`:e.ticketUrl?esc(L(e.price)):esc(t().free)}</span></div></div>
         <div class="th" style="--cs:${PILLAR_COLOR[e.pillar][1]}"><img src="${esc(e.image)}" alt="" loading="lazy">${e.video?VB:""}</div>
         <span class="go">${ARR}</span></article>`).join("")
       : `<div class="empty-msg">${esc(t().nothing)}</div>`;
@@ -288,7 +289,7 @@
     $("#evHero").className = "ev-hero "+e.pillar; $("#evHero").style.setProperty("--c", c);
     $("#evHero").innerHTML = `<div class="wrap"><div>
         <div class="crumb"><a href="index.html${qs()}#program">← ${esc(t().evBack)}</a></div>
-        <span class="tag" style="background:rgba(255,255,255,.16);color:#fff">${esc(L(e.tur))}</span>
+        <span class="tag" style="background:rgba(255,255,255,.16);color:#fff">${esc(L(e.tur))}</span>${e.soldOut?`<span class="sold-tag">${esc(t().soldOut)}</span>`:""}
         <h1>${esc(L(e.title))}</h1><p class="lead">${esc(L(e.short))}</p></div>
       ${mediaHtml(e)}</div>`;
     LB=e.gallery||[];
@@ -299,8 +300,8 @@
         <div><dt>${esc(e.times.length>1?t().evSessions:t().evTime)}</dt><dd>${e.times.length>1&&isRun(e)?`<div class="slots-r" style="margin-top:6px">${slotsHtml(e).split('<div class="slots-r">')[1].replace(/<\/div>$/,"")}</div>`:esc(timeTxt(e))}</dd></div>
         ${dur?`<div><dt>${esc(t().evDuration)}</dt><dd>${esc(dur)}</dd></div>`:""}
         <div><dt>${esc(t().evPlace)}</dt><dd>studio HATCH — High Garden AVM<br><span style="font-weight:400;font-size:14px;color:var(--muted)">Farabi Cd. E Blok No: 12-E, Nilüfer/Bursa</span><br><a href="${MAPS}" target="_blank" rel="noopener" style="font-size:14px;color:var(--blue)">${esc(t().map)} ↗</a></dd></div>
-        <div><dt>${esc(t().evPrice)}</dt><dd>${esc(e.ticketUrl?L(e.price):t().noTicket)}</dd></div></dl>
-        ${e.ticketUrl?`<a class="btn btn-blue" href="${esc(e.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>${giseHtml()}`:""}
+        <div><dt>${esc(t().evPrice)}</dt><dd>${e.soldOut?`<b class="sold-txt">${esc(t().soldOut)}</b>${e.ticketUrl&&L(e.price)?` · <s>${esc(L(e.price))}</s>`:""}`:esc(e.ticketUrl?L(e.price):t().noTicket)}</dd></div></dl>
+        ${e.soldOut?`${soldBtn()}<p class="sold-note">${esc(t().soldNote)}</p>`:e.ticketUrl?`<a class="btn btn-blue" href="${esc(e.ticketUrl)}" target="_blank" rel="noopener">${esc(t().buy)} <span class="arr">${ARR}</span></a>${giseHtml()}`:""}
         <div class="acts"><button class="btn" onclick="hatchIcs()">📅 ${esc(t().addCal)}</button><button class="btn" onclick="hatchShare()">↗ ${esc(t().share)}</button></div></aside>`;
     const more = EV.filter(x=>x.id!==e.id && !isRun(x) && x.date>=today()).sort((a,b)=>(a.pillar===e.pillar?0:1)-(b.pillar===e.pillar?0:1) || a.date.localeCompare(b.date)).slice(0,3);
     $("#more").innerHTML = `<h2 class="h2" style="font-size:clamp(28px,3vw,40px)">${esc(t().evMore)}</h2><div class="rows">${more.map(x=>`<article class="row"><a class="row-link" href="${evUrl(x)}" aria-label="${esc(L(x.title))}"></a>
@@ -315,7 +316,7 @@
       image:[new URL(e.image,location.href).href],
       location:{ "@type":"Place", name:"studio HATCH — High Garden AVM", address:{ "@type":"PostalAddress", streetAddress:"Ahmet Yesevi Mah., Farabi Cd. Newline Konutları E Blok No: 12-E", addressLocality:"Nilüfer", addressRegion:"Bursa", postalCode:"16140", addressCountry:"TR" } },
       organizer:{ "@type":"Organization", name:"studio HATCH", url:"https://www.studiohatch.tv" },
-      ...(e.ticketUrl?{offers:{ "@type":"Offer", url:e.ticketUrl, availability:"https://schema.org/InStock" }}:{}) };
+      ...(e.ticketUrl?{offers:{ "@type":"Offer", url:e.ticketUrl, availability:e.soldOut?"https://schema.org/SoldOut":"https://schema.org/InStock" }}:{}) };
     let s=document.getElementById("ld"); if(!s){ s=document.createElement("script"); s.type="application/ld+json"; s.id="ld"; document.head.appendChild(s); }
     s.textContent=JSON.stringify(ld);
     window.hatchIcs = () => {

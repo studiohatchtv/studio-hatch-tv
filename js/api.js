@@ -17,7 +17,7 @@
   function map(r){
     const times = (r.seanslar && r.seanslar.length) ? r.seanslar : (r.baslangic_saat ? [hm(r.baslangic_saat)] : []);
     const multi = r.bitis_tarih && r.bitis_tarih > r.tarih;
-    return { id:r.id, pillar:["culture","wellness","nocturne"].includes(r.program)?r.program:"culture", kind: multi ? "run" : "event", featured:!!r.one_cikan,
+    return { id:r.id, pillar:["culture","wellness","nocturne"].includes(r.program)?r.program:"culture", kind: multi ? "run" : "event", featured:!!r.one_cikan, soldOut:!!r.tukendi,
       tur:{tr:r.tur||"", en:r.tur_en||r.tur||""}, title:{tr:r.baslik, en:r.baslik_en||r.baslik},
       short:{tr:r.ozet||"", en:r.ozet_en||r.ozet||""}, desc:{tr:paras(r.aciklama), en:paras(r.aciklama_en||r.aciklama)},
       know:{tr:lines(r.bilgiler), en:lines(r.bilgiler_en||r.bilgiler)},

@@ -793,3 +793,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hu-s-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--hu);font-weight:700;font-size:15px;padding:11px 20px;border-radius:999px;white-space:nowrap;transition:transform .15s}
 .hu-strip-a:hover .hu-s-btn{transform:translateX(3px)}
 @media (max-width:760px){.hu-strip .wrap{flex-wrap:wrap;gap:10px 14px}.hu-s-t{flex-basis:100%;order:2;font-size:14.5px}.hu-s-t b{display:block;font-size:18px;margin:0 0 2px}.hu-s-btn{order:3;padding:9px 16px;font-size:14px}}
+
+/* Tükendi / Sold out */
+.sold-tag{display:inline-block;margin-left:6px;padding:3px 8px;border-radius:999px;background:#E5202E;color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.sold-txt{color:#E5202E;font-weight:700}
+.sold-btn{background:#E5202E!important;color:#fff!important;border-color:#E5202E!important;cursor:not-allowed;pointer-events:none}
+.sold-note{margin:10px 0 0;font-size:14px;color:var(--muted)}
